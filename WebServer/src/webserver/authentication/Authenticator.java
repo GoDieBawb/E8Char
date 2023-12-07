@@ -6,6 +6,7 @@
 package webserver.authentication;
 
 import java.util.HashMap;
+import webserver.SQLUtil;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.util.HashMap;
  */
 public class Authenticator {
     
-    HashMap<String, User> tokenMap;
+    HashMap<String, User> tokenMap; //Maps Access Token Strings to User Objects
     
     public Authenticator() {
         tokenMap = new HashMap<>();
@@ -22,6 +23,8 @@ public class Authenticator {
     public HashMap<String, User> getTokenMap() {
         return tokenMap;
     }
+    
+    //TODO Multiple Logins Need to Return the same token
     
     //returns the user name for that token if valid
     public String Authenticate(String token) {
@@ -32,9 +35,10 @@ public class Authenticator {
             
             if ((curTime-lastAct)/1000 > 60) {
                 System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
+                tokenMap.remove(token);
                 return null;
             }
-            
+            tokenMap.get(token).lastAct = System.currentTimeMillis(); //Rest Timer
             return tokenMap.get(token).userName;
         }
         else return null;
@@ -60,9 +64,17 @@ public class Authenticator {
         
     }
     
-    //TODO: Check Username and Password Here
+    //Checks Username and Password
     private boolean verify(String userName, String password) {
-        return true;
+        SQLUtil u        = new SQLUtil();
+        String response  = u.queryDatabase("SELECT Password FROM Staff WHERE Username = '" + userName+"'");
+        
+        if (response.equals("")) return false;
+        
+        response         = response.substring(1, response.length() - 1); //Remove first and last character
+        String pass      = response.split(": ")[1]; //Split at ": " to get requested field
+        System.out.println("Pass: " + pass);
+        return password.equals(pass);
     }
     
 }

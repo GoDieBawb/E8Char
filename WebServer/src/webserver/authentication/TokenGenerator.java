@@ -5,6 +5,7 @@
  */
 package webserver.authentication;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -12,21 +13,35 @@ import java.util.Random;
  * @author MeanC
  */
 public class TokenGenerator {
- 
-    public String generateToken() {
+
+    ArrayList<Character> badChars;
     
-//        for (int i = 0; i < 125;  i++) {
-//            System.out.println( i + ": " + (char) i);
-//        }
+    public String generateToken() {
+
         
         char[] charArray = new char[15];
-        Random r = new Random();
         for (int i = 0; i < 15; i++) {
-            int randomNum = r.nextInt((122 - 33) + 1) + 33;
-            char c = (char) randomNum;
-            charArray[i] = c;
+
+            charArray[i] = randomChar();
         }
         return new String(charArray);
+    }
+    
+    private char randomChar() {
+        
+        char c = (char) randomCharNum();
+        return c;        
+    }
+    
+    private int randomCharNum() {
+        Random r = new Random();
+        int randomNum = r.nextInt((122 - 48) + 1) + 48;
+        
+        //Remove Special Characters
+        if (randomNum >= 58 && randomNum <= 64) return randomCharNum();
+        if (randomNum >= 91 && randomNum <= 96) return randomCharNum();
+        
+        return randomNum;
     }
     
 }

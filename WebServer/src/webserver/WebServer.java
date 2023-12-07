@@ -5,6 +5,7 @@
  */
 package webserver;
 
+import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpsConfigurator;
@@ -25,6 +26,8 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLParameters;
 import javax.net.ssl.TrustManagerFactory;
 import util.FileReader;
+import webserver.posts.PostHandler;
+import webserver.responses.BasicResponse;
 
 /**
  *
@@ -44,6 +47,7 @@ public class WebServer {
 //    }
     
     static int PORT = 80;
+    private final static PostHandler POSTHANDLER = new PostHandler();
     
     private String getLoginString() {
         ArrayList<String> lines = new FileReader().getLines("pass.txt");
@@ -137,7 +141,7 @@ public class WebServer {
             String path = t.getRequestURI().getPath().replace("/", "");
             System.out.println("Path: " + path);
             
-            if (path.equals("")) path = "Index";
+            if (path.equals("")) path = "Login";
             if (!path.toLowerCase().contains("html")) path += ".html";
             
             File file = new File("pages/"+path);
@@ -155,19 +159,21 @@ public class WebServer {
         public void handlePost(HttpExchange t) {
             
             System.out.println("Handling POST");        
-            
+            String json = "";
             try {
-                String s = new String(t.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                System.out.println(s);
+                json = new String(t.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
+                //System.out.println(json);
             }
             catch(IOException e) {}
             
-            String response = "{\"outcome\":\"success\"}";
-
+            //String response = "{\"outcome\":\"success\"}";
+            BasicResponse response     = POSTHANDLER.handle(json);
+            String        jsonResponse = new Gson().toJson(response);
+            System.out.println("JSON Response: " + jsonResponse);
             try {
-                t.sendResponseHeaders(200, response.length());
+                t.sendResponseHeaders(200, jsonResponse.length());
                 OutputStream os = t.getResponseBody();
-                os.write(response.getBytes());
+                os.write(jsonResponse.getBytes());
                 os.close();
             }
             catch (IOException f){}

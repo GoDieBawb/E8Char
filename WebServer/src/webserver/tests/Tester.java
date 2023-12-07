@@ -9,9 +9,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import util.FileReader;
 import webserver.SQLUtil;
+import webserver.authentication.TokenGenerator;
 import webserver.posts.BasicPost;
 import webserver.posts.LoginPost;
 import webserver.posts.PostHandler;
+import webserver.responses.LoginResponse;
 
 /**
  *
@@ -21,8 +23,14 @@ public class Tester {
     
     public void sqlTest() {
         SQLUtil u = new SQLUtil();
-        String response = u.queryDatabase("SELECT * FROM Persons");
-        System.out.println("SQL Response: " + response);
+        String userName  = "testy";
+        String response  = u.queryDatabase("SELECT Password FROM Staff WHERE Username = '" + userName+"'");
+         
+        System.out.println("SQL Response: " + response); //print raw response
+        
+        response = response.substring(1, response.length() - 1); //Remove first and last character
+        String password  = response.split(": ")[1]; //Split at ": " to get requested field    
+        System.out.println("Pass: " + password);
     }
 
     protected class GsonTest {
@@ -64,12 +72,12 @@ public class Tester {
         
         System.out.println("JSON String: " + s);
         
-        String token  = p.handle(s);
+        LoginResponse response  = (LoginResponse) p.handle(s);
         
         
         
         BasicPost b   = new BasicPost();
-        b.accessToken = token;
+        b.accessToken = response.accessToken;
         b.postType    = "Fake Post Type";
         p.handle(g.toJson(b));
 
@@ -98,6 +106,17 @@ public class Tester {
         String pass = info.split(",")[1];
         System.out.println("User: " + user);
         System.out.println("Pass: " + pass);
+        
+    }
+    
+    public void tokenTest() {
+    
+        TokenGenerator t = new TokenGenerator();
+        int x = 1;
+        while (x < 10) {
+            System.out.println(x+": " + t.generateToken());
+            x++;
+        }
         
     }
     

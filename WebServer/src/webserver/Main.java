@@ -9,7 +9,9 @@ public class Main {
         
         WebServer w = new WebServer();
         w.start();
-        Tester t = new Tester();
+        //Tester t = new Tester();
+        //t.tokenTest();
+        //t.gsonTest();
         //t.sqlTest();
         //t.postTest();
         //t.readTest();
