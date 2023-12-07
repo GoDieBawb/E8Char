@@ -33,7 +33,8 @@ public class Authenticator {
             Long lastAct = tokenMap.get(token).lastAct;
             Long curTime = System.currentTimeMillis();
             
-            if ((curTime-lastAct)/1000 > 60) {
+            //15 minute time out for token
+            if ((curTime-lastAct)/1000 > 60*15) {
                 System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
                 tokenMap.remove(token);
                 return null;
@@ -49,9 +50,10 @@ public class Authenticator {
         
         if (verify(userName, password)) {
             String token  = new TokenGenerator().generateToken();
-            System.out.println("User: " + userName + " Authenticated Token: " + token);
+            System.out.println("User: " + userName + " Authenticated Token: " + token);           
             User u        = new User();
             u.userName    = userName;
+            u.userId      = getUserId(userName);
             u.accessToken = token;
             u.lastAct     = System.currentTimeMillis();
             tokenMap.put(token, u);
@@ -75,6 +77,30 @@ public class Authenticator {
         String pass      = response.split(": ")[1]; //Split at ": " to get requested field
         System.out.println("Pass: " + pass);
         return password.equals(pass);
+    }
+    
+    //Can Probably be moved to verify
+    private int getUserId(String userName) {
+        SQLUtil s        = new SQLUtil();
+        String response  = s.queryDatabase("SELECT Id FROM Staff WHERE Username = '" + userName+"'"); 
+        System.out.println("RESPONSE: " + response);
+        response         = response.substring(1, response.length() - 1); //Remove first and last character
+        String idString  = response.split(": ")[1]; //Split at ": " to get requested field
+        return Integer.valueOf(idString);
+    }
+    
+    public int getUserIdByToken(String accessToken) {
+        if (tokenMap.containsKey(accessToken)) {
+            return tokenMap.get(accessToken).userId;
+        }
+        return -1;
+    }
+    
+    public String getUserNameByToken(String accessToken) {
+        if (tokenMap.containsKey(accessToken)) {
+            return tokenMap.get(accessToken).userName;
+        }
+        return null;
     }
     
 }

@@ -15,7 +15,6 @@ public class LoginResponse extends BasicResponse {
     
     public LoginResponse() {
         responseType = "login";
-        
     }
     
 }

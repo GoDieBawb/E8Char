@@ -13,6 +13,7 @@ public class User {
     
     String userName;
     String accessToken;
+    int    userId;
     Long   lastAct;
     
 }

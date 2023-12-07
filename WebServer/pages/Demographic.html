@@ -57,6 +57,8 @@
 				var city   	    = document.getElementById('city').value;
 				var state   	= document.getElementById('state').value;
 				var zip   	    = document.getElementById('zip').value;
+				var enteredby	= "";
+				var entereddate = "";
 				
 				var obj = {"accessToken": accessToken, "postType": postType, "firstname": firstname, "lastname": lastname, "phonenumber": phonenumber, "dob": dob, "address": address, "city": city, "state": state, "zip": zip};
 				var postString = JSON.stringify(obj);

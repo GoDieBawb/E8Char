@@ -6,6 +6,7 @@
 package webserver.posts;
 
 import com.google.gson.Gson;
+import java.time.LocalDate;
 import webserver.authentication.Authenticator;
 import webserver.responses.BadTokenResponse;
 import webserver.responses.BasicResponse;
@@ -52,16 +53,32 @@ public class PostHandler {
             System.out.println("Checking Token: " + b.accessToken);
             String user = authenticator.Authenticate(b.accessToken);
             
-            //If user is null then the Access Token is Badd
+            //If user is null then the Access Token is Bad
             if (user == null) {
                 System.out.println("BAD TOKEN");
                 return new BadTokenResponse();
             }
+            System.out.println("Verified!");
             
         }
         
         //Once Token Verified Determine Which Post Type
         switch (b.postType) {
+            case "submitDemographic":
+                System.out.println("Submitting Demographic");
+                try {
+                    SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
+                    sdp.enteredby   = authenticator.getUserIdByToken(sdp.accessToken);
+                    sdp.entereddate = LocalDate.now().toString();
+                    sdp.publish();                    
+                }
+                catch(Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Submitted!");
+                BasicResponse br = new BasicResponse();
+                br.outcome = "Success";
+                return br;
             default:
                 System.out.println("ERROR: Unregistered Post Type: " + b.postType);
                 return new UnknownPostResponse();
