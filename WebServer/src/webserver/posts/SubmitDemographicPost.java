@@ -5,7 +5,6 @@
  */
 package webserver.posts;
 
-import java.time.LocalDate;
 import webserver.SQLUtil;
 
 /**
@@ -45,7 +44,7 @@ public class SubmitDemographicPost extends BasicPost {
         String queryString = "INSERT INTO Client (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EnteredBy, EnteredDate)"
                 + "VALUES ('" + firstname + "', '" + lastname + "', '" + phonenumber + "', '" + dob + "', '" + address + "', '" + city 
                 + "', '" + state + "', '" + zip + "', '" + enteredby + "', '" + entereddate + "')";
-        System.out.println("Query String: " + queryString);
+
         SQLUtil sql = new SQLUtil();
         sql.queryDatabase(queryString);
     }

@@ -138,13 +138,17 @@ public class WebServer {
             
             System.out.println("Handling GET");
             
-            String path = t.getRequestURI().getPath().replace("/", "");
+            String path = t.getRequestURI().getPath();
             System.out.println("Path: " + path);
             
+            //https://www.elechart.com/
             if (path.equals("")) path = "Login";
-            if (!path.toLowerCase().contains("html")) path += ".html";
             
-            File file = new File("pages/"+path);
+            if (path.contains("images")) {}
+            
+            else if (!path.toLowerCase().contains("html")) path += ".html";
+            
+            File file = new File("html"+path);
             
             try (OutputStream os = t.getResponseBody()) {
                 t.sendResponseHeaders(200, file.length());
@@ -162,11 +166,9 @@ public class WebServer {
             String json = "";
             try {
                 json = new String(t.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                //System.out.println(json);
             }
             catch(IOException e) {}
-            
-            //String response = "{\"outcome\":\"success\"}";
+
             BasicResponse response     = POSTHANDLER.handle(json);
             String        jsonResponse = new Gson().toJson(response);
             System.out.println("JSON Response: " + jsonResponse);

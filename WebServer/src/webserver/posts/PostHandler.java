@@ -64,24 +64,32 @@ public class PostHandler {
         
         //Once Token Verified Determine Which Post Type
         switch (b.postType) {
+            
             case "submitDemographic":
-                System.out.println("Submitting Demographic");
-                try {
-                    SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
-                    sdp.enteredby   = authenticator.getUserIdByToken(sdp.accessToken);
-                    sdp.entereddate = LocalDate.now().toString();
-                    sdp.publish();                    
-                }
-                catch(Exception e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Submitted!");
-                BasicResponse br = new BasicResponse();
-                br.outcome = "Success";
-                return br;
+                SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
+                sdp.enteredby   = authenticator.getUserIdByToken(sdp.accessToken);
+                sdp.entereddate = LocalDate.now().toString();
+                sdp.publish();                    
+                return new BasicResponse("Success");
+                
+            case "submitMentalHealthEvaluation":
+                SubmitMHEvalPost smhe = g.fromJson(json, SubmitMHEvalPost.class);
+                smhe.enteredby   = authenticator.getUserIdByToken(smhe.accessToken);
+                smhe.entereddate = LocalDate.now().toString();
+                smhe.publish();
+                return new BasicResponse("Success");
+               
+            case "submitPhysicalEvaluation":
+                SubmitPhysicalPost smpe = g.fromJson(json, SubmitPhysicalPost.class);
+                smpe.enteredby   = authenticator.getUserIdByToken(smpe.accessToken);
+                smpe.entereddate = LocalDate.now().toString();
+                smpe.publish();
+                return new BasicResponse("Success");              
+                
             default:
                 System.out.println("ERROR: Unregistered Post Type: " + b.postType);
                 return new UnknownPostResponse();
+                
         }
         
     }
