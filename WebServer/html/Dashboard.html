@@ -1,5 +1,4 @@
-
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -15,7 +14,7 @@
             <a class="nav-link" href="Demographic.html">New Patient</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">New Service</a>
             </li>
             <li class="nav-item">
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
@@ -25,3 +24,75 @@
 
 </body>
 </html>
+
+<script>
+
+    //On window load we get a list of the user's available clients
+    window.onload = function() {
+        loadUserClients();
+    };
+
+    //Requests users clients from the server
+    function loadUserClients() {
+        var accessToken = getCookie("accessToken");
+        var postType    = "requestUserClients";
+        var obj = {"accessToken": accessToken, "postType": postType};
+        var postString = JSON.stringify(obj);
+        console.log(postString);
+        fetch('localhost', {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+
+            })
+            .then(response => response.json())
+            .then(response => handleClientsResponse(JSON.stringify(response)))				
+           
+        }
+            
+    
+    //Handles the response from the server for the client response
+    function handleClientsResponse(response) {
+        console.log("Handle: " + response);
+        var obj = JSON.parse(response);
+        var outcome = obj["outcome"];
+        var respType = obj["responseType"];
+        var clients  = obj["clients"];
+        console.log("Outcome: " + outcome);
+        
+        //Alert and return if failed
+        if (outcome == "failed") {
+            alert("Post Failed: " + respType);
+            return;
+        }
+        
+        //Goes prints out the list of clients
+        console.log("Clients: ");
+        for (let i = 0; i < clients.length; i++) {
+            console.log(clients[i]);
+        }
+        
+    }
+    
+    // Grabbed from w3
+    function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }    
+
+
+</script>

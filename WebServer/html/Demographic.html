@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Inquiry Form</title>
+    <title>Register New Patient</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,37 +47,37 @@
 
     <script>
         function submitDemographic() {
-		var accessToken = getCookie("accessToken");
-		var postType    = "submitDemographic";		
-        var firstname   = document.getElementById('firstname').value;
-		var lastname    = document.getElementById('lastname').value;
-		var phonenumber = document.getElementById('phonenumber').value;
-        var dob 	    = document.getElementById('dob').value;
-        var address     = document.getElementById('address').value;
-		var city    	= document.getElementById('city').value;
-		var state   	= document.getElementById('state').value;
-		var zip   	    = document.getElementById('zip').value;
-		var enteredby	= "";
-		var entereddate = "";
-				
-		var obj = {"accessToken": accessToken, "postType": postType, "firstname": firstname, "lastname": lastname, "phonenumber": phonenumber, "dob": dob, "address": address, "city": city, "state": state, "zip": zip};
+            var accessToken = getCookie("accessToken");
+            var postType    = "submitDemographic";		
+            var firstname   = document.getElementById('firstname').value;
+            var lastname    = document.getElementById('lastname').value;
+            var phonenumber = document.getElementById('phonenumber').value;
+            var dob 	    = document.getElementById('dob').value;
+            var address     = document.getElementById('address').value;
+            var city    	= document.getElementById('city').value;
+            var state   	= document.getElementById('state').value;
+            var zip   	    = document.getElementById('zip').value;
+            var enteredby	= "";
+            var entereddate = "";
+                    
+            var obj = {"accessToken": accessToken, "postType": postType, "firstname": firstname, "lastname": lastname, "phonenumber": phonenumber, "dob": dob, "address": address, "city": city, "state": state, "zip": zip};
 			var postString = JSON.stringify(obj);
 			console.log(postString);
 				
-		fetch('localhost', {
-			method: 'POST',
-			mode: "cors",
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(obj)
+            fetch('localhost', {
+                method: 'POST',
+                mode: "cors",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(obj)
 
-			})
-			.then(response => response.json())
-			.then(response => handleResponse(JSON.stringify(response)))				
+                })
+                .then(response => response.json())
+                .then(response => handleResponse(JSON.stringify(response)))				
                
-        	}
+        }
 		
 		function handleResponse(response) {
 			console.log("Handle: " + response);

@@ -35,7 +35,7 @@ public class Authenticator {
             
             //15 minute time out for token
             if ((curTime-lastAct)/1000 > 60*15) {
-                System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
+                //System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
                 tokenMap.remove(token);
                 return null;
             }
@@ -50,7 +50,7 @@ public class Authenticator {
         
         if (verify(userName, password)) {
             String token  = new TokenGenerator().generateToken();
-            System.out.println("User: " + userName + " Authenticated Token: " + token);           
+            //System.out.println("User: " + userName + " Authenticated Token: " + token);           
             User u        = new User();
             u.userName    = userName;
             u.userId      = getUserId(userName);
@@ -75,7 +75,7 @@ public class Authenticator {
         
         response         = response.substring(1, response.length() - 1); //Remove first and last character
         String pass      = response.split(": ")[1]; //Split at ": " to get requested field
-        System.out.println("Pass: " + pass);
+        //System.out.println("Pass: " + pass);
         return password.equals(pass);
     }
     
@@ -83,7 +83,7 @@ public class Authenticator {
     private int getUserId(String userName) {
         SQLUtil s        = new SQLUtil();
         String response  = s.queryDatabase("SELECT Id FROM Staff WHERE Username = '" + userName+"'"); 
-        System.out.println("RESPONSE: " + response);
+        //System.out.println("RESPONSE: " + response);
         response         = response.substring(1, response.length() - 1); //Remove first and last character
         String idString  = response.split(": ")[1]; //Split at ": " to get requested field
         return Integer.valueOf(idString);

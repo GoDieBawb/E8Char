@@ -7,6 +7,7 @@ package webserver.tests;
 
 import com.google.gson.Gson;
 import java.util.ArrayList;
+import java.util.Scanner;
 import util.FileReader;
 import webserver.SQLUtil;
 import webserver.authentication.TokenGenerator;
@@ -25,6 +26,18 @@ public class Tester {
         SQLUtil u = new SQLUtil();
         String userName  = "testy";
         String response  = u.queryDatabase("SELECT Password FROM Staff WHERE Username = '" + userName+"'");
+         
+        System.out.println("SQL Response: " + response); //print raw response
+        
+        response = response.substring(1, response.length() - 1); //Remove first and last character
+        String password  = response.split(": ")[1]; //Split at ": " to get requested field    
+        System.out.println("Pass: " + password);
+    }
+
+    public void sqlTest2() {
+        SQLUtil u = new SQLUtil();
+        String userName  = "testy";
+        String response  = u.queryDatabase("SELECT * FROM Staff");
          
         System.out.println("SQL Response: " + response); //print raw response
         
@@ -106,6 +119,30 @@ public class Tester {
         String pass = info.split(",")[1];
         System.out.println("User: " + user);
         System.out.println("Pass: " + pass);
+        
+    }
+    
+    public void clientsResponseTest() {
+        
+        System.out.print("Enter DB Password: ");
+        String pass = new Scanner(System.in).nextLine();
+        
+        
+        PostHandler p = new PostHandler();
+        LoginPost l   = new LoginPost();
+        l.accessToken = "None";
+        l.postType    = "Login";
+        l.username    = "testy";
+        l.password    = pass;
+        Gson      g   = new Gson();
+        String    s   = g.toJson(l);       
+        
+        LoginResponse response  = (LoginResponse) p.handle(s);
+        
+        BasicPost b   = new BasicPost();
+        b.accessToken = response.accessToken;
+        b.postType    = "requestUserClients";
+        p.handle(g.toJson(b));
         
     }
     

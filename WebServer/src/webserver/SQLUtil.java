@@ -109,6 +109,8 @@ public class SQLUtil {
                 //Iteration Number
                 int i                        = 1;
                 
+                System.out.println("");
+                
                 //Iterate over all relevent columns
                 while(i <= columns) {
                     

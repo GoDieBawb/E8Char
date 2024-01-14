@@ -11,6 +11,7 @@ import webserver.authentication.Authenticator;
 import webserver.responses.BadTokenResponse;
 import webserver.responses.BasicResponse;
 import webserver.responses.LoginResponse;
+import webserver.responses.UserClientsResponse;
 import webserver.responses.UnknownPostResponse;
 
 /**
@@ -33,7 +34,7 @@ public class PostHandler {
         //Handle Login
         if (b.postType.equals("Login")) {
             LoginPost l = g.fromJson(json, LoginPost.class);
-            System.out.println("Checking Login: " + l.username + " " + l.password);
+            //System.out.println("Checking Login: " + l.username + " " + l.password);
             String token    = authenticator.Authenticate(l.username, l.password);
             LoginResponse r = new LoginResponse();
             //If Token is Null Login Failed
@@ -84,7 +85,14 @@ public class PostHandler {
                 smpe.enteredby   = authenticator.getUserIdByToken(smpe.accessToken);
                 smpe.entereddate = LocalDate.now().toString();
                 smpe.publish();
-                return new BasicResponse("Success");              
+                return new BasicResponse("Success");
+                
+            case "requestUserClients":
+                System.out.println("Requesting User Clients");
+                int userId                          = authenticator.getUserIdByToken(b.accessToken);
+                UserClientsResponse clientsResponse = new UserClientsResponse(userId);
+                //System.out.println("GSON STUFF: " + g.toJson(clientsResponse));
+                return clientsResponse;
                 
             default:
                 System.out.println("ERROR: Unregistered Post Type: " + b.postType);
