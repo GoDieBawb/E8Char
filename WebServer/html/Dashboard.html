@@ -29,7 +29,8 @@
 
     //On window load we get a list of the user's available clients
     window.onload = function() {
-        loadUserClients();
+        //loadUserClients();
+        testClientsResponseHandle(); //Allows for testing clients without server connection
     };
 
     //Requests users clients from the server
@@ -76,6 +77,12 @@
             console.log(clients[i]);
         }
         
+    }
+    
+    //Creates a list of test clients and sends them to the response handler
+    function testClientsResponseHandle() {
+        var test = {"userId":1,"clients":[{"clientId":"2","lastName":"Ripley","firstName":"Robert","DOB":"2020-12-12T00:00"},{"clientId":"3","lastName":"Boogerton","firstName":"NayNay","DOB":"1999-09-09T00:00"},{"clientId":"4","lastName":"Testington","firstName":"Bob","DOB":"2000-01-01T00:00"},{"clientId":"5","lastName":"Testington","firstName":"Bob","DOB":"2000-01-01T00:00"},{"clientId":"6","lastName":"McTest","firstName":"Paul","DOB":"2023-12-13T00:00"}],"responseType":"UserClientsResponse","outcome":"Success"};
+        handleClientsResponse(JSON.stringify(test));
     }
     
     // Grabbed from w3
