@@ -171,7 +171,7 @@ public class WebServer {
 
             BasicResponse response     = POSTHANDLER.handle(json);
             String        jsonResponse = new Gson().toJson(response);
-            System.out.println("JSON Response: " + jsonResponse);
+            //System.out.println("JSON Response: " + jsonResponse);
             try {
                 t.sendResponseHeaders(200, jsonResponse.length());
                 OutputStream os = t.getResponseBody();

@@ -78,8 +78,8 @@ public class Tester {
         LoginPost l   = new LoginPost();
         l.accessToken = "None";
         l.postType    = "Login";
-        l.username    = "TestUser";
-        l.password    = "TestPassword";
+        l.username    = "testy";
+        l.password    = "$test$";
         Gson      g   = new Gson();
         String    s   = g.toJson(l);       
         
