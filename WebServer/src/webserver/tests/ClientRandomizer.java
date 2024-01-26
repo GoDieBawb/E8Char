@@ -30,7 +30,7 @@ public class ClientRandomizer {
         client.state       = randomState();
         client.zip         = randomInt(10000,99999)+"";
         client.debug();
-        //client.publish();
+        client.publish();
     }
     
     private String randomFirstName() {

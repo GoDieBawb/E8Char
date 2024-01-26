@@ -11,12 +11,8 @@ import webserver.SQLUtil;
  *
  * @author MeanC
  */
-public class SubmitPhysicalPost extends BasicPost {
-    
-    public int         clientId;
-    public int         enteredby;
-    public String      entereddate;
-    public int         serviceCode;    
+public class SubmitPhysicalPost extends ServicePost {
+       
     public int         height;
     public int         weight;
     public String      bloodPressure;
@@ -26,7 +22,6 @@ public class SubmitPhysicalPost extends BasicPost {
     SubmitPhysicalPost() {
         postType    = "submitPhysicalEval";
         serviceCode = 1;
-        clientId    = 1;
     }    
     
     public void debug() {
@@ -43,12 +38,24 @@ public class SubmitPhysicalPost extends BasicPost {
     
     public void publish() {
         
-        String queryString = "INSERT INTO PhysicalEval (ClientId, Height, Weight, BloodPressure, HeartRate, Temperature, ServiceCode, EnteredBy, EnteredDate)"
-                + "VALUES ('" + clientId + "', '"  + height + "', '" + weight + "', '" + bloodPressure + "', '" + heartRate + "', '" + temperature + "', '"  + serviceCode 
-                + "', '" + enteredby + "', '" + entereddate + "')";
-
+        String serviceId = generateService();
+        
+        String queryString = "INSERT INTO PhysicalEval (ClientId, Height, Weight, BloodPressure, HeartRate, Temperature, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
+                + "VALUES ("
+                + "'"  + clientId      + "',"
+                + " '" + height        + "',"
+                + " '" + weight        + "',"
+                + " '" + bloodPressure + "',"
+                + " '" + heartRate     + "',"
+                + " '" + temperature   + "',"
+                + " '" + serviceCode   + "',"
+                + " '" + enteredby     + "',"
+                + " '" + entereddate   + "',"
+                + " '" + serviceId     + "')";
+        
         SQLUtil sql = new SQLUtil();
         sql.queryDatabase(queryString);
+        
     }        
     
 }

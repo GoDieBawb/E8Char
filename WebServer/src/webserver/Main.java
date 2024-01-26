@@ -1,7 +1,6 @@
 package webserver;
 
-import webserver.tests.HashTest;
-import webserver.tests.Tester;
+import webserver.tests.ClientRandomizer;
 
 
 public class Main {
@@ -17,7 +16,7 @@ public class Main {
         //t.sqlTest2();
         //t.postTest();
         //t.readTest();
-        
+        //new ClientRandomizer().createRandomClient();
     }
 
 }

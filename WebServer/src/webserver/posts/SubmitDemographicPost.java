@@ -43,10 +43,13 @@ public class SubmitDemographicPost extends BasicPost {
         
         String queryString = "INSERT INTO Client (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EnteredBy, EnteredDate)"
                 + "VALUES ('" + firstname + "', '" + lastname + "', '" + phonenumber + "', '" + dob + "', '" + address + "', '" + city 
-                + "', '" + state + "', '" + zip + "', '" + enteredby + "', '" + entereddate + "')";
+                + "', '" + state + "', '" + zip + "', '" + enteredby + "', '" + entereddate + "'); ";
 
         SQLUtil sql = new SQLUtil();
         sql.queryDatabase(queryString);
+        String idQuery = "SELECT MAX(id) FROM Client;";
+        String id      = sql.queryDatabase(idQuery).split(" ")[1]; //Grabs the most recent ID. Sus but works
+        System.out.println("ADDED CLIENT ID: " + id);
     }
     
 }

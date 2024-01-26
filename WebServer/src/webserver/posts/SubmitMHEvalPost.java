@@ -11,22 +11,17 @@ import webserver.SQLUtil;
  *
  * @author MeanC
  */
-public class SubmitMHEvalPost  extends BasicPost {
+public class SubmitMHEvalPost  extends ServicePost {
     
-    public int         clientId;
-    public int         enteredby;
-    public String      entereddate;
     public int         stressLevel;    
     public int         anxietyLevel;   
     public int         depressionLevel;
     public String      sleepQuality;   
     public int         overallHealth;
-    public int         serviceCode;
     
     SubmitMHEvalPost() {
         postType    = "submitMHEval";
         serviceCode = 2;
-        clientId    = 1;
     }
     
     public void debug() {
@@ -42,12 +37,23 @@ public class SubmitMHEvalPost  extends BasicPost {
     }
     
     public void publish() {
-        
-        String queryString = "INSERT INTO MHEval (ClientId, StressLevel, AnxietyLevel, DepressionLevel, SleepQuality, OverallHealth, ServiceCode, EnteredBy, EnteredDate)"
-                + "VALUES ('" + clientId + "', '"  + stressLevel + "', '" + anxietyLevel + "', '" + depressionLevel + "', '" + sleepQuality + "', '" + overallHealth + "', '" + serviceCode 
-                + "', '" + enteredby + "', '" + entereddate + "')";
 
-        SQLUtil sql = new SQLUtil();
+        String serviceId = this.generateService();
+        
+        String queryString = "INSERT INTO MHEval (ClientId, StressLevel, AnxietyLevel, DepressionLevel, SleepQuality, OverallHealth, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
+                + "VALUES ("
+                + "'" + clientId        + "', "
+                + "'" + stressLevel     + "', "
+                + "'" + anxietyLevel    + "', "
+                + "'" + depressionLevel + "', "
+                + "'" + sleepQuality    + "', "
+                + "'" + overallHealth   + "', "
+                + "'" + serviceCode     + "', "
+                + "'" + enteredby       + "', "
+                + "'" + entereddate     + "', "
+                + "'" + serviceId       + "')";
+
+        SQLUtil sql         = new SQLUtil();
         sql.queryDatabase(queryString);
     }    
     
