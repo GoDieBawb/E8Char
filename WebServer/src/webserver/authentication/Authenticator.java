@@ -5,6 +5,7 @@
  */
 package webserver.authentication;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.util.HashMap;
 import webserver.SQLUtil;
 
@@ -73,10 +74,11 @@ public class Authenticator {
         
         if (response.equals("")) return false;
         
-        response         = response.substring(1, response.length() - 1); //Remove first and last character
-        String pass      = response.split(": ")[1]; //Split at ": " to get requested field
-        //System.out.println("Pass: " + pass);
-        return password.equals(pass);
+        response               = response.substring(1, response.length() - 1); //Remove first and last character
+        String dbHash          = response.split(": ")[1]; //Split at ": " to get requested field
+        BCrypt.Result result   = BCrypt.verifyer().verify(password.toCharArray(), dbHash);
+        System.out.println("VERIFY: " + result.verified);
+        return result.verified;
     }
     
     //Can Probably be moved to verify

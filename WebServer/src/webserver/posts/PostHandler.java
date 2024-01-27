@@ -91,7 +91,6 @@ public class PostHandler {
                 System.out.println("Requesting User Clients");
                 int userId                          = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
-                //System.out.println("GSON STUFF: " + g.toJson(clientsResponse));
                 return clientsResponse;
                 
             default:

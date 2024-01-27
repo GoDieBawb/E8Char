@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Physical Evaluation Form</title>
+        <title>Mental Evaluation Form</title>
         <style>
 body {
     font-family: Arial, sans-serif;
@@ -48,8 +48,9 @@ body {
         <script>
             function submitMentalHealthEvaluation() {
                 var accessToken = getCookie("accessToken");
-                var postType = "submitMentalHealthEvaluation";
-
+                var clientId    = getCookie("clientID");
+                var postType    = "submitMentalHealthEvaluation";
+                
                 // will get the form data
                 var stressLevel     = document.getElementById('stressLevel').value;
                 var anxietyLevel    = document.getElementById('anxietyLevel').value;
@@ -60,6 +61,7 @@ body {
                 // Create object for submission
                 var obj = {
                     "accessToken": accessToken,
+                    "clientId": clientId,
                     "postType": postType,
                     "stressLevel": stressLevel,
                     "anxietyLevel": anxietyLevel,
