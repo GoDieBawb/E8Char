@@ -48,6 +48,7 @@
     <script>
         function submitPhysicalEvaluation() {
             var accessToken = getCookie("accessToken");
+            var clientId    = getCookie("clientID");
             var postType = "submitPhysicalEvaluation";
 
             // will get the form data
@@ -60,6 +61,7 @@
             // Create object for submission
             var obj = {
                 "accessToken": accessToken,
+                "clientId": clientId,
                 "postType": postType,
                 "height": height,
                 "weight": weight,
