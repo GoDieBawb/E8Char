@@ -1,0 +1,6 @@
+build/
+nbproject/
+lib/
+build.xml
+manifest.mf
+*.jar
