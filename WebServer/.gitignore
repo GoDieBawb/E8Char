@@ -1,6 +1,10 @@
 build/
-nbproject/
 lib/
+nbproject/
+src/
 build.xml
 manifest.mf
-*.jar
+Makefile
+pass.txt
+lig.keystore
+WebServer.jar
