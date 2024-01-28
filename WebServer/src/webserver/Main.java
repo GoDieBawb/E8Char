@@ -1,6 +1,6 @@
 package webserver;
 
-import webserver.tests.ClientRandomizer;
+import webserver.tests.Tester;
 
 
 public class Main {
@@ -9,6 +9,7 @@ public class Main {
         WebServer w = new WebServer();
         w.start();
         //Tester t = new Tester();
+        //t.clientServicesResponseTest();
         //t.clientsResponseTest();
         //t.tokenTest();
         //t.gsonTest();
