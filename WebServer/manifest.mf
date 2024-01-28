@@ -1,2 +1,0 @@
-Class-Path: lib/gson-2.10.1.jar lib/bcrypt-0.10.2-sources.jar lib/bcrypt-0.10.2.jar lib/bytes-1.6.1.jar lib/mysql-connector-j-8.1.0.jar
-Main-Class: webserver.Main
