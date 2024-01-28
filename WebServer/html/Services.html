@@ -102,7 +102,7 @@
                 loadedEntry = newServiceCard;
                 
                 servicesList.appendChild(newServiceCard.HTMLReference);
-                newServiceCard.HTMLReference.getElementsByTagName("a")[0].addEventListener("click", () => newServiceCard.select(), false);
+                newServiceCard.HTMLReference.children.findInParticular("tag", "a").addEventListener("click", () => newServiceCard.select(), false);
             }
             
             loadedEntry.serviceRecords.push(serv);

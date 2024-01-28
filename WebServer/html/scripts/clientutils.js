@@ -1,5 +1,27 @@
 const clientUtils = {};
 
+// searches a child element of an element.
+// valid strings for searchMode: "class", "id" and "tag".
+// returns null if the child element to search for doesn't exist.
+HTMLCollection.prototype.findInParticular = function(searchMode, name) {
+    for (const element of this) {
+        if (searchMode == "class") {
+            if (element.className.search(name) >= 0)
+                return element;
+        }
+        else if (searchMode == "id") {
+            if (element.id == name)
+                return element;
+        }
+        else if (searchMode == "tag") {
+            if (element.tagName.toLowerCase() == name)
+                return element;
+        }
+    }
+
+    return null;
+}
+
 clientUtils.getCookie = function(cname) {
     let name = cname + "=";
     let ca = document.cookie.split(';');
@@ -23,7 +45,8 @@ clientUtils.setCookie = function(cname, cvalue) {
     document.cookie = cname + "=" + cvalue + ";path=/";
 }
 
-// Initiates a POST request to the server.
+// Initiates a POST request to the server, then calls the respone callback function
+// with the response JSON string.
 clientUtils.webPost = function(postType, data, responseCallBack) {
     try {
         fetch('localhost', {
@@ -47,4 +70,11 @@ clientUtils.webPost = function(postType, data, responseCallBack) {
 clientUtils.setNavigationPath = function(pathString) {
     let navigationPathBar = document.getElementById("navigation-path-bar");
     navigationPathBar.innerText = pathString;
+}
+
+clientUtils.setLoadingStatus = function(isLoading, loadUIElement) {
+    if (isLoading)
+        loadUIElement.hidden = true;
+    else
+        loadUIElement.hidden = false;
 }
