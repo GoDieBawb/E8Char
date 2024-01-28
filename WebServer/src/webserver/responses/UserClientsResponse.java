@@ -61,13 +61,13 @@ public class UserClientsResponse extends BasicResponse {
                 String fs    = fieldStrings[i];
                 String value = fs.split(": ")[1];
                 
-                if (fs.contains("Id"))
+                if (fs.contains("Id:"))
                     c.clientId  = value;
-                else if (fs.contains("FirstName"))
+                else if (fs.contains("FirstName:"))
                     c.firstName = value;
-                else if (fs.contains("LastName"))
+                else if (fs.contains("LastName:"))
                     c.lastName  = value;
-                else if (fs.contains("DOB"))
+                else if (fs.contains("DOB:"))
                     c.DOB       = value;
                 
             }
