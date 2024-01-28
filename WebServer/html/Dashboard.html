@@ -66,10 +66,12 @@
                 <div class="card" id="${this.cardID}">
                     <div class="card-body">
                         <h5 class="card-title m-0">${this.clientLastName}, ${this.clientFirstName}</h5>
-                        <spanclass="card-title">D.O.B: ${this.clientDOB}</span>
+                        <spanclass="card-title">${this.clientDOB}</span>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item" id="admit-status">Status: </li>
+                        <li class="list-group-item" id="admit-status">Admittance:</li>
+                        <li class="list-group-item" id="discharge-status">Discharge status:</li>
+                        <li class="list-group-item" id="eval-status">Evaluation status:</li>
                     </ul>
                 </div>
             </div>`, "text/html").getElementById(this.cardID);
