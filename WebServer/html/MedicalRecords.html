@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Medication Record Form</title>
+        <style>
+
+/* This code below will deal with the CSS aspect of the form*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+            fieldset {
+                margin-bottom: 20px;
+                padding: 10px;
+            }
+
+            legend {
+                font-weight: bold;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            input, select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
+
+            button {
+                padding: 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+        
+         /*  This will position labels above radio buttons */
+        div {
+            display: flex;
+            flex-direction: column;
+        }
+
+            /* This will align radio buttons vertically */
+        input[type="radio"] {
+            margin-top: 5px;
+        }
+
+
+        </style>
+
+        
+       <script>
+            function submitMedicationRecord() {
+                var accessToken = getCookie("accessToken");
+                var postType = "submitMedicationRecord";
+
+                // will get the form data
+                var medicationName = document.getElementById('medicationName').value;
+                var dosage = document.getElementById('dosage').value;
+                var frequencyOfDosage = document.getElementById('frequencyOfDosage').value;
+                var prescribedBy = document.getElementById('prescribedBy').value;
+                var hasSideEffects = document.querySelector('input[name="sideEffects"]:checked').value;
+                var hasAllergies = document.querySelector('input[name="allergies"]:checked').value;
+
+                // Create object for submission
+                var obj = {
+                    "accessToken": accessToken,
+                    "postType": postType,
+                    "medicationName": medicationName,
+                    "dosage": dosage,
+                    "frequencyOfDosage": frequencyOfDosage,
+                    "prescribedBy": prescribedBy,
+                    "hasSideEffects": hasSideEffects,
+                    "hasAllergies": hasAllergies
+                };
+
+                // This code below will do the fetch request
+                fetch('https://localhost', {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(obj)
+                })
+                    .then(response => response.json())
+                    .then(response => handleResponse(response))
+
+            }
+
+
+            function handleResponse(response) {
+                console.log("Handle: " + response);
+                var obj = JSON.parse(response);
+                var outcome = obj["outcome"];
+                var respType = obj["responseType"];
+                console.log("Outcome: " + outcome);
+
+                if (outcome == "failed") {
+                    alert("Post Failed: " + respType);
+                }
+                else if (outcome == "success") {
+                    alert("Submit Success!");
+                }
+
+            }
+
+            // Grabbed from w3
+            function getCookie(cname) {
+                let name = cname + "=";
+                let ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+        </script>
+    </head>
+    <body>
+
+        
+        <!-- Below code is the html aspect of the form -->
+        <h2>Medication Record Form</h2>
+
+        <form action="#" method="post">
+
+            <!-- Information for the medication record -->
+            <fieldset>
+                 <legend>Medication Record</legend>
+            <label for="medicationName">Medication Name:</label>
+            <input type="text" id="medicationName" name="medicationName" required>
+            <label for="dosage">Dosage:</label>
+            <input type="text" id="dosage" name="dosage" required>
+            <label for="frequencyOfDosage">Frequency of Dosage:</label>
+            <input type="text" id="frequencyOfDosage" name="frequencyOfDosage" required>
+            <label for="prescribedBy">Prescribed By:</label>
+            <input type="text" id="prescribedBy" name="prescribedBy" required>
+            <label><strong>Side Effects:</strong></label>
+            <div>
+                <label for="sideEffectsYes">Yes</label>
+                <input type="radio" id="sideEffectsYes" name="sideEffects" value="Yes">
+            </div>
+            <div>
+                <label for="sideEffectsNo">No</label>
+                <input type="radio" id="sideEffectsNo" name="sideEffects" value="No">
+            </div>
+            <label><strong>Allergies:</strong></label>
+            <div>
+                <label for="allergiesYes">Yes</label>
+                <input type="radio" id="allergiesYes" name="allergies" value="Yes">
+            </div>
+            <div>
+                <label for="allergiesNo">No</label>
+                <input type="radio" id="allergiesNo" name="allergies" value="No">
+            </div>
+        </fieldset>
+            <!-- Submit button -->
+            <button onclick="submitMedicationRecord()" type="button">Submit</button>
+
+        </form>
+
+    </body>
+</html>
