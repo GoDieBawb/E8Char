@@ -146,6 +146,8 @@ public class WebServer {
             
             if (path.contains("images")) {}
             
+            else if (path.contains("scripts")) {}
+            
             else if (!path.toLowerCase().contains("html")) path += ".html";
             
             File file = new File("html"+path);
