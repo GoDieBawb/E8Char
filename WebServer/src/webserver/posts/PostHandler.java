@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import webserver.authentication.Authenticator;
 import webserver.responses.BadTokenResponse;
 import webserver.responses.BasicResponse;
+import webserver.responses.ClientServicesResponse;
 import webserver.responses.LoginResponse;
 import webserver.responses.UserClientsResponse;
 import webserver.responses.UnknownPostResponse;
@@ -91,7 +92,14 @@ public class PostHandler {
                 System.out.println("Requesting User Clients");
                 int userId                          = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
+                //System.out.println("GSON CLIENTS: " + g.toJson(clientsResponse));
                 return clientsResponse;
+              
+            case "requestClientServices":
+                int selectedClient         = g.fromJson(json, RequestClientServicesPost.class).clientId;
+                int requestingUser         = authenticator.getUserIdByToken(b.accessToken);
+                ClientServicesResponse csr = new ClientServicesResponse(requestingUser,selectedClient);
+                return csr;
                 
             default:
                 System.out.println("ERROR: Unregistered Post Type: " + b.postType);

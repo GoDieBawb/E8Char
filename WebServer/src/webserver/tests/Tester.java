@@ -14,6 +14,7 @@ import webserver.authentication.TokenGenerator;
 import webserver.posts.BasicPost;
 import webserver.posts.LoginPost;
 import webserver.posts.PostHandler;
+import webserver.responses.ClientServicesResponse;
 import webserver.responses.LoginResponse;
 
 /**
@@ -155,6 +156,11 @@ public class Tester {
             x++;
         }
         
+    }
+    
+    public void clientServicesResponseTest() {
+        ClientServicesResponse csr = new ClientServicesResponse(1,24);
+        System.out.println(new Gson().toJson(csr));
     }
     
 }

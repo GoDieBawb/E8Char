@@ -30,7 +30,8 @@ public class ServicePost extends BasicPost {
         sql.queryDatabase(serviceQuery);
         
         String idQuery   = "SELECT MAX(id) FROM Service;";
-        String serviceId = sql.queryDatabase(idQuery).split(": ")[1].substring(0, 1);
+        String s         = sql.queryDatabase(idQuery);
+        String serviceId = s.split(": ")[1].replace("]", "");
         return serviceId;
     }
     
