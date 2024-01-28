@@ -3,6 +3,7 @@
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="scripts/clientutils.js"></script>
     </head>
     <body>
         <div class="container">
@@ -84,7 +85,7 @@
                 this.referenceCard.style.backgroundColor = "#dedede";
             });
 
-            setCookie("clientID", this.clientID);
+            clientUtils.setCookie("clientID", this.clientID);
 
             let newServiceLink = document.getElementById("dash-new-service-link");
             newServiceLink.className = "nav-link";
@@ -105,25 +106,14 @@
 
     //Requests users clients from the server
     function loadUserClients() {
-        var accessToken = getCookie("accessToken");
+        var accessToken = clientUtils.getCookie("accessToken");
         var postType    = "requestUserClients";
         var obj = {"accessToken": accessToken, "postType": postType};
         var postString = JSON.stringify(obj);
-        console.log(postString);
-        fetch('localhost', {
-            method: 'POST',
-            mode: "cors",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
 
-            })
-            .then(response => response.json())
-            .then(response => handleClientsResponse(JSON.stringify(response)))
-        }
-            
+        console.log(postString);
+        clientUtils.webPost(postType, obj, handleClientsResponse);
+    }
     
     //Handles the response from the server for the client response
     function handleClientsResponse(response) {
@@ -141,7 +131,7 @@
         }
 
         let clientCardList = document.getElementById("card-list");
-        let clientIDCookieVal = getCookie("clientID");
+        let clientIDCookieVal = clientUtils.getCookie("clientID");
 
         if (clients.length == 0)
             console.warn("There are no clients to read from!");
@@ -154,29 +144,9 @@
             loadedUICards.push(newUICard);
 
             // Remember the selected card.
-            if (clientIDCookieVal != "" && newUICard.clientID == clientIDCookieVal)
+            if (clientIDCookieVal != null && newUICard.clientID == clientIDCookieVal)
                 newUICard.select();
         }
-    }
-    
-    // Grabbed from w3
-    function getCookie(cname) {
-        let name = cname + "=";
-        let ca = document.cookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function setCookie(cname, cvalue) {
-        document.cookie = cname + "=" + cvalue + ";path=/";
     }
 
     function patientSearchSort(showAll)
