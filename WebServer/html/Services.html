@@ -23,7 +23,7 @@
                 <div>
                 </div>
                 <br>
-                <button onclick="showServiceList();">Services List</button>
+                <button onclick="showServiceList('view-selected-service');">Services List</button>
             </div>
         </div>
     </body>
@@ -47,8 +47,8 @@
             </div>`, "text/html").getElementById(this.HTMLID);
 
         this.select = function() {
-            setViewVisiblity("services-list", false);
-            setViewVisiblity("selected-service", true);
+            setElementVisiblity("view-services-list", false);
+            setElementVisiblity("view-selected-service", true);
 
             let recordsList = document.getElementById("view-selected-service").firstElementChild;
             recordsList.innerHTML = "";
@@ -111,18 +111,18 @@
 
     ////////////////////////////////////////////////
 
-    function setViewVisiblity(viewName, visible)
+    function setElementVisiblity(elementName, visible)
     {
-        let el = document.getElementById("view-" + viewName);
+        let el = document.getElementById(elementName);
         el.hidden = !visible;
     }
 
-    function showServiceList(viewNameToHide)
+    function showServiceList(elementNameToHide)
     {
-        if (viewNameToHide != null)
-            setViewVisiblity(viewNameToHide, false);
+        if (elementNameToHide != null)
+            setElementVisiblity(elementNameToHide, false);
 
-        setViewVisiblity('services-list', true);
+        setElementVisiblity('view-services-list', true);
         clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services`);
     }
 </script>
