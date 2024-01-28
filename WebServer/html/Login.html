@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<style>
+	img {
+		width: 8%;
+		padding-left: 50px;
+	}
+	h3 {
+		padding-left: 50px;
+	}
+</style>
+</head>
+<body>
+
+<img src="images/Elephant.png" alt="Your Logo"/> 
+<h3>EleChart</h3>
+
+<form>
+  <div class="container-md"> 
+  <div class="row mb-3">
+    <label for="username" class="col-sm-2 col-form-label">Username</label>
+    <div class="col-sm-10 ">
+      <input type="username" class="form-control" id="username">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="password" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password" class="form-control" id="password">
+    </div>
+  </div>
+  
+  </fieldset>
+  
+  <button onclick = "attemptLogin()" type="button" class="btn btn-primary">Sign in</button>
+</div>
+</form>
+<script>
+
+function attemptLogin() {
+  
+    var accessToken = "None";
+    var postType    = "Login";
+    var username    = document.getElementById("username").value;
+	var password    = document.getElementById("password").value;
+  
+	fetch('localhost', {
+		method: 'POST',
+		mode: "cors",
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({"accessToken": accessToken, "postType": postType, "username": username, "password": password })
+
+	})
+	   .then(response => response.json())
+	   .then(response => handleResponse(JSON.stringify(response)))
+
+}
+
+function handleResponse(response) {
+	console.log("Handle: " + response);
+	var obj = JSON.parse(response);
+	var outcome = obj["outcome"];
+	console.log("Outcome: " + outcome);
+	
+	if (outcome == "failed") {
+		alert("Login Failed");
+	}
+	else if (outcome == "success") {
+		document.cookie = "accessToken="+obj["accessToken"];
+		//alert("Login Success! Token: " + getCookie("accessToken"));
+		window.location.href = "Dashboard.html";
+	}
+	
+}
+
+//Grabbed from w3
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+</script>
+
+</body>
+</html>

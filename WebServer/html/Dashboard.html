@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" href="Demographic.html" role="button">New Patient</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="dash-new-service-link" href="Services.html" role="button">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"  role="button">Close Session</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <div class="row"><h2>Dashboard</h2></div>
+            <div class="row">
+                <div class="col-3">
+                    <form id="dash-search-form" onsubmit="return false;" aria-hidden="true" hidden></form>
+                    <div class="row">
+                        <div class="col border text-center pb-3">
+                            <h6>Patient Information</h6>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Name</span>
+                                <input class="form-control" form="dash-search-form" name="patient-search-name" type="text" aria-label="Patient Name">
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">D.O.B</span>
+                                <input class="form-control" form="dash-search-form" name="patient-search-dob" type="date" aria-label="Patient Date Of Birth">
+                            </div>
+                            <button class="btn btn-primary" onclick="patientSearchSort()">Find Patient</button>
+                            <button class="btn btn-primary" onclick="patientSearchSort(true)">Show All</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <div id="card-list" class="row gy-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    "use strict"
+
+    var loadedUICards = [];
+
+    // This object represents a client entry in the dashboard's clients list.
+    function ClientCard(clientLastName, clientFirstName, clientDOB, clientID) {
+        // TODO: admittance, discharge and evaluation statuses
+        this.clientLastName = clientLastName;
+        this.clientFirstName = clientFirstName;
+        this.clientID = clientID;
+        this.clientDOB = clientDOB;
+        this.cardID = "card" + clientID;
+        this.referenceCard = new DOMParser().parseFromString(`
+            <div class="col-4">
+                <div class="card" id="${this.cardID}">
+                    <div class="card-body">
+                        <h5 class="card-title m-0">${this.clientLastName}, ${this.clientFirstName}</h5>
+                        <spanclass="card-title">${this.clientDOB}</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="admit-status">Admittance:</li>
+                        <li class="list-group-item" id="discharge-status">Discharge status:</li>
+                        <li class="list-group-item" id="eval-status">Evaluation status:</li>
+                    </ul>
+                </div>
+            </div>`, "text/html").getElementById(this.cardID);
+
+        this.select = function() {
+            loadedUICards.forEach(card => {
+                if (this !== card)
+                    card.deselect();
+                
+                this.referenceCard.style.backgroundColor = "#dedede";
+            });
+
+            setCookie("clientID", this.clientID);
+
+            let newServiceLink = document.getElementById("dash-new-service-link");
+            newServiceLink.className = "nav-link";
+            newServiceLink.setAttribute("aria-disabled", "false");
+        }
+
+        this.deselect = function() {
+            this.referenceCard.style.backgroundColor = "";
+        }
+
+        // TODO: add methods for hovering effects.
+    }   
+
+    //On window load we get a list of the user's available clients
+    window.onload = function() {
+        loadUserClients();
+    };
+
+    //Requests users clients from the server
+    function loadUserClients() {
+        var accessToken = getCookie("accessToken");
+        var postType    = "requestUserClients";
+        var obj = {"accessToken": accessToken, "postType": postType};
+        var postString = JSON.stringify(obj);
+        console.log(postString);
+        fetch('localhost', {
+            method: 'POST',
+            mode: "cors",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+
+            })
+            .then(response => response.json())
+            .then(response => handleClientsResponse(JSON.stringify(response)))
+        }
+            
+    
+    //Handles the response from the server for the client response
+    function handleClientsResponse(response) {
+        console.log("resp: " + response);
+
+        var obj = JSON.parse(response);
+        var outcome = obj["outcome"];
+        var respType = obj["responseType"];
+        var clients  = obj["clients"];
+        
+        //Alert and return if failed
+        if (outcome == "failed") {
+            alert("Post Failed: " + respType);
+            return;
+        }
+
+        let clientCardList = document.getElementById("card-list");
+        let clientIDCookieVal = getCookie("clientID");
+
+        if (clients.length == 0)
+            console.warn("There are no clients to read from!");
+
+        for (let i = 0; i < clients.length; i++) {
+            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clients[i].DOB, clients[i].clientId);
+
+            newUICard.referenceCard.addEventListener("click", () => newUICard.select(), false);
+            clientCardList.appendChild(newUICard.referenceCard.parentElement);
+            loadedUICards.push(newUICard);
+
+            // Remember the selected card.
+            if (clientIDCookieVal != "" && newUICard.clientID == clientIDCookieVal)
+                newUICard.select();
+        }
+    }
+    
+    // Grabbed from w3
+    function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function setCookie(cname, cvalue) {
+        document.cookie = cname + "=" + cvalue + ";path=/";
+    }
+
+    function patientSearchSort(showAll)
+    {
+        let formData = Object.fromEntries(new FormData(document.getElementById("dash-search-form")));
+        let averagePercentages = 0;
+
+        loadedUICards.forEach(card => {
+            let containsName = `${card.clientLastName} ${card.clientFirstName}`.toLowerCase().includes(formData["patient-search-name"].toLowerCase());
+            let containsNameReversed = `${card.clientFirstName} ${card.clientLastName}`.toLowerCase().includes(formData["patient-search-name"].toLowerCase());
+            let DOBComponents = formData["patient-search-dob"].split("-");
+            let [containsYear, containsMonth, containsDay] = [card.clientDOB.includes(DOBComponents[0]), card.clientDOB.includes(DOBComponents[1]), card.clientDOB.includes(DOBComponents[2])];
+            
+            // Show all cards if name field is empty.
+            if (showAll) {
+                card.referenceCard.parentElement.style.display = "block";
+                return;
+            }
+
+            // Not using name field to search.
+            if (formData["patient-search-name"].length == 0)
+                containsName = containsNameReversed = false;
+
+            if (containsName || containsNameReversed)
+                card.referenceCard.parentElement.style.display = "block";
+            else {
+                if (DOBComponents.length > 1 && (containsYear || containsMonth || containsDay))
+                    card.referenceCard.parentElement.style.display = "block";
+                else
+                    card.referenceCard.parentElement.style.display = "none";
+            }
+        });
+    }
+
+</script>
