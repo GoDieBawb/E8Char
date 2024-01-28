@@ -3,27 +3,126 @@
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="scripts/ClientUtils.js"></script>
     </head>
     <body>
         <div>
             <a href="Dashboard.html">Dashboard</a>
-            <div>
-                <nav id="navigation-path"><a>Dashboard</a><a> &gt; Client</a><a> &gt; Services</a></nav>
-                <h2>Services</h2>
-                <hr>
+            <div id="navigation-path-bar"></div>
+            <h2>Services</h2>
+            <hr>
+            <div id="view-services-list">
                 <label>Filter</label>
                 <input type="text">
+                <br>
+                <br>
                 <div id="services-list">
-                    <div>
-                        <h4>Physicals</h4>
-                        <a href="#">link to physicals</a>
-                    </div>
-                    <div>
-                        <h4>Mental Health</h4>
-                        <a href="#">link to mental health</a>
-                    </div>
                 </div>
+            </div>
+            <div id="view-selected-service" hidden>
+                <div>
+                </div>
+                <br>
+                <button onclick="showServiceList();">Services List</button>
             </div>
         </div>
     </body>
 </html>
+
+<script>
+    "use strict"
+
+    var loadedServices = {};
+
+    // This object represents a service entry in the services page.
+    function ServiceEntry(serviceID, serviceType) {
+        this.serviceID = serviceID;
+        this.serviceType = serviceType;
+        this.serviceRecords = new Array();
+        this.HTMLID = "serviceEntryUI" + serviceID;
+        this.HTMLReference = new DOMParser().parseFromString(
+            `<div id="${this.HTMLID}">
+                <h4>${serviceType}</h4>
+                <a href="#">link to physicals</a>
+            </div>`, "text/html").getElementById(this.HTMLID);
+
+        this.select = function() {
+            setViewVisiblity("services-list", false);
+            setViewVisiblity("selected-service", true);
+
+            let recordsList = document.getElementById("view-selected-service").firstElementChild;
+            recordsList.innerHTML = "";
+
+            this.serviceRecords.forEach(record => {
+                recordsList.innerHTML += `<div><h6>${record.serviceType}</h6><div>${record.date}</div></div>`;
+            });
+
+            clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services > ${this.serviceType}`);
+        }
+    }  
+
+    window.onload = function() {
+        parseServices();
+        clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services`);
+    };
+
+    //Requests users clients from the server
+    function parseServices() {
+        var accessToken = clientUtils.getCookie("accessToken");
+        var postType = "requestClientServices";
+        var obj = {"accessToken": accessToken, "postType": postType};
+
+        clientUtils.webPost(postType, obj, handleClientsResponse);
+    }
+    
+    //Handles the response from the server for the client response
+    function handleClientsResponse(response) {
+        console.log("resp: " + response);
+
+        var obj = JSON.parse(response);
+        var outcome = obj["outcome"];
+        var respType = obj["responseType"];
+        var services = obj["services"];
+
+        //Alert and return if failed
+        if (outcome == "failed") {
+            alert("Post Failed: " + respType);
+            return;
+        }
+
+        // Load up the services and populate their corresponding records
+        let servicesList = document.getElementById("services-list");
+
+        services.forEach(serv => {
+            let loadedEntry = loadedServices[serv.serviceType];
+
+            if (loadedEntry == null) {
+                const newServiceCard = new ServiceEntry(serv.serviceId, serv.serviceType, serv.date);
+                loadedServices[serv.serviceType] = newServiceCard;
+                loadedEntry = newServiceCard;
+                
+                servicesList.appendChild(newServiceCard.HTMLReference);
+                newServiceCard.HTMLReference.getElementsByTagName("a")[0].addEventListener("click", () => newServiceCard.select(), false);
+            }
+            
+            loadedEntry.serviceRecords.push(serv);
+        });
+    }
+
+    ////////////////////////////////////////////////
+
+    function setViewVisiblity(viewName, visible)
+    {
+        let el = document.getElementById("view-" + viewName);
+        el.hidden = !visible;
+    }
+
+    function showServiceList(viewNameToHide)
+    {
+        if (viewNameToHide != null)
+            setViewVisiblity(viewNameToHide, false);
+
+        setViewVisiblity('services-list', true);
+        clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services`);
+    }
+</script>
