@@ -43,7 +43,7 @@
         this.HTMLReference = new DOMParser().parseFromString(
             `<div id="${this.HTMLID}">
                 <h4>${serviceType}</h4>
-                <a href="#">link to physicals</a>
+                <a href="#">link to ${serviceType} list</a>
             </div>`, "text/html").getElementById(this.HTMLID);
 
         this.select = function() {
@@ -54,7 +54,12 @@
             recordsList.innerHTML = "";
 
             this.serviceRecords.forEach(record => {
-                recordsList.innerHTML += `<div><h6>${record.serviceType}</h6><div>${record.date}</div></div>`;
+                recordsList.innerHTML += 
+                    `<div>
+                        <h6>${record.serviceType}</h6>
+                        <div>${record.date}</div>
+                        <button>View Record</button>
+                    </div>`;
             });
 
             clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services > ${this.serviceType}`);
@@ -69,8 +74,9 @@
     //Requests users clients from the server
     function parseServices() {
         var accessToken = clientUtils.getCookie("accessToken");
+        var clientId = clientUtils.getCookie("clientID");
         var postType = "requestClientServices";
-        var obj = {"accessToken": accessToken, "postType": postType};
+        var obj = {"accessToken": accessToken, "postType": postType, "clientId": clientId};
 
         clientUtils.webPost(postType, obj, handleClientsResponse);
     }
