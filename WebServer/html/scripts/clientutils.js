@@ -45,6 +45,10 @@ clientUtils.setCookie = function(cname, cvalue) {
     document.cookie = cname + "=" + cvalue + ";path=/";
 }
 
+clientUtils.delCookie = function(cname) {
+    document.cookie = cname + "=;Max-Age=-99999999;";
+}
+
 // Initiates a POST request to the server, then calls the respone callback function
 // with the response JSON string.
 clientUtils.webPost = function(postType, data, responseCallBack) {

@@ -86,6 +86,7 @@
             });
 
             clientUtils.setCookie("clientID", this.clientID);
+            clientUtils.setCookie("clientFriendlyName", `${clientLastName}, ${clientFirstName}`);
 
             let newServiceLink = document.getElementById("dash-new-service-link");
             newServiceLink.className = "nav-link";

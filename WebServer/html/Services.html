@@ -21,9 +21,11 @@
             </div>
             <div id="view-selected-service" hidden>
                 <div>
+                    <!-- list of service records go in this div block -->
                 </div>
-                <br>
-                <button onclick="showServiceList('view-selected-service');">Services List</button>
+                <button onclick="showServiceList('view-selected-service')">Services List</button>
+                <button onclick="showCreationForm()">New Service Record</button>
+                <iframe id="view-creation-form" src="./PhysicalEvaluation.html" title="new service form" style="width:-webkit-fill-available;height:" hidden></iframe>
             </div>
         </div>
     </body>
@@ -33,6 +35,7 @@
     "use strict"
 
     var loadedServices = {};
+    var selectedServiceEntry = null;
 
     // This object represents a service entry in the services page.
     function ServiceEntry(serviceID, serviceType) {
@@ -62,13 +65,14 @@
                     </div>`;
             });
 
-            clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services > ${this.serviceType}`);
+            clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services > ${this.serviceType}`);
+            selectedServiceEntry = this;
         }
     }  
 
     window.onload = function() {
         parseServices();
-        clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services`);
+        clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
     };
 
     //Requests users clients from the server
@@ -117,18 +121,28 @@
 
     ////////////////////////////////////////////////
 
-    function setElementVisiblity(elementName, visible)
-    {
+    function setElementVisiblity(elementName, visible) {
         let el = document.getElementById(elementName);
         el.hidden = !visible;
     }
 
-    function showServiceList(elementNameToHide)
-    {
+    function showServiceList(elementNameToHide) {
         if (elementNameToHide != null)
             setElementVisiblity(elementNameToHide, false);
 
         setElementVisiblity('view-services-list', true);
         clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services`);
+    }
+
+    function showCreationForm() {
+        if (!selectedServiceEntry) {
+            console.error("Tried showing the creation form for this service but its service isn't selected!");
+            return;
+        }
+
+        let creationFormView = document.getElementById("view-creation-form")
+        creationFormView.setAttribute("src", selectedServiceEntry.serviceType.replace(" ", "") + ".html");
+        creationFormView.setAttribute("height", 500);
+        creationFormView.hidden = false;
     }
 </script>
