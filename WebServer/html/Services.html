@@ -17,7 +17,9 @@
                 <br>
                 <br>
                 <div id="services-list">
+                    <span id="loading-services-display" hidden><img src="images/load_display.gif" width="64" height="64"></img><span></span></span>
                 </div>
+                <button onclick="newService()">New Service</button>
             </div>
             <div id="view-selected-service" hidden>
                 <div>
@@ -25,7 +27,7 @@
                 </div>
                 <button onclick="showServiceList('view-selected-service')">Services List</button>
                 <button onclick="showCreationForm()">New Service Record</button>
-                <iframe id="view-creation-form" src="./PhysicalEvaluation.html" title="new service form" style="width:-webkit-fill-available;height:" hidden></iframe>
+                <iframe id="view-creation-form" src="./PhysicalEvaluation.html" title="new service form" style="width:-webkit-fill-available;" hidden></iframe>
             </div>
         </div>
     </body>
@@ -37,10 +39,27 @@
     var loadedServices = {};
     var selectedServiceEntry = null;
 
+    window.onload = function() {
+        clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
+        clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
+
+        // retrieve a list of services for this particular patient
+        let newClientPost = new clientUtils.ClientPost(
+            "requestClientServices",
+            clientUtils.getCookie("accessToken"),
+            responseCallback
+        );
+
+        newClientPost.addParam("clientId", clientUtils.getCookie("clientID"));
+
+        clientUtils.webPost(newClientPost);
+    };
+
     // This object represents a service entry in the services page.
-    function ServiceEntry(serviceID, serviceType) {
+    function ServiceEntry(serviceID, serviceType, serviceFile) {
         this.serviceID = serviceID;
         this.serviceType = serviceType;
+        this.serviceFile = serviceFile;
         this.serviceRecords = new Array();
         this.HTMLID = "serviceEntryUI" + serviceID;
         this.HTMLReference = new DOMParser().parseFromString(
@@ -68,46 +87,24 @@
             clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services > ${this.serviceType}`);
             selectedServiceEntry = this;
         }
-    }  
-
-    window.onload = function() {
-        parseServices();
-        clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
-    };
-
-    //Requests users clients from the server
-    function parseServices() {
-        var accessToken = clientUtils.getCookie("accessToken");
-        var clientId = clientUtils.getCookie("clientID");
-        var postType = "requestClientServices";
-        var obj = {"accessToken": accessToken, "postType": postType, "clientId": clientId};
-
-        clientUtils.webPost(postType, obj, handleClientsResponse);
     }
     
     //Handles the response from the server for the client response
-    function handleClientsResponse(response) {
-        console.log("resp: " + response);
-
-        var obj = JSON.parse(response);
-        var outcome = obj["outcome"];
-        var respType = obj["responseType"];
-        var services = obj["services"];
-
+    function responseCallback(serverResponse) {
         //Alert and return if failed
-        if (outcome == "failed") {
-            alert("Post Failed: " + respType);
+        if (serverResponse.outcome == "failed") {
+            alert("Post Failed: " + serverResponse.responseType);
             return;
         }
 
         // Load up the services and populate their corresponding records
         let servicesList = document.getElementById("services-list");
 
-        services.forEach(serv => {
+        serverResponse.services.forEach(serv => {
             let loadedEntry = loadedServices[serv.serviceType];
 
             if (loadedEntry == null) {
-                const newServiceCard = new ServiceEntry(serv.serviceId, serv.serviceType, serv.date);
+                const newServiceCard = new ServiceEntry(serv.serviceId, serv.serviceType, serv.serviceFile);
                 loadedServices[serv.serviceType] = newServiceCard;
                 loadedEntry = newServiceCard;
                 
@@ -117,6 +114,8 @@
             
             loadedEntry.serviceRecords.push(serv);
         });
+
+        clientUtils.setLoadingStatus(false, "loading-services-display");
     }
 
     ////////////////////////////////////////////////
@@ -141,8 +140,13 @@
         }
 
         let creationFormView = document.getElementById("view-creation-form")
-        creationFormView.setAttribute("src", selectedServiceEntry.serviceType.replace(" ", "") + ".html");
+        creationFormView.innerHTML = "";
+        creationFormView.setAttribute("src", `./${selectedServiceEntry.serviceFile}`);
         creationFormView.setAttribute("height", 500);
         creationFormView.hidden = false;
+    }
+    
+    function newService() {
+
     }
 </script>

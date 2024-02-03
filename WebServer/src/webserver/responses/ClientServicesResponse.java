@@ -32,12 +32,13 @@ public class ClientServicesResponse extends BasicResponse {
         public String date;
         public String serviceType;
         public String serviceId;
+        public String serviceFile;
         
     }
     
     private void getServices() {
     
-        String query            = "SELECT Service.Id, Service.ServiceDate, ServiceType FROM Service "
+        String query            = "SELECT Service.Id, Service.ServiceDate, ServiceType, ServiceType.FileName FROM Service "
                                 + "JOIN Test.ServiceType on ServiceCode = ServiceType.Id "
                                 + "WHERE ClientId = " + clientId + " AND EnteredBy = " + userId;
                                 
@@ -63,6 +64,8 @@ public class ClientServicesResponse extends BasicResponse {
                     svc.serviceType = value;
                 else if (fs.startsWith("Id:"))
                     svc.serviceId = value;
+                else if (fs.startsWith("FileName:"))
+                    svc.serviceFile = value;
                 
             }
             

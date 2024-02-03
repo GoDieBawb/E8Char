@@ -42,6 +42,7 @@
                 </div>
                 <div class="col-9">
                     <div id="card-list" class="row gy-3">
+                        <span id="loading-patients-display" hidden><img src="images/load_display.gif" width="64" height="64"></img><span></span></span>
                     </div>
                 </div>
             </div>
@@ -102,37 +103,29 @@
 
     //On window load we get a list of the user's available clients
     window.onload = function() {
-        loadUserClients();
+        clientUtils.setLoadingStatus(true, "loading-patients-display", "retrieving patient list ..");
+        
+        var newClientPost = new clientUtils.ClientPost(
+            "requestUserClients",
+            clientUtils.getCookie("accessToken"),
+            responseCallback
+        );
+        
+        clientUtils.webPost(newClientPost);
     };
-
-    //Requests users clients from the server
-    function loadUserClients() {
-        var accessToken = clientUtils.getCookie("accessToken");
-        var postType    = "requestUserClients";
-        var obj = {"accessToken": accessToken, "postType": postType};
-        var postString = JSON.stringify(obj);
-
-        console.log(postString);
-        clientUtils.webPost(postType, obj, handleClientsResponse);
-    }
     
     //Handles the response from the server for the client response
-    function handleClientsResponse(response) {
-        console.log("resp: " + response);
+    function responseCallback(serverResponse) {
 
-        var obj = JSON.parse(response);
-        var outcome = obj["outcome"];
-        var respType = obj["responseType"];
-        var clients  = obj["clients"];
-        
         //Alert and return if failed
-        if (outcome == "failed") {
-            alert("Post Failed: " + respType);
+        if (serverResponse.outcome == "failed") {
+            alert("Post Failed: " + serverResponse.responseType);
             return;
         }
 
         let clientCardList = document.getElementById("card-list");
         let clientIDCookieVal = clientUtils.getCookie("clientID");
+        let clients = serverResponse.clients;
 
         if (clients.length == 0)
             console.warn("There are no clients to read from!");
@@ -145,9 +138,11 @@
             loadedUICards.push(newUICard);
 
             // Remember the selected card.
-            if (clientIDCookieVal != null && newUICard.clientID == clientIDCookieVal)
+            if ((clientIDCookieVal != null && newUICard.clientID == clientIDCookieVal) || i == 0)
                 newUICard.select();
         }
+
+        clientUtils.setLoadingStatus(false, "loading-patients-display");
     }
 
     function patientSearchSort(showAll)
