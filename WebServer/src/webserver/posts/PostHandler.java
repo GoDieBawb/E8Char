@@ -52,7 +52,7 @@ public class PostHandler {
         
         //Verify Token
         else {
-            System.out.println("Checking Token: " + b.accessToken);
+            //System.out.println("Checking Token: " + b.accessToken);
             String user = authenticator.Authenticate(b.accessToken);
             
             //If user is null then the Access Token is Bad
@@ -60,7 +60,7 @@ public class PostHandler {
                 System.out.println("BAD TOKEN");
                 return new BadTokenResponse();
             }
-            System.out.println("Verified!");
+            // System.out.println("Verified!");
             
         }
         
@@ -89,7 +89,6 @@ public class PostHandler {
                 return new BasicResponse("Success");
                 
             case "requestUserClients":
-                System.out.println("Requesting User Clients");
                 int userId                          = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
                 //System.out.println("GSON CLIENTS: " + g.toJson(clientsResponse));
@@ -102,7 +101,6 @@ public class PostHandler {
                 return csr;
                 
             default:
-                System.out.println("ERROR: Unregistered Post Type: " + b.postType);
                 return new UnknownPostResponse();
                 
         }

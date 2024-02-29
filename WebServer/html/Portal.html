@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/custom.css">
+        <title>Portal</title>
+        <script src="scripts/clientutils.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h1 class="col">Portal</h1>
+            </div>
+            <div class="row justify-content-center text-center">
+                <div class="col"><button onclick="clientUtils.goto('Demographic')">New Patient</button></div>
+                <div class="col"><button onclick="clientUtils.goto('PatientInquiry')">Patient Inquiry</button></div>
+                <div class="col"><button onclick="exitSession()">Exit Session</button></div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    "use strict"
+
+    const CACHE_ENABLED = true;
+
+    var loadedUICards = [];
+
+    // This object represents a client entry in the dashboard's clients list.
+    function ClientCard(clientLastName, clientFirstName, clientDOB, clientID) {
+        // TODO: admittance, discharge and evaluation statuses
+        this.clientLastName = clientLastName;
+        this.clientFirstName = clientFirstName;
+        this.clientID = clientID;
+        this.clientDOB = clientDOB;
+        this.cardID = "card" + clientID;
+        this.referenceCard = new DOMParser().parseFromString(`
+            <div class="col-4">
+                <div class="card" id="${this.cardID}">
+                    <div class="card-body">
+                        <h5 class="card-title m-0">${this.clientLastName}, ${this.clientFirstName}</h5>
+                        <spanclass="card-title">${this.clientDOB}</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" id="admit-status">Admittance:</li>
+                        <li class="list-group-item" id="admit-status"><a class="btn-elechart-default" href="Services.html" role="button">Select</a></li>
+                    </ul>
+                </div>
+            </div>`, "text/html").getElementById(this.cardID);
+
+        this.select = function() {
+            loadedUICards.forEach(card => {
+                if (this !== card)
+                    card.deselect();
+                
+                this.referenceCard.style.backgroundColor = "#dedede";
+            });
+
+            clientUtils.setCookie("clientID", this.clientID);
+            clientUtils.setCookie("clientFriendlyName", `${clientLastName}, ${clientFirstName}`);
+        }
+
+        this.deselect = function() {
+            this.referenceCard.style.backgroundColor = "";
+        }
+    }   
+
+    //On window load we get a list of the user's available clients
+    window.onload = function() {
+        // clientUtils.setLoadingStatus(true, "loading-patients-display", "retrieving patient list ..");
+
+        // let dashboardListCache = sessionStorage.getItem("dashboardListCache");
+
+        // if (dashboardListCache != null && CACHE_ENABLED) {
+        //     // Client list had been cached. Load that instead.
+        //     responseCallback(JSON.parse(dashboardListCache));
+        //     return;
+        // }
+
+        // var newClientPost = new clientUtils.ClientPost(
+        //     "requestUserClients",
+        //     clientUtils.getCookie("accessToken"),
+        //     responseCallback
+        // );
+        
+        // clientUtils.webPost(newClientPost);
+    };
+    
+    //Handles the response from the server for the client response
+    function responseCallback(serverResponse) {
+
+        //Alert and return if failed
+        if (serverResponse.outcome == "failed") {
+            alert("Post Failed: " + serverResponse.responseType);
+            return;
+        }
+
+        let clientCardList = document.getElementById("card-list");
+        let clientIDCookieVal = clientUtils.getCookie("clientID");
+        let clients = serverResponse.clients;
+
+        if (clients.length == 0)
+            console.warn("There are no clients to read from!");
+
+        for (let i = 0; i < clients.length; i++) {
+            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clients[i].DOB, clients[i].clientId);
+
+            newUICard.referenceCard.addEventListener("click", () => newUICard.select(), false);
+            clientCardList.appendChild(newUICard.referenceCard.parentElement);
+            loadedUICards.push(newUICard);
+
+            // Remember the selected card.
+            if ((clientIDCookieVal != null && newUICard.clientID == clientIDCookieVal) || i == 0)
+                newUICard.select();
+        }
+
+        if (sessionStorage.getItem("dashboardListCache") == null && CACHE_ENABLED)
+            // Cache the result list and match it to that of the server's json response format
+            sessionStorage.setItem("dashboardListCache", JSON.stringify( {clients: clients} ));
+
+        clientUtils.setLoadingStatus(false, "loading-patients-display");
+    }
+
+    function patientSearchSort(showAll)
+    {
+        let formData = Object.fromEntries(new FormData(document.getElementById("dash-search-form")));
+        let averagePercentages = 0;
+
+        loadedUICards.forEach(card => {
+            let containsName = `${card.clientLastName} ${card.clientFirstName}`.toLowerCase().includes(formData["patient-search-name"].toLowerCase());
+            let containsNameReversed = `${card.clientFirstName} ${card.clientLastName}`.toLowerCase().includes(formData["patient-search-name"].toLowerCase());
+            let DOBComponents = formData["patient-search-dob"].split("-");
+            let [containsYear, containsMonth, containsDay] = [card.clientDOB.includes(DOBComponents[0]), card.clientDOB.includes(DOBComponents[1]), card.clientDOB.includes(DOBComponents[2])];
+            
+            // Show all cards if name field is empty.
+            if (showAll) {
+                card.referenceCard.parentElement.style.display = "block";
+                return;
+            }
+
+            // Not using name field to search.
+            if (formData["patient-search-name"].length == 0)
+                containsName = containsNameReversed = false;
+
+            if (containsName || containsNameReversed)
+                card.referenceCard.parentElement.style.display = "block";
+            else {
+                if (DOBComponents.length > 1 && (containsYear || containsMonth || containsDay))
+                    card.referenceCard.parentElement.style.display = "block";
+                else
+                    card.referenceCard.parentElement.style.display = "none";
+            }
+        });
+    }
+
+    function exitSession() {
+        clientUtils.burnSession();
+        clientUtils.goto("login");
+    }
+</script>

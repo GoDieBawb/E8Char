@@ -135,19 +135,16 @@ public class WebServer {
         
         //Handles GET Calls From the Client
         public void handleGet(HttpExchange t) {
-            
-            System.out.println("Handling GET");
-            
             String path = t.getRequestURI().getPath();
-            System.out.println("Path: " + path);
+            System.out.println("Handling GET: " + path);
             
             //https://www.elechart.com/
             if (path.equals("")) path = "Login";
             
             if (path.contains("images")) {}
-            
             else if (path.contains("scripts")) {}
-            
+            else if (path.contains("css")) {}
+            else if (path.contains("bootstrap")) {}        
             else if (!path.toLowerCase().contains("html")) path += ".html";
             
             File file = new File("html"+path);
@@ -163,13 +160,13 @@ public class WebServer {
         
         //Handles POST calls to the Server
         public void handlePost(HttpExchange t) {
-            
-            System.out.println("Handling POST");        
             String json = "";
             try {
                 json = new String(t.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             }
             catch(IOException e) {}
+
+            System.out.println("Handling POST: " + json);
 
             BasicResponse response     = POSTHANDLER.handle(json);
             String        jsonResponse = new Gson().toJson(response);

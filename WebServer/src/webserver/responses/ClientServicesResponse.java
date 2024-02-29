@@ -42,22 +42,26 @@ public class ClientServicesResponse extends BasicResponse {
                                 + "JOIN Test.ServiceType on ServiceCode = ServiceType.Id "
                                 + "WHERE ClientId = " + clientId + " AND EnteredBy = " + userId;
                                 
-        System.out.println(query);
+        //System.out.println(query);
         SQLUtil sql             = new SQLUtil();
         String response         = sql.queryDatabase(query).replace("[", "");
         String[] serviceStrings = response.split("]");
+
+        // if there's no results, then return nothing.
+        if (response.equals(""))
+            return;
+
         for (String s : serviceStrings) {
             
             Service svc = new Service();          
             String[] fieldStrings = s.split(", ");
+
             services.add(svc);
             
             for (int i = 0; i < fieldStrings.length; i++) {
-            
                 String fs    = fieldStrings[i];
-                String value = fs.split(": ")[1];
-                System.out.println("FS: " + fs);
-                
+                String value = fs.split(":")[1];
+
                 if (fs.contains("ServiceDate:"))
                     svc.date = value;
                 else if (fs.contains("ServiceType:"))
@@ -66,11 +70,7 @@ public class ClientServicesResponse extends BasicResponse {
                     svc.serviceId = value;
                 else if (fs.startsWith("FileName:"))
                     svc.serviceFile = value;
-                
             }
-            
         }
-        
     }
-    
 }

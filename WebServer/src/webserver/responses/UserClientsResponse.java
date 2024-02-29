@@ -42,14 +42,16 @@ public class UserClientsResponse extends BasicResponse {
     }
     
     private ArrayList<Client> getClients() {
-        
         clients = new ArrayList<>();
-        
         String response = getSQLResponse();
         
-        response               = response.replace("[", "");
+        response = response.replace("[", "");
         String[] clientStrings = response.split("]");
         
+        // if there's no results, then return nothing.
+        if (response.equals(""))
+            return null;
+
         for (String s : clientStrings) {
             
             Client   c            = new Client();           
@@ -57,9 +59,8 @@ public class UserClientsResponse extends BasicResponse {
             clients.add(c);
             
             for (int i = 0; i < fieldStrings.length; i++) {
-            
                 String fs    = fieldStrings[i];
-                String value = fs.split(": ")[1];
+                String value = fs.split(":")[1];
                 
                 if (fs.contains("Id:"))
                     c.clientId  = value;
@@ -68,15 +69,10 @@ public class UserClientsResponse extends BasicResponse {
                 else if (fs.contains("LastName:"))
                     c.lastName  = value;
                 else if (fs.contains("DOB:"))
-                    c.DOB       = value;
-                
+                    c.DOB       = value; 
             }
-            
-            
         }
 
-        return clients;
-        
+        return clients; 
     }
-    
 }

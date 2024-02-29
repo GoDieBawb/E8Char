@@ -1,248 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immunization Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        fieldset {
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        legend {
-            font-weight: bold;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        .vaccine-booster-details {
-            display: none;
-        }
-    </style>
-
-    <script>
-        function submitImmunizationRecord() {
-            var accessToken = getCookie("accessToken");
-            var clientId    = getCookie("clientID");
-            var postType = "submitImmunizationRecord";
-
-            // will get the form data
-            var vaccineName = document.getElementById('vaccineName').value;
-            var dateAdministered = document.getElementById('dateAdministered').value;
-            var administeringLocation = document.getElementById('administeringLocation').value;
-            var nextDoseDue = document.getElementById('nextDoseDue').value;
-            var covidVaccination = document.getElementById('covidVaccination').value;
-            var covidFirstDoseDate = document.getElementById('covidFirstDoseDate').value;
-            var covidSecondDoseDate = document.getElementById('covidSecondDoseDate').value;
-            var firstBoosterDate = document.getElementById('firstBoosterDate').value;
-            var secondBoosterDate = document.getElementById('secondBoosterDate').value;
-            var vaccineTypeFirstDose = document.getElementById('vaccineTypeFirstDose').value;
-            var vaccineTypeSecondDose = document.getElementById('vaccineTypeSecondDose').value;
-            var vaccineTypeBooster = document.getElementById('vaccineTypeBooster').value;
-
-            // Create object for submission
-            var obj = {
-                "accessToken": accessToken,
-                "clientId": clientId,
-                "postType": postType,
-                "vaccineName": vaccineName,
-                "dateAdministered": dateAdministered,
-                "administeringLocation": administeringLocation,
-                "nextDoseDate": nextDoseDate,
-                "covidVaccination": covidVaccination,
-                "covidFirstDoseDate": covidFirstDoseDate,
-                "covidSecondDoseDate": covidSecondDoseDate,
-                "firstBoosterDate": firstBoosterDate,
-                "secondBoosterDate": secondBoosterDate,
-                "vaccineTypeFirstDose": vaccineTypeFirstDose,
-                "vaccineTypeSecondDose": vaccineTypeSecondDose,
-                "vaccineTypeBooster": vaccineTypeBooster
-            };
-
-            // This code below will do the fetch request
-            fetch('localhost', {
-                method: 'POST',
-                mode: "cors",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(obj)
-            })
-            .then(response => response.json())
-            .then(response => handleResponse(JSON.stringify(response)))	
-       
-        }
-
-        function handleResponse(response) {
-            console.log("Handle: " + response);
-            var obj = JSON.parse(response);
-            var outcome = obj["outcome"];
-            var respType = obj["responseType"];
-            console.log("Outcome: " + outcome);
-            
-            if (outcome == "failed") {
-                alert("Post Failed: " + respType);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Immunization Form</title>
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/custom.css">
+        <script src="scripts/clientutils.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
             }
-            else if (outcome == "success") {
-                alert("Submit Success!");
+
+            fieldset {
+                margin-bottom: 20px;
+                padding: 10px;
             }
-            
-        }
 
-        // Grabbed from w3
-        function getCookie(cname) {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
+            legend {
+                font-weight: bold;
             }
-            return "";
-        }
-    </script>
-</head>
-<body>
 
-    <h2>Immunization Form</h2>
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
 
-    <form action="#" method="post">
+            input, select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+            }
 
-        <!-- Information -->
-        <fieldset>
-            <legend>Immunization Record</legend>
-            <label for="vaccineName">Vaccine Name:</label>
-            <input type="text" id="vaccineName" name="vaccineName" required>
+            button {
+                padding: 10px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
-            <label for="dateAdministered">Date Administered:</label>
-            <input type="date" id="dateAdministered" name="dateAdministered" required>
+            button:hover {
+                background-color: #45a049;
+            }
 
-            <label for="administeringLocation">Administering Location:</label>
-            <input type="text" id="administeringLocation" name="administeringLocation" required>
+            .vaccine-booster-details {
+                display: none;
+            }
+        </style>
 
-            <label for="nextDoseDate">Next Dose Date:</label>
-            <input type="date" id="nextDoseDate" name="nextDoseDate">
-            <!-- Below is where the Covid-19 information starts -->
-            <label for="covidVaccination">COVID-19 Vaccination:</label>
-            <!-- This select id function below creates the dropdown menu. When you click it has two options yes or no.-->
- <!-- The onchange attribute is set off when once you click either yes or no. If you click yes the additional information will be shown. If you click no then no information will pop up -->
-            <select id="covidVaccination" name="covidVaccination" required onchange="toggleVaccineBoosterDetails()">
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
- <!-- The div id function is just to diplay more information about the patient vaccination like first and second dose.-->
-            <div id="covidVaccinationDetails" style="display: none;">
-                <label for="covidFirstDoseDate">First Dose Date:</label>
-                <input type="date" id="covidFirstDoseDate" name="covidFirstDoseDate">
+        <script>
+            function submitImmunizationRecord() {
+                var accessToken = getCookie("accessToken");
+                var clientId    = getCookie("clientID");
+                var postType = "submitImmunizationRecord";
+
+                // will get the form data
+                var vaccineName = document.getElementById('vaccineName').value;
+                var dateAdministered = document.getElementById('dateAdministered').value;
+                var administeringLocation = document.getElementById('administeringLocation').value;
+                var nextDoseDue = document.getElementById('nextDoseDue').value;
+                var covidVaccination = document.getElementById('covidVaccination').value;
+                var covidFirstDoseDate = document.getElementById('covidFirstDoseDate').value;
+                var covidSecondDoseDate = document.getElementById('covidSecondDoseDate').value;
+                var firstBoosterDate = document.getElementById('firstBoosterDate').value;
+                var secondBoosterDate = document.getElementById('secondBoosterDate').value;
+                var vaccineTypeFirstDose = document.getElementById('vaccineTypeFirstDose').value;
+                var vaccineTypeSecondDose = document.getElementById('vaccineTypeSecondDose').value;
+                var vaccineTypeBooster = document.getElementById('vaccineTypeBooster').value;
+
+                // Create object for submission
+                var obj = {
+                    "accessToken": accessToken,
+                    "clientId": clientId,
+                    "postType": postType,
+                    "vaccineName": vaccineName,
+                    "dateAdministered": dateAdministered,
+                    "administeringLocation": administeringLocation,
+                    "nextDoseDate": nextDoseDate,
+                    "covidVaccination": covidVaccination,
+                    "covidFirstDoseDate": covidFirstDoseDate,
+                    "covidSecondDoseDate": covidSecondDoseDate,
+                    "firstBoosterDate": firstBoosterDate,
+                    "secondBoosterDate": secondBoosterDate,
+                    "vaccineTypeFirstDose": vaccineTypeFirstDose,
+                    "vaccineTypeSecondDose": vaccineTypeSecondDose,
+                    "vaccineTypeBooster": vaccineTypeBooster
+                };
+
+                // This code below will do the fetch request
+                fetch('localhost', {
+                    method: 'POST',
+                    mode: "cors",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(obj)
+                })
+                .then(response => response.json())
+                .then(response => handleResponse(JSON.stringify(response)))	
+        
+            }
+
+            function handleResponse(response) {
+                console.log("Handle: " + response);
+                var obj = JSON.parse(response);
+                var outcome = obj["outcome"];
+                var respType = obj["responseType"];
+                console.log("Outcome: " + outcome);
                 
-                <label for="covidSecondDoseDate">Second Dose Date:</label>
-                <input type="date" id="covidSecondDoseDate" name="covidSecondDoseDate">
-
-                <label for="vaccineTypeFirstDose">First Dose Vaccine Type:</label>
- <!-- This select id function below creates the dropdown menu. When you click it has three options for the type of vaccination you took.-->
-                <select id="vaccineTypeFirstDose" name="vaccineTypeFirstDose" required>
-
-                    <option value="">Select</option>
-                    <option value="Pfizer">Pfizer</option>
-                    <option value="Moderna">Moderna</option>
-                    <option value="Johnson & Johnson">Johnson & Johnson</option>
-                </select>
-
-                <label for="vaccineTypeSecondDose">Second Dose Vaccine Type:</label>
-                <select id="vaccineTypeSecondDose" name="vaccineTypeSecondDose" required>
-                    <option value="">Select</option>
-                    <option value="Pfizer">Pfizer</option>
-                    <option value="Moderna">Moderna</option>
-                    <option value="Johnson & Johnson">Johnson & Johnson</option>
-                </select>
-            </div>
-
-            <!-- Vaccine Booster Details -->
-            <fieldset class="vaccine-booster-details" id="vaccineBoosterDetails" style="display: none;">
-                <legend>Vaccine Booster Details</legend>
-                <label for="firstBoosterDate">First Booster Date:</label>
-                <input type="date" id="firstBoosterDate" name="firstBoosterDate">
-
-                <label for="secondBoosterDate">Second Booster Date:</label>
-                <input type="date" id="secondBoosterDate" name="secondBoosterDate">
-
-                <label for="vaccineTypeBooster">Booster Vaccine Type:</label>
+                if (outcome == "failed") {
+                    alert("Post Failed: " + respType);
+                }
+                else if (outcome == "success") {
+                    alert("Submit Success!");
+                }
                 
-                <!-- This select id function below creates the dropdow    n menu. When you click it has three options for the type of vaccination you took.--> 
-               <select id="vaccineTypeBooster" name="vaccineTypeBooster" required>
+            }
+
+            // Grabbed from w3
+            function getCookie(cname) {
+                let name = cname + "=";
+                let ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+        </script>
+    </head>
+    <body>
+
+        <h2>Immunization Form</h2>
+
+        <form action="#" method="post">
+
+            <!-- Information -->
+            <fieldset>
+                <legend>Immunization Record</legend>
+                <label for="vaccineName">Vaccine Name:</label>
+                <input type="text" id="vaccineName" name="vaccineName" required>
+
+                <label for="dateAdministered">Date Administered:</label>
+                <input type="date" id="dateAdministered" name="dateAdministered" required>
+
+                <label for="administeringLocation">Administering Location:</label>
+                <input type="text" id="administeringLocation" name="administeringLocation" required>
+
+                <label for="nextDoseDate">Next Dose Date:</label>
+                <input type="date" id="nextDoseDate" name="nextDoseDate">
+                <!-- Below is where the Covid-19 information starts -->
+                <label for="covidVaccination">COVID-19 Vaccination:</label>
+                <!-- This select id function below creates the dropdown menu. When you click it has two options yes or no.-->
+    <!-- The onchange attribute is set off when once you click either yes or no. If you click yes the additional information will be shown. If you click no then no information will pop up -->
+                <select id="covidVaccination" name="covidVaccination" required onchange="toggleVaccineBoosterDetails()">
                     <option value="">Select</option>
-                    <option value="Pfizer">Pfizer</option>
-                    <option value="Moderna">Moderna</option>
-                    <option value="Johnson & Johnson">Johnson & Johnson</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                 </select>
+    <!-- The div id function is just to diplay more information about the patient vaccination like first and second dose.-->
+                <div id="covidVaccinationDetails" style="display: none;">
+                    <label for="covidFirstDoseDate">First Dose Date:</label>
+                    <input type="date" id="covidFirstDoseDate" name="covidFirstDoseDate">
+                    
+                    <label for="covidSecondDoseDate">Second Dose Date:</label>
+                    <input type="date" id="covidSecondDoseDate" name="covidSecondDoseDate">
+
+                    <label for="vaccineTypeFirstDose">First Dose Vaccine Type:</label>
+    <!-- This select id function below creates the dropdown menu. When you click it has three options for the type of vaccination you took.-->
+                    <select id="vaccineTypeFirstDose" name="vaccineTypeFirstDose" required>
+
+                        <option value="">Select</option>
+                        <option value="Pfizer">Pfizer</option>
+                        <option value="Moderna">Moderna</option>
+                        <option value="Johnson & Johnson">Johnson & Johnson</option>
+                    </select>
+
+                    <label for="vaccineTypeSecondDose">Second Dose Vaccine Type:</label>
+                    <select id="vaccineTypeSecondDose" name="vaccineTypeSecondDose" required>
+                        <option value="">Select</option>
+                        <option value="Pfizer">Pfizer</option>
+                        <option value="Moderna">Moderna</option>
+                        <option value="Johnson & Johnson">Johnson & Johnson</option>
+                    </select>
+                </div>
+
+                <!-- Vaccine Booster Details -->
+                <fieldset class="vaccine-booster-details" id="vaccineBoosterDetails" style="display: none;">
+                    <legend>Vaccine Booster Details</legend>
+                    <label for="firstBoosterDate">First Booster Date:</label>
+                    <input type="date" id="firstBoosterDate" name="firstBoosterDate">
+
+                    <label for="secondBoosterDate">Second Booster Date:</label>
+                    <input type="date" id="secondBoosterDate" name="secondBoosterDate">
+
+                    <label for="vaccineTypeBooster">Booster Vaccine Type:</label>
+                    
+                    <!-- This select id function below creates the dropdow    n menu. When you click it has three options for the type of vaccination you took.--> 
+                <select id="vaccineTypeBooster" name="vaccineTypeBooster" required>
+                        <option value="">Select</option>
+                        <option value="Pfizer">Pfizer</option>
+                        <option value="Moderna">Moderna</option>
+                        <option value="Johnson & Johnson">Johnson & Johnson</option>
+                    </select>
+                </fieldset>
             </fieldset>
-        </fieldset>
 
-        <!-- Submit button -->
-        <button onclick="submitImmunizationRecord()" type="button">Submit</button>
+            <!-- Submit button -->
+            <button onclick="submitImmunizationRecord()" type="button">Submit</button>
 
-    </form>
+        </form>
 
-    <script>
-        //Every time a user changes a value in the COVID-19 Vaccination dropdown menu, the toggleVaccineBoosterDetails() function is used.
+        <script>
+            //Every time a user changes a value in the COVID-19 Vaccination dropdown menu, the toggleVaccineBoosterDetails() function is used.
 
-   //It sets the display style attribute of the covidVaccinationDetails div and the vaccineBoosterDetailsFieldset fieldset to block making these components visible if the selected value is Yes indicating that the user has received a COVID-19 vaccination.
+    //It sets the display style attribute of the covidVaccinationDetails div and the vaccineBoosterDetailsFieldset fieldset to block making these components visible if the selected value is Yes indicating that the user has received a COVID-19 vaccination.
 
-        //This hides certain items by setting their display style attribute to none, which indicates that the user has not gotten the COVID-19 vaccine, if the selected value is No.
-       
-        function toggleVaccineBoosterDetails() {
-            var covidVaccinationSelect = document.getElementById('covidVaccination');
-            var vaccineBoosterDetailsFieldset = document.getElementById('vaccineBoosterDetails');
-            var vaccineTypeSelect = document.getElementById('vaccineTypeBooster');
+            //This hides certain items by setting their display style attribute to none, which indicates that the user has not gotten the COVID-19 vaccine, if the selected value is No.
+        
+            function toggleVaccineBoosterDetails() {
+                var covidVaccinationSelect = document.getElementById('covidVaccination');
+                var vaccineBoosterDetailsFieldset = document.getElementById('vaccineBoosterDetails');
+                var vaccineTypeSelect = document.getElementById('vaccineTypeBooster');
 
-            if (covidVaccinationSelect.value === 'Yes') {
-                document.getElementById('covidVaccinationDetails').style.display = 'block';
-                vaccineBoosterDetailsFieldset.style.display = 'block';
-                vaccineTypeSelect.required = true;
-            } else {
-                document.getElementById('covidVaccinationDetails').style.display = 'none';
-                vaccineBoosterDetailsFieldset.style.display = 'none';
-                vaccineTypeSelect.required = false;
+                if (covidVaccinationSelect.value === 'Yes') {
+                    document.getElementById('covidVaccinationDetails').style.display = 'block';
+                    vaccineBoosterDetailsFieldset.style.display = 'block';
+                    vaccineTypeSelect.required = true;
+                } else {
+                    document.getElementById('covidVaccinationDetails').style.display = 'none';
+                    vaccineBoosterDetailsFieldset.style.display = 'none';
+                    vaccineTypeSelect.required = false;
+                }
             }
-        }
-    </script>
-
-</body>
+        </script>
+    </body>
 </html>

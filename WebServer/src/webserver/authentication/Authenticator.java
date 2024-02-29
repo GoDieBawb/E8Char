@@ -35,7 +35,8 @@ public class Authenticator {
             Long curTime = System.currentTimeMillis();
             
             //15 minute time out for token
-            if ((curTime-lastAct)/1000 > 60*15) {
+            //if ((curTime-lastAct)/1000 > 60*15) {
+            if ((curTime-lastAct)/1000 > 60*3600) {
                 //System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
                 tokenMap.remove(token);
                 return null;
@@ -75,9 +76,9 @@ public class Authenticator {
         if (response.equals("")) return false;
         
         response               = response.substring(1, response.length() - 1); //Remove first and last character
-        String dbHash          = response.split(": ")[1]; //Split at ": " to get requested field
+        String dbHash          = response.split(":")[1]; //Split at ":" to get requested field
         BCrypt.Result result   = BCrypt.verifyer().verify(password.toCharArray(), dbHash);
-        System.out.println("VERIFY: " + result.verified);
+        //System.out.println("VERIFY: " + result.verified);
         return result.verified;
     }
     
@@ -87,7 +88,7 @@ public class Authenticator {
         String response  = s.queryDatabase("SELECT Id FROM Staff WHERE Username = '" + userName+"'"); 
         //System.out.println("RESPONSE: " + response);
         response         = response.substring(1, response.length() - 1); //Remove first and last character
-        String idString  = response.split(": ")[1]; //Split at ": " to get requested field
+        String idString  = response.split(":")[1]; //Split at ":" to get requested field
         return Integer.valueOf(idString);
     }
     

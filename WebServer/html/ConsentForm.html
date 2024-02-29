@@ -1,249 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consent Form</title>
-   
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-   <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        fieldset {
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 2px solid #ccc;
-            border-radius: 10px;
-        }
-
-        legend {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #333;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .checkbox-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
-
-        .signature-line {
-            margin-top: 20px;
-            border-bottom: 1px solid #333;
-            width: 50%;
-            padding-bottom: 10px;
-        }
-
-        .consent-disclaimer {
-            margin-bottom: 20px;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-
-    <script>
-        function submitConsentForm() {
-            var accessToken = getCookie("accessToken");
-            var clientId    = getCookie("clientID");
-            var postType = "submitConsentForm";
-
-            // Get form data
-            var procedure = document.getElementById('procedure').value;
-            var risks = document.getElementById('risks').value;
-            var benefits = document.getElementById('benefits').value;
-            var anesthesia = document.getElementById('anesthesia').value;
-            var consentType = document.querySelector('input[name="consent-type"]:checked').value;
-            var additionalInfo = document.getElementById('additional-info').value;
-            var personName = document.getElementById('person-name').value;
-            var consentGiven = document.getElementById('consent-given').checked;
-
-            // Create object for submission
-            var obj = {
-                "accessToken": accessToken,
-                "clientId": clientId,
-                "postType": postType,
-                "procedure": procedure,
-                "risks": risks,
-                "benefits": benefits,
-                "anesthesia": anesthesia,
-                "consentType": consentType,
-                "additionalInfo": additionalInfo,
-                "personName": personName,
-                "consentGiven": consentGiven
-            };
-
-            // Fetch request
-            fetch('localhost', {
-                method: 'POST',
-                mode: "cors",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(obj)
-            })
-            .then(response => response.json())
-            .then(response => handleResponse(JSON.stringify(response)));    
-        }
-
-        function handleResponse(response) {
-            console.log("Handle: " + response);
-            var obj = JSON.parse(response);
-            var outcome = obj["outcome"];
-            var respType = obj["responseType"];
-            console.log("Outcome: " + outcome);
-            
-            if (outcome == "failed") {
-                alert("Post Failed: " + respType);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/custom.css">
+        <script src="scripts/clientutils.js"></script>
+        <title>Consent Form</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
             }
-            else if (outcome == "success") {
-                alert("Submit Success!");
+
+            fieldset {
+                margin-bottom: 20px;
+                padding: 20px;
+                border: 2px solid #ccc;
+                border-radius: 10px;
             }
-        }
 
-        // Cookie retrieval function
-        function getCookie(cname) {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
+            legend {
+                font-weight: bold;
+                font-size: 1.2em;
+                color: #333;
             }
-            return "";
-        }
-    </script>
-</head>
-<body>
 
-    <h2>Consent Form</h2>
+            label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
 
-    <form action="#" method="post">
+            input[type="text"],
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-        <!-- Information -->
-        <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
-            <legend>Informaton for the Procedure, Treatment, or Surgery</legend>
-            <label for="procedure">Procedure, Treatment, or Surgery:</label>
-            <input type="text" id="procedure" name="procedure" required>
+            textarea {
+                resize: vertical;
+            }
 
-            <label for="risks">Risks:</label>
-            <textarea id="risks" name="risks" rows="4" required></textarea>
+            select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
 
-            <label for="benefits">Benefits:</label>
-            <textarea id="benefits" name="benefits" rows="4" required></textarea>
-        </fieldset>
+            .checkbox-label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: normal;
+            }
 
+            .signature-line {
+                margin-top: 20px;
+                border-bottom: 1px solid #333;
+                width: 50%;
+                padding-bottom: 10px;
+            }
 
-            <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
-            <label for="anesthesia">Anesthesia Type:</label>
-            <select id="anesthesia" name="anesthesia">
-                <option value="General">General Anesthesia</option>
-                <option value="Local">Local Anesthesia</option>
-                <option value="Regional">Regional Anesthesia</option>
-                <option value="None">No Anesthesia</option>
-            </select>
-        </fieldset>
-            <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
-            <label>Consent Type:</label>
-            <div class="checkbox-label">
-            
-                <label for="written">Written</label>
-                <input type="radio" id="written" name="consent-type" value="Written" required>
-            </div>
-            <div class="checkbox-label">
-               
-                <label for="verbal">Verbal</label>
-                <input type="radio" id="verbal" name="consent-type" value="Verbal" required>
-            </div>
+            .consent-disclaimer {
+                margin-bottom: 20px;
+            }
 
-            <label for="additional-info">Additional Information:</label>
-            <textarea id="additional-info" name="additional-info" rows="4"></textarea>
-        </fieldset>
+            button {
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
 
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
 
-            <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
-            <label for="person-name">Name of Person Giving Consent:</label>
-            <input type="text" id="person-name" name="person-name" required>
-        </fieldset>
+        <script>
+            function submitConsentForm() {
+                var accessToken = getCookie("accessToken");
+                var clientId    = getCookie("clientID");
+                var postType = "submitConsentForm";
 
-            <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
-            <div class="consent-disclaimer">
-                <p><strong>Consent and Disclaimer:</strong><p>
-                <p>By providing my consent, I acknowledge that I have read and understood the information provided regarding the procedure, including its risks and benefits. I also understand that this form serves as a legal document indicating my agreement to proceed with the procedure.</p>
-            </div>
-        </fieldset>
-        
-        
-        <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
-        <div class="checkbox-label">
+                // Get form data
+                var procedure = document.getElementById('procedure').value;
+                var risks = document.getElementById('risks').value;
+                var benefits = document.getElementById('benefits').value;
+                var anesthesia = document.getElementById('anesthesia').value;
+                var consentType = document.querySelector('input[name="consent-type"]:checked').value;
+                var additionalInfo = document.getElementById('additional-info').value;
+                var personName = document.getElementById('person-name').value;
+                var consentGiven = document.getElementById('consent-given').checked;
+
+                // Create object for submission
+                var obj = {
+                    "accessToken": accessToken,
+                    "clientId": clientId,
+                    "postType": postType,
+                    "procedure": procedure,
+                    "risks": risks,
+                    "benefits": benefits,
+                    "anesthesia": anesthesia,
+                    "consentType": consentType,
+                    "additionalInfo": additionalInfo,
+                    "personName": personName,
+                    "consentGiven": consentGiven
+                };
+
+                // Fetch request
+                fetch('localhost', {
+                    method: 'POST',
+                    mode: "cors",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(obj)
+                })
+                .then(response => response.json())
+                .then(response => handleResponse(JSON.stringify(response)));    
+            }
+
+            function handleResponse(response) {
+                console.log("Handle: " + response);
+                var obj = JSON.parse(response);
+                var outcome = obj["outcome"];
+                var respType = obj["responseType"];
+                console.log("Outcome: " + outcome);
                 
-                <label for="consent-given">I hereby give my consent for the above procedure and have been adequately informed of the risks and benefits.</label>
-                <input type="checkbox" id="consent-given" name="consent-given" required>
-            </div>
+                if (outcome == "failed") {
+                    alert("Post Failed: " + respType);
+                }
+                else if (outcome == "success") {
+                    alert("Submit Success!");
+                }
+            }
 
+            // Cookie retrieval function
+            function getCookie(cname) {
+                let name = cname + "=";
+                let ca = document.cookie.split(';');
+                for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+        </script>
+    </head>
+    <body>
+
+        <h2>Consent Form</h2>
+
+        <form action="#" method="post">
+
+            <!-- Information -->
+            <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
+                <legend>Informaton for the Procedure, Treatment, or Surgery</legend>
+                <label for="procedure">Procedure, Treatment, or Surgery:</label>
+                <input type="text" id="procedure" name="procedure" required>
+
+                <label for="risks">Risks:</label>
+                <textarea id="risks" name="risks" rows="4" required></textarea>
+
+                <label for="benefits">Benefits:</label>
+                <textarea id="benefits" name="benefits" rows="4" required></textarea>
+            </fieldset>
+
+
+                <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
+                <label for="anesthesia">Anesthesia Type:</label>
+                <select id="anesthesia" name="anesthesia">
+                    <option value="General">General Anesthesia</option>
+                    <option value="Local">Local Anesthesia</option>
+                    <option value="Regional">Regional Anesthesia</option>
+                    <option value="None">No Anesthesia</option>
+                </select>
+            </fieldset>
+                <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
+                <label>Consent Type:</label>
+                <div class="checkbox-label">
+                
+                    <label for="written">Written</label>
+                    <input type="radio" id="written" name="consent-type" value="Written" required>
+                </div>
+                <div class="checkbox-label">
+                
+                    <label for="verbal">Verbal</label>
+                    <input type="radio" id="verbal" name="consent-type" value="Verbal" required>
+                </div>
+
+                <label for="additional-info">Additional Information:</label>
+                <textarea id="additional-info" name="additional-info" rows="4"></textarea>
+            </fieldset>
+
+
+                <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
+                <label for="person-name">Name of Person Giving Consent:</label>
+                <input type="text" id="person-name" name="person-name" required>
+            </fieldset>
+
+                <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
+                <div class="consent-disclaimer">
+                    <p><strong>Consent and Disclaimer:</strong><p>
+                    <p>By providing my consent, I acknowledge that I have read and understood the information provided regarding the procedure, including its risks and benefits. I also understand that this form serves as a legal document indicating my agreement to proceed with the procedure.</p>
+                </div>
+            </fieldset>
             
-            <label for="person-signature">Signature:</label>
-            <input type="text" id="person-signature" name="person-signature" required placeholder="Please sign here">
-            <div class="signature-line"></div>
-        </fieldset>
+            
+            <fieldset style="border: 2px solid #ccc; border-radius: 10px;">
+            <div class="checkbox-label">
+                    
+                    <label for="consent-given">I hereby give my consent for the above procedure and have been adequately informed of the risks and benefits.</label>
+                    <input type="checkbox" id="consent-given" name="consent-given" required>
+                </div>
 
-        <!-- Submit button -->
-        <button onclick="submitConsentForm()" type="button">Submit</button>
+                
+                <label for="person-signature">Signature:</label>
+                <input type="text" id="person-signature" name="person-signature" required placeholder="Please sign here">
+                <div class="signature-line"></div>
+            </fieldset>
 
-    </form>
-
-</body>
+            <!-- Submit button -->
+            <button onclick="submitConsentForm()" type="button">Submit</button>
+        </form>
+    </body>
 </html>
-
-
-

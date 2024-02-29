@@ -1,181 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Surgical History Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .form-section {
-            margin-bottom: 20px;
-            border: 1px solid #ccc; 
-            border-radius: 5px; 
-            padding: 20px;
-            background-color: #f9f9f9;
-        }
-
-        .form-label {
-            font-weight: bold;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        .btn-submit {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .btn-submit:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2 class="text-center">Surgical History Form</h2>
-
-        <div class="form-section">
-            <h3 class="text-center mb-4">Patient Information</h3>
-            <div class="mb-3">
-                <label for="patientName" class="form-label">Patient Name:</label>
-                <input type="text" id="patientName" name="patientName" class="form-input" required>
-            </div>
-            <div class="mb-3">
-                <label for="dateOfBirth" class="form-label">Date of Birth:</label>
-                <input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input" required>
-            </div>
-            <div class="mb-3">
-                <label for="medicalRecordNumber" class="form-label">Medical Record Number:</label>
-                <input type="text" id="medicalRecordNumber" name="medicalRecordNumber" class="form-input" required>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <h3 class="text-center mb-4">Surgical History</h3>
-            <div class="mb-3">
-                <label class="form-label">Current Surgery:</label>
-                <div>
-                    <input type="text" id="currentSurgeryName" name="currentSurgeryName" class="form-input mb-2" placeholder="Surgery Name">
-                    <input type="date" id="dateOfSurgery" name="dateOfSurgery" class="form-input mb-2" placeholder="Date of Surgery">
-                    <input type="text" id="insuranceInfo" name="insuranceInfo" class="form-input mb-2" placeholder="Insurance Information">
-                    <textarea id="surgeryDetails" name="surgeryDetails" class="form-input mb-2" rows="4" placeholder="Details of Surgery"></textarea>
-                    <input type="text" id="doctorName" name="doctorName" class="form-input mb-2" placeholder="Doctor's Name">
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Past Surgeries (if any):</label>
-                <div id="pastSurgeriesContainer">
-                    <!-- Past Surgeries Fields will be dynamically added here -->
-                </div>
-                <button type="button" class="btn btn-secondary mb-3" onclick="addPastSurgery()">Add Past Surgery</button>
-            </div>
-        </div>
-
-        <div class="text-center">
-            <button class="btn-submit" onclick="submitSurgicalHistory()">Submit</button>
-        </div>
-    </div>
-
-    <script>
-        /**
- * Function to add a new past surgery input field to the pastSurgeriesContainer.
- */
-
-        function addPastSurgery() {
-            // Retrieve the element in the container that has the history of surgeries.
-            const pastSurgeriesContainer = document.getElementById('pastSurgeriesContainer');
-            // HTML template for new input fields for previous surgeries.
-            const pastSurgeryFields = `
-                <div class="mb-3">
-                    <input type="text" class="form-input mb-2" placeholder="Surgery Name">
-                    <input type="date" class="form-input mb-2" placeholder="Date of Surgery">
-                    <textarea class="form-input mb-2" rows="4" placeholder="Details of Surgery"></textarea>
-                </div>
-            `;
-            // At the end, insert the HTML for the new prior surgery input fields into the container.
-            pastSurgeriesContainer.insertAdjacentHTML('beforeend', pastSurgeryFields);
-        }
-
-        function submitSurgicalHistory() {
-            var accessToken = getCookie("accessToken");
-            var postType = "submitSurgicalHistory";
-
-            var patientName = document.getElementById('patientName').value;
-            var dateOfBirth = document.getElementById('dateOfBirth').value;
-            var medicalRecordNumber = document.getElementById('medicalRecordNumber').value;
-            var dateOfSurgery = document.getElementById('dateOfSurgery').value;
-            var insuranceInfo = document.getElementById('insuranceInfo').value;
-            var surgeryDetails = document.getElementById('surgeryDetails').value;
-            var doctorName = document.getElementById('doctorName').value;
-
-            var obj = {
-                "accessToken": accessToken,
-                "postType": postType,
-                "patientName": patientName,
-                "dateOfBirth": dateOfBirth,
-                "medicalRecordNumber": medicalRecordNumber,
-                "dateOfSurgery": dateOfSurgery,
-                "insuranceInfo": insuranceInfo,
-                "surgeryDetails": surgeryDetails,
-                "doctorName": doctorName
-            };
-
-            fetch('https://localhost', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(obj)
-            })
-            .then(response => response.json())
-            .then(response => handleResponse(response))
-            .catch(error => console.error('Error submitting form:', error));
-        }
-
-        function handleResponse(response) {
-            var outcome = response.outcome;
-            var respType = response.responseType;
-
-            if (outcome == "failed") {
-                alert("Post Failed: " + respType);
-            }
-            else if (outcome == "success") {
-                alert("Submit Success!");
-            }
-        }
-
-        function getCookie(cname) {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-    </script>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/custom.css">
+		<script src="scripts/clientutils.js"></script>
+		<title>Surgical History Form</title>
+		<style>
+			body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+			}
+			.form-section {
+			margin-bottom: 20px;
+			border: 1px solid #ccc; 
+			border-radius: 5px; 
+			padding: 20px;
+			background-color: #f9f9f9;
+			}
+			.form-label {
+			font-weight: bold;
+			}
+			.form-input {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			box-sizing: border-box;
+			}
+			.btn-submit {
+			padding: 10px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			}
+			.btn-submit:hover {
+			background-color: #45a049;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h2 class="text-center">Surgical History Form</h2>
+			<div class="form-section">
+				<h3 class="text-center mb-4">Patient Information</h3>
+				<div class="mb-3">
+					<label for="patientName" class="form-label">Patient Name:</label>
+					<input type="text" id="patientName" name="patientName" class="form-input" required>
+				</div>
+				<div class="mb-3">
+					<label for="dateOfBirth" class="form-label">Date of Birth:</label>
+					<input type="date" id="dateOfBirth" name="dateOfBirth" class="form-input" required>
+				</div>
+				<div class="mb-3">
+					<label for="medicalRecordNumber" class="form-label">Medical Record Number:</label>
+					<input type="text" id="medicalRecordNumber" name="medicalRecordNumber" class="form-input" required>
+				</div>
+			</div>
+			<div class="form-section">
+				<h3 class="text-center mb-4">Surgical History</h3>
+				<div class="mb-3">
+					<label class="form-label">Current Surgery:</label>
+					<div>
+						<input type="text" id="currentSurgeryName" name="currentSurgeryName" class="form-input mb-2" placeholder="Surgery Name">
+						<input type="date" id="dateOfSurgery" name="dateOfSurgery" class="form-input mb-2" placeholder="Date of Surgery">
+						<input type="text" id="insuranceInfo" name="insuranceInfo" class="form-input mb-2" placeholder="Insurance Information">
+						<textarea id="surgeryDetails" name="surgeryDetails" class="form-input mb-2" rows="4" placeholder="Details of Surgery"></textarea>
+						<input type="text" id="doctorName" name="doctorName" class="form-input mb-2" placeholder="Doctor's Name">
+					</div>
+				</div>
+				<div class="mb-3">
+					<label class="form-label">Past Surgeries (if any):</label>
+					<div id="pastSurgeriesContainer">
+						<!-- Past Surgeries Fields will be dynamically added here -->
+					</div>
+					<button type="button" class="btn btn-secondary mb-3" onclick="addPastSurgery()">Add Past Surgery</button>
+				</div>
+			</div>
+			<div class="text-center">
+				<button class="btn-submit" onclick="submitSurgicalHistory()">Submit</button>
+			</div>
+		</div>
+		<script>
+			/**
+			* Function to add a new past surgery input field to the pastSurgeriesContainer.
+			*/
+			
+			function addPastSurgery() {
+			    // Retrieve the element in the container that has the history of surgeries.
+			    const pastSurgeriesContainer = document.getElementById('pastSurgeriesContainer');
+			    // HTML template for new input fields for previous surgeries.
+			    const pastSurgeryFields = `
+			        <div class="mb-3">
+			            <input type="text" class="form-input mb-2" placeholder="Surgery Name">
+			            <input type="date" class="form-input mb-2" placeholder="Date of Surgery">
+			            <textarea class="form-input mb-2" rows="4" placeholder="Details of Surgery"></textarea>
+			        </div>
+			    `;
+			    // At the end, insert the HTML for the new prior surgery input fields into the container.
+			    pastSurgeriesContainer.insertAdjacentHTML('beforeend', pastSurgeryFields);
+			}
+			
+			function submitSurgicalHistory() {
+			    var accessToken = getCookie("accessToken");
+			    var postType = "submitSurgicalHistory";
+			
+			    var patientName = document.getElementById('patientName').value;
+			    var dateOfBirth = document.getElementById('dateOfBirth').value;
+			    var medicalRecordNumber = document.getElementById('medicalRecordNumber').value;
+			    var dateOfSurgery = document.getElementById('dateOfSurgery').value;
+			    var insuranceInfo = document.getElementById('insuranceInfo').value;
+			    var surgeryDetails = document.getElementById('surgeryDetails').value;
+			    var doctorName = document.getElementById('doctorName').value;
+			
+			    var obj = {
+			        "accessToken": accessToken,
+			        "postType": postType,
+			        "patientName": patientName,
+			        "dateOfBirth": dateOfBirth,
+			        "medicalRecordNumber": medicalRecordNumber,
+			        "dateOfSurgery": dateOfSurgery,
+			        "insuranceInfo": insuranceInfo,
+			        "surgeryDetails": surgeryDetails,
+			        "doctorName": doctorName
+			    };
+			
+			    fetch('https://localhost', {
+			        method: 'POST',
+			        mode: 'cors',
+			        headers: {
+			            'Accept': 'application/json',
+			            'Content-Type': 'application/json'
+			        },
+			        body: JSON.stringify(obj)
+			    })
+			    .then(response => response.json())
+			    .then(response => handleResponse(response))
+			    .catch(error => console.error('Error submitting form:', error));
+			}
+			
+			function handleResponse(response) {
+			    var outcome = response.outcome;
+			    var respType = response.responseType;
+			
+			    if (outcome == "failed") {
+			        alert("Post Failed: " + respType);
+			    }
+			    else if (outcome == "success") {
+			        alert("Submit Success!");
+			    }
+			}
+			
+			function getCookie(cname) {
+			    let name = cname + "=";
+			    let ca = document.cookie.split(';');
+			    for(let i = 0; i < ca.length; i++) {
+			        let c = ca[i];
+			        while (c.charAt(0) == ' ') {
+			            c = c.substring(1);
+			        }
+			        if (c.indexOf(name) == 0) {
+			            return c.substring(name.length, c.length);
+			        }
+			    }
+			    return "";
+			}
+		</script>
+	</body>
 </html>

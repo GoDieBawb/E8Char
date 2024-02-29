@@ -1,195 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register New Staff</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        fieldset {
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        legend {
-            font-weight: bold;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-
-    <script>
-        
-//The code below is too handle the submission of the form.
-        //Below is also where the javascript aspect of the form begins.
-        function submitStaff() {
-            var accessToken = getCookie("accessToken");
-            var postType = "submitStaff";
-            var firstname = document.getElementById('firstname').value;
-            var lastname = document.getElementById('lastname').value;
-            var email = document.getElementById('email').value;
-            var phonenumber = document.getElementById('phonenumber').value;
-            var dob = document.getElementById('dob').value;
-            var address = document.getElementById('address').value;
-            var city = document.getElementById('city').value;
-            var state = document.getElementById('state').value;
-            var zip = document.getElementById('zip').value;
-            var position = document.getElementById('position').value;
-            var department = document.getElementById('department').value;
-            var employmentdate = document.getElementById('employmentdate').value;
-            var hourlyrate = document.getElementById('hourlyrate').value;
-            var enteredby = "";
-            var entereddate = "";
-
-            var obj = {
-                "accessToken": accessToken,
-                "postType": postType,
-                "firstname": firstname,
-                "lastname": lastname,
-                "email": email,
-                "phonenumber": phonenumber,
-                "dob": dob,
-                "address": address,
-                "city": city,
-                "state": state,
-                "zip": zip,
-                "position": position,
-                "department": department,
-                "employmentdate": employmentdate,
-                "hourlyrate": hourlyrate
-            };
-            var postString = JSON.stringify(obj);
-            console.log(postString);
-
-            fetch('localhost', {
-                method: 'POST',
-                mode: "cors",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(obj)
-            })
-            .then(response => response.json())
-            .then(response => handleResponse(JSON.stringify(response)))		
-        }
-        //The code below will handle the response of the server 
-        function handleResponse(response) {
-            console.log("Handle: " + response);
-            var obj = JSON.parse(response);
-            var outcome = obj["outcome"];
-            var respType = obj["responseType"];
-            console.log("Outcome: " + outcome);
-
-            if (outcome == "failed") {
-                alert("Post Failed: " + respType);
-            } else if (outcome == "success") {
-                alert("Submit Success!");
-            }
-        }
-
-        //Grabbed from w3
-        function getCookie(cname) {
-            let name = cname + "=";
-            let ca = document.cookie.split(';');
-            for(let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-    </script>
-</head>
-<body>
-
-    <h2>Staff Registration Form</h2>
-
-    <form action="#" method="post">
-
-        <!-- Staff Information -->
-        <!-- The label and input also create the text boxes around first name and etc. -->
-        <fieldset>
-            <legend>Personal Information</legend>
-            <label for="firstname">First Name:</label>
-            <input type="text" id="firstname" name="firstname" required>
-            
-            <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" name="lastname" required>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="phonenumber">Phone Number:</label>
-            <input type="text" id="phonenumber" name="phonenumber" required>                 
-
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob" required>
-
-            <label for="address">Address:</label>
-            <input type="text" id="address" name="address">
-            
-            <label for="city">City:</label>
-            <input type="text" id="city" name="city">
-
-            <label for="state">State:</label>
-            <input type="text" id="state" name="state">
-            
-            <label for="zip">Zip:</label>
-            <input type="text" id="zip" name="zip">            
-        </fieldset>
-
-        <!-- Additional Staff Information -->
-        <fieldset>
-            <legend>Additional Information</legend>
-     <label for="position">Position:</label>
-<input type="text" id="position" name="position" required>
-
-<label for="department">Department:</label>
-<input type="text" id="department" name="department">
-
-<label for="employmentdate">Employment Date:</label>
-<input type="date" id="employmentdate" name="employmentdate" required>
-
-<label for="hourlyrate">Hourly Rate:</label>
-<input type="number" id="hourlyrate" name="hourlyrate" min="0" required>
-  </fieldset>
-
-        <!-- The submit button function -->
-        <button onclick="submitStaff()" type="button">Submit</button>
-
-    </form>
-
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Register New Staff</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/custom.css">
+		<script src="scripts/clientutils.js"></script>
+		<style>
+			body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+			}
+			fieldset {
+			margin-bottom: 20px;
+			padding: 10px;
+			}
+			legend {
+			font-weight: bold;
+			}
+			label {
+			display: block;
+			margin-bottom: 5px;
+			}
+			input, select {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			box-sizing: border-box;
+			}
+			button {
+			padding: 10px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			}
+			button:hover {
+			background-color: #45a049;
+			}
+		</style>
+		<script>
+			//The code below is too handle the submission of the form.
+			        //Below is also where the javascript aspect of the form begins.
+			        function submitStaff() {
+			            var accessToken = getCookie("accessToken");
+			            var postType = "submitStaff";
+			            var firstname = document.getElementById('firstname').value;
+			            var lastname = document.getElementById('lastname').value;
+			            var email = document.getElementById('email').value;
+			            var phonenumber = document.getElementById('phonenumber').value;
+			            var dob = document.getElementById('dob').value;
+			            var address = document.getElementById('address').value;
+			            var city = document.getElementById('city').value;
+			            var state = document.getElementById('state').value;
+			            var zip = document.getElementById('zip').value;
+			            var position = document.getElementById('position').value;
+			            var department = document.getElementById('department').value;
+			            var employmentdate = document.getElementById('employmentdate').value;
+			            var hourlyrate = document.getElementById('hourlyrate').value;
+			            var enteredby = "";
+			            var entereddate = "";
+			
+			            var obj = {
+			                "accessToken": accessToken,
+			                "postType": postType,
+			                "firstname": firstname,
+			                "lastname": lastname,
+			                "email": email,
+			                "phonenumber": phonenumber,
+			                "dob": dob,
+			                "address": address,
+			                "city": city,
+			                "state": state,
+			                "zip": zip,
+			                "position": position,
+			                "department": department,
+			                "employmentdate": employmentdate,
+			                "hourlyrate": hourlyrate
+			            };
+			            var postString = JSON.stringify(obj);
+			            console.log(postString);
+			
+			            fetch('localhost', {
+			                method: 'POST',
+			                mode: "cors",
+			                headers: {
+			                    'Accept': 'application/json',
+			                    'Content-Type': 'application/json'
+			                },
+			                body: JSON.stringify(obj)
+			            })
+			            .then(response => response.json())
+			            .then(response => handleResponse(JSON.stringify(response)))		
+			        }
+			        //The code below will handle the response of the server 
+			        function handleResponse(response) {
+			            console.log("Handle: " + response);
+			            var obj = JSON.parse(response);
+			            var outcome = obj["outcome"];
+			            var respType = obj["responseType"];
+			            console.log("Outcome: " + outcome);
+			
+			            if (outcome == "failed") {
+			                alert("Post Failed: " + respType);
+			            } else if (outcome == "success") {
+			                alert("Submit Success!");
+			            }
+			        }
+			
+			        //Grabbed from w3
+			        function getCookie(cname) {
+			            let name = cname + "=";
+			            let ca = document.cookie.split(';');
+			            for(let i = 0; i < ca.length; i++) {
+			                let c = ca[i];
+			                while (c.charAt(0) == ' ') {
+			                    c = c.substring(1);
+			                }
+			                if (c.indexOf(name) == 0) {
+			                    return c.substring(name.length, c.length);
+			                }
+			            }
+			            return "";
+			        }
+			    
+		</script>
+	</head>
+	<body>
+		<h2>Staff Registration Form</h2>
+		<form action="#" method="post">
+			<!-- Staff Information -->
+			<!-- The label and input also create the text boxes around first name and etc. -->
+			<fieldset>
+				<legend>Personal Information</legend>
+				<label for="firstname">First Name:</label>
+				<input type="text" id="firstname" name="firstname" required>
+				<label for="lastname">Last Name:</label>
+				<input type="text" id="lastname" name="lastname" required>
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+				<label for="phonenumber">Phone Number:</label>
+				<input type="text" id="phonenumber" name="phonenumber" required>                 
+				<label for="dob">Date of Birth:</label>
+				<input type="date" id="dob" name="dob" required>
+				<label for="address">Address:</label>
+				<input type="text" id="address" name="address">
+				<label for="city">City:</label>
+				<input type="text" id="city" name="city">
+				<label for="state">State:</label>
+				<input type="text" id="state" name="state">
+				<label for="zip">Zip:</label>
+				<input type="text" id="zip" name="zip">            
+			</fieldset>
+			<!-- Additional Staff Information -->
+			<fieldset>
+				<legend>Additional Information</legend>
+				<label for="position">Position:</label>
+				<input type="text" id="position" name="position" required>
+				<label for="department">Department:</label>
+				<input type="text" id="department" name="department">
+				<label for="employmentdate">Employment Date:</label>
+				<input type="date" id="employmentdate" name="employmentdate" required>
+				<label for="hourlyrate">Hourly Rate:</label>
+				<input type="number" id="hourlyrate" name="hourlyrate" min="0" required>
+			</fieldset>
+			<!-- The submit button function -->
+			<button onclick="submitStaff()" type="button">Submit</button>
+		</form>
+	</body>
 </html>

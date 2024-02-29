@@ -119,3 +119,16 @@ clientUtils.setLoadingStatus = function(isLoading, loadDisplayID, message) {
     if (isLoading)
         loadDisplayElement.children.findInParticular("tag", "span").innerText = message;
 }
+
+clientUtils.burnSession = function() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++)
+        clientUtils.delCookie(cookies[i].split("=")[0]);
+
+    sessionStorage.clear();
+}
+
+clientUtils.goto = function(url) {
+    document.location.href = url;
+}

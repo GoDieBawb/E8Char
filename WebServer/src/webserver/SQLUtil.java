@@ -1,10 +1,6 @@
 package webserver;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import util.FileReader;
 
@@ -25,7 +21,7 @@ public class SQLUtil {
    
    //Connection and Statement for communicating
    static Connection conn = null;
-   static Statement  stmt = null;
+   static Statement stmt = null;
    
    //Line Count For Output
    private int outputCount = 1;
@@ -38,7 +34,6 @@ public class SQLUtil {
         String user = info.split(",")[0].replace(" ", "");
         String pass = info.split(",")[1].replace(" ", "");
         
-        //login(user, pass, "localhost", "Test");
         login(user, pass, "149.56.101.29", "Test");
     }
 
@@ -62,11 +57,11 @@ public class SQLUtil {
         //Try to Connect
         try {
             
-            System.out.println("Attempting to Connect to Database");
+            //System.out.println("Attempting to Connect to Database");
             
             conn         = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt         = conn.createStatement();
-            System.out.println("Connected!");
+            //System.out.println("Connected!");
             
         }
         
@@ -74,9 +69,7 @@ public class SQLUtil {
         catch(SQLException conEx) {
         
             System.out.println("Connection Failed: " + conEx);
-            
         }
-       
     }
     
     public String queryDatabase(String sql){
@@ -86,7 +79,6 @@ public class SQLUtil {
             
             conn         = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt         = conn.createStatement();
-            
         }
         
         //Catch Exception For Connection Failure
@@ -98,38 +90,27 @@ public class SQLUtil {
         try {
 
             //Query the Database
-            ResultSet rs = (stmt.executeQuery(sql));
+            ResultSet rs = stmt.executeQuery(sql);
             StringBuilder sb = new StringBuilder();
-            while (rs.next()) {
 
+            while (rs.next()) {
                 //Create a list of strings to hold the info
-                ArrayList<String> infoList = new ArrayList();
+                ArrayList<String> infoList = new ArrayList<String>();
+
                 //Get the list of columns relevent to the current Query
-                int columns                  = getReleventColumnCount(rs);
-                //Iteration Number
-                int i                        = 1;
-                
-                System.out.println("");
+                int columns = getReleventColumnCount(rs);
                 
                 //Iterate over all relevent columns
-                while(i <= columns) {
-                    
-                    String info = rs.getMetaData().getColumnName(i) + ": " + rs.getObject(i);
+                for (int i = 1; i <= columns; i++) {
+                    String info = rs.getMetaData().getColumnName(i) + ":" + rs.getObject(i);
                     infoList.add(info);
-                    i++;
-                    
                 }
                 
-                //System.out.println( + outputCount + ": " + infoList.toString());
                 sb.append(infoList.toString());
-                outputCount++;                
-                    
             }
             
             return sb.toString();
-                
         }        
-        
         //Catches if there's Something wrong with the command
         catch (SQLException e) {
             

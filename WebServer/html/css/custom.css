@@ -1,0 +1,50 @@
+#elechart-logo {
+    --logo-size: 50%;
+    width: var(--logo-size);
+    height: var(--logo-size);
+}
+
+#elechart-title {
+    --title-size: 50%;
+    width: var(--title-size);
+    height: var(--title-size);
+}
+
+#login-background {
+    background: url("../images/elechart-bg.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.elechart-style-1 {
+   background-color: whitesmoke;
+   border: 2px solid teal;
+}
+
+.btn-elechart-default {
+    border: 1px solid  #2d6858;
+    border-radius: 5px;
+    background-color: #37816f;
+    color: whitesmoke;
+    text-decoration: none;
+    padding: 1px 8px 1px 8px;
+    margin: 3px 0 5px 0
+}
+
+.btn-elechart-default-disabled {
+    border: 1px solid  #5c5c5c;
+    border-radius: 5px;
+    background-color: #e9e9e9;
+    color: rgb(138, 138, 138);
+    text-decoration: none;
+    padding: 1px 8px 1px 8px;
+    margin: 3px 0 5px 0
+}
+
+/* Dashboard */
+#card-list {
+    overflow-y: scroll;
+    height: calc(100vh - 100px);
+}
