@@ -34,13 +34,10 @@ public class SQLUtil {
         String user = info.split(",")[0].replace(" ", "");
         String pass = info.split(",")[1].replace(" ", "");
         
-<<<<<<< Updated upstream
-        login(user, pass, "149.56.101.29", "Test");
+        //login(user, pass, "149.56.101.29", "Test");
 
-=======
         login(user, pass, "localhost", "Test");
         //login(user, pass, "149.56.101.29", "Test");
->>>>>>> Stashed changes
     }
 
     private String getLoginString() {
