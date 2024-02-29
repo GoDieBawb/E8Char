@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/Web-Server/WebServer/src/webserver/tests/Tester.java</file>
-            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/Web-Server/WebServer/src/webserver/WebServer.java</file>
-            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/Web-Server/WebServer/src/webserver/posts/PostHandler.java</file>
-            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/Web-Server/WebServer/src/webserver/authentication/Authenticator.java</file>
+            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/E8Char/WebServer/src/webserver/SQLUtil.java</file>
+            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/E8Char/WebServer/src/webserver/authentication/Authenticator.java</file>
+            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/E8Char/WebServer/src/webserver/Main.java</file>
+            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/E8Char/WebServer/src/webserver/tests/HashTest.java</file>
+            <file>file:/C:/Users/MeanC/OneDrive/Documents/Github/E8Char/WebServer/src/webserver/responses/ClientServicesResponse.java</file>
         </group>
     </open-files>
 </project-private>
