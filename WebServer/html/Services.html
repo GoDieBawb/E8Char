@@ -4,17 +4,28 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="css/custom.css">
-        <script src="scripts/clientutils.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/custom.css">
+		<script src="scripts/clientutils.js"></script>
+        <title>Patient Services</title>
     </head>
-    <body>
-        <div>
-            <a href="Dashboard.html">Dashboard</a>
-            <div id="navigation-path-bar"></div>
-            <h2>Services</h2>
-            <hr>
-            
-            <div id="view-services-list">
+    <body class="container">
+        <div class="row align-items-center">
+            <div class="col-4"><h1 class="col">Patient Services</h1></div>
+            <div class="col-2">
+                <button class="btn-elechart-default" id="service-patient-btn" onclick="clientUtils.goto('PatientLookup.html')">Patient Lookup</button>
+            </div>
+        </div>
+        <div class="row" id="services-page">
+            <div class="col-4 bg-light">
+                <div class="row text-center border"><span>Service Records</span></div>
+                <div class="row" id="services-list">
+                </div>
+            </div>
+            <div class="col-8 bg-light">
+                <div class="row text-center border"><span>Mass Form Viewer</span></div>
+            </div>
+
+            <!-- <div id="view-services-list">
                 <label>Filter</label>
                 <input type="text">
                 <br>
@@ -24,19 +35,16 @@
                 </div>
                 <br>
                 <button onclick="newService()">New Service</button>
-            </div>
+            </div> -->
 
-            <div id="view-selected-service" hidden>
-                <div>
-                    <!-- list of service records go in this div block -->
-                </div>
+            <!-- <div id="view-selected-service" hidden>
                 <br>
                 <button onclick="showServiceList('view-selected-service')">Services List</button>
                 <button onclick="showCreationForm()">New Service Record</button>
                 <br>
                 <br>
                 <iframe id="view-creation-form" src="./PhysicalEvaluation.html" title="new service form" style="width:-webkit-fill-available;" hidden></iframe>
-            </div>
+            </div> -->
         </div>
     </body>
 </html>
@@ -48,8 +56,8 @@
     var selectedServiceEntry = null;
 
     window.onload = function() {
-        clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
-        clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
+        //clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
+        //clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
 
         // retrieve a list of services for this particular patient
         let newClientPost = new clientUtils.ClientPost(
@@ -59,7 +67,6 @@
         );
 
         newClientPost.addParam("clientId", clientUtils.getCookie("clientID"));
-
         clientUtils.webPost(newClientPost);
     };
 
@@ -71,28 +78,13 @@
         this.serviceRecords = new Array();
         this.HTMLID = "serviceEntryUI" + serviceID;
         this.HTMLReference = new DOMParser().parseFromString(
-            `<div id="${this.HTMLID}">
-                <h4>${serviceType}</h4>
-                <a href="#">link to ${serviceType} list</a>
+            `<div class="row py-3 elechart-service-entry border-top-0 rounded" id="${this.HTMLID}">
+                <div class="col">${this.serviceType}</div>
+                <div class="col">1/1/2024</div>
             </div>`, "text/html").getElementById(this.HTMLID);
 
         this.select = function() {
-            setElementVisiblity("view-services-list", false);
-            setElementVisiblity("view-selected-service", true);
-
-            let recordsList = document.getElementById("view-selected-service").firstElementChild;
-            recordsList.innerHTML = "";
-
-            this.serviceRecords.forEach(record => {
-                recordsList.innerHTML += 
-                    `<div>
-                        <h6>${record.serviceType}</h6>
-                        <div>${record.date}</div>
-                        <button>View Record</button>
-                    </div>`;
-            });
-
-            clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services > ${this.serviceType}`);
+            //clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services > ${this.serviceType}`);
             selectedServiceEntry = this;
         }
     }
@@ -117,13 +109,13 @@
                 loadedEntry = newServiceCard;
                 
                 servicesList.appendChild(newServiceCard.HTMLReference);
-                newServiceCard.HTMLReference.children.findInParticular("tag", "a").addEventListener("click", () => newServiceCard.select(), false);
+                //newServiceCard.HTMLReference.children.findInParticular("tag", "a").addEventListener("click", () => newServiceCard.select(), false);
             }
             
             loadedEntry.serviceRecords.push(serv);
         });
 
-        clientUtils.setLoadingStatus(false, "loading-services-display");
+        //clientUtils.setLoadingStatus(false, "loading-services-display");
 
         console.log(serverResponse.services);
     }
@@ -140,7 +132,7 @@
             setElementVisiblity(elementNameToHide, false);
 
         setElementVisiblity('view-services-list', true);
-        clientUtils.setNavigationPath(`Dashboard > Client #${clientUtils.getCookie("clientID")} > Services`);
+        clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
     }
 
     function showCreationForm() {

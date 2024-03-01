@@ -30,7 +30,6 @@
     color: whitesmoke;
     text-decoration: none;
     padding: 1px 8px 1px 8px;
-    margin: 3px 0 5px 0
 }
 
 .btn-elechart-default-disabled {
@@ -41,6 +40,19 @@
     text-decoration: none;
     padding: 1px 8px 1px 8px;
     margin: 3px 0 5px 0
+}
+
+/* Services */
+.elechart-service-entry {
+    font-size: larger;
+}
+
+#services-list {
+    overflow-y: scroll;
+}
+
+#services-list {
+    height: calc(100vh - 300px);
 }
 
 /* Dashboard */

@@ -15,7 +15,7 @@
             </div>
             <div class="row justify-content-center text-center">
                 <div class="col"><button onclick="clientUtils.goto('Demographic')">New Patient</button></div>
-                <div class="col"><button onclick="clientUtils.goto('PatientInquiry')">Patient Inquiry</button></div>
+                <div class="col"><button onclick="clientUtils.goto('PatientLookup')">Patient Inquiry</button></div>
                 <div class="col"><button onclick="exitSession()">Exit Session</button></div>
             </div>
         </div>
@@ -158,6 +158,6 @@
 
     function exitSession() {
         clientUtils.burnSession();
-        clientUtils.goto("login");
+        clientUtils.goto("Login.html");
     }
 </script>

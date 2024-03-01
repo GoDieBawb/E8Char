@@ -5,17 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="css/custom.css">
+        <title>Patient Lookup</title>
         <script src="scripts/clientutils.js"></script>
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <h1 class="col">Patient Inquiry</h1>
+                <h1 class="col">Patient Lookup</h1>
             </div>
             <div class="row">
                 <div class="col-3 bg-light border">
                     <form id="dash-search-form" onsubmit="return false;" aria-hidden="true" hidden></form>
-                    <div class="row">
+                    <div class="row p-2">
                         <div class="col text-center">
                             <div class="input-group">
                                 <span class="input-group-text">Name</span>
@@ -25,13 +26,15 @@
                                 <span class="input-group-text">D.O.B</span>
                                 <input class="form-control" form="dash-search-form" name="patient-search-dob" type="date" aria-label="Patient Date Of Birth">
                             </div>
-                            <button class="btn-elechart-default" onclick="patientSearchSort()">Find Patient</button>
-                            <button class="btn-elechart-default" onclick="patientSearchSort(true)">Show All</button>
+                            <div class="pt-2">
+                                <button class="btn-elechart-default" onclick="patientSearchSort()">Find Patient</button>
+                                <button class="btn-elechart-default" onclick="patientSearchSort(true)">Show All</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="row border-top py-2">
+                    <div class="row border-top p-2">
                         <h5 class="text-center">Actions</h5>
-                        <button class="btn-elechart-default-disabled" onclick="" disabled>Service Patient</button>
+                        <button class="btn-elechart-default-disabled" id="service-patient-btn" onclick="clientUtils.goto('Services')">Service Patient</button>
                         <button class="btn-elechart-default" onclick="closeSession()">Close Session</button>
                     </div>
                 </div>
@@ -67,9 +70,9 @@
                         <h5 class="card-title m-0">${this.clientLastName}, ${this.clientFirstName}</h5>
                         <spanclass="card-title">${this.clientDOB}</span>
                     </div>
-                    <ul class="list-group list-group-flush">
+                    <!--<ul class="list-group list-group-flush">
                         <li class="list-group-item" id="admit-status">Admittance:</li>
-                    </ul>
+                    </ul>-->
                 </div>
             </div>`, "text/html").getElementById(this.cardID);
 
@@ -78,7 +81,11 @@
                 if (this !== card)
                     card.deselect();
                 
+                let servicePatientBtn = document.getElementById("service-patient-btn");
+
                 this.referenceCard.style.backgroundColor = "#dedede";
+                servicePatientBtn.className = "btn-elechart-default";
+                servicePatientBtn.removeAttribute("disabled");
             });
 
             clientUtils.setCookie("clientID", this.clientID);
@@ -130,7 +137,7 @@
             console.warn("There are no clients to read from!");
 
         for (let i = 0; i < clients.length; i++) {
-            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clients[i].DOB, clients[i].clientId);
+            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clients[i].DOB.split("T")[0], clients[i].clientId);
 
             newUICard.referenceCard.addEventListener("click", () => newUICard.select(), false);
             clientCardList.appendChild(newUICard.referenceCard.parentElement);
@@ -178,6 +185,6 @@
 
     function closeSession() {
         clientUtils.burnSession();
-        document.location.href = "/login";
+        document.location.href = "Login.html";
     }
 </script>

@@ -7,6 +7,84 @@
 		<link rel="stylesheet" type="text/css" href="css/custom.css">
 		<script src="scripts/clientutils.js"></script>
 		<title>Register New Patient</title>
+		<style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+            }
+
+            fieldset {
+                margin-bottom: 20px;
+                padding: 20px;
+                border: 2px solid #ccc;
+                border-radius: 10px;
+            }
+
+            legend {
+                font-weight: bold;
+                font-size: 1.2em;
+                color: #333;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+
+            input[type="text"],
+            textarea {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            textarea {
+                resize: vertical;
+            }
+
+            select {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .checkbox-label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: normal;
+            }
+
+            .signature-line {
+                margin-top: 20px;
+                border-bottom: 1px solid #333;
+                width: 50%;
+                padding-bottom: 10px;
+            }
+
+            .consent-disclaimer {
+                margin-bottom: 20px;
+            }
+
+            button {
+                padding: 10px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
 		<script>
 			function submitDemographic() {
 				var accessToken = getCookie("accessToken");
