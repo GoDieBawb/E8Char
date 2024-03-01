@@ -19,7 +19,7 @@ public class SubmitImmunizationRecordPost extends ServicePost {
     
     public SubmitImmunizationRecordPost() {
         postType = "submitImmunizationRecord";
-        serviceCode = 4; // Assuming a unique service code for immunization records
+        serviceCode = 4; //Service code number 4 
     }
     
     public void debug() {
