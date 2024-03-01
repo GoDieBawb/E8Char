@@ -15,7 +15,7 @@ public class SubmitImmunizationRecordPost extends ServicePost {
     public String secondBoosterDate;
     public String vaccineTypeFirstDose;
     public String vaccineTypeSecondDose;
-    public String vaccineTypeBooster;
+    public String vaccineTypeBooster; 
     
     public SubmitImmunizationRecordPost() {
         postType = "submitImmunizationRecord";

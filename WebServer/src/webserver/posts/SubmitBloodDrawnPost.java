@@ -18,7 +18,7 @@ public class SubmitBloodDrawnRequestPost extends ServicePost {
         serviceCode = 3; 
     }
     
-    public void debug() {
+    public void debug() { 
         System.out.println("patientName: " + patientName);
         System.out.println("dateOfBirth: " + dateOfBirth);
         System.out.println("medicalRecordNumber: " + medicalRecordNumber);

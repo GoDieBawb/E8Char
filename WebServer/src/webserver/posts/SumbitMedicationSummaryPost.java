@@ -17,7 +17,7 @@ public class MedicationSummaryPost extends ServicePost {
         System.out.println("serviceCode: " + serviceCode);
     }
     
-    public void publish() {
+    public void publish() { 
         String serviceId = generateService();
         
         String queryString = "INSERT INTO MedicationSummary (OrderNumber, Contents, Date, ServiceCode, EnteredBy, EnteredDate, ServiceId) "

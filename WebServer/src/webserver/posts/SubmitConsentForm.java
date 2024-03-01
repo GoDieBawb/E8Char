@@ -22,7 +22,7 @@ public class ConsentFormPost extends ServicePost {
         System.out.println("consentGiven: " + consentGiven);
     }
 
-    public void publish() {
+    public void publish() { 
         String serviceId = generateService();
 
         String queryString = "INSERT INTO ConsentFormData (Procedure, Risks, Benefits, Anesthesia, ConsentType, AdditionalInfo, PersonName, ConsentGiven, EnteredBy, EnteredDate, ServiceId) "
