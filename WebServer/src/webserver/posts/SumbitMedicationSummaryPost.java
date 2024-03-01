@@ -7,7 +7,7 @@ public class MedicationSummaryPost extends ServicePost {
     
     public MedicationSummaryPost() {
         postType = "medicationSummary";
-        serviceCode = 5; // Assuming a unique service code for medication summary posts
+        serviceCode = 5; //Service code number 5
     }
     
     public void debug() {
