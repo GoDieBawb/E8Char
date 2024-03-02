@@ -4,9 +4,18 @@ import webserver.SQLUtil;
 
 public class AppointmentFormPost extends ServicePost {
 
+    public String firstname;
+    public String lastname;
+    public String email;
+    public String phonenumber;
+    public String physician;
+    public String date;
+    public String reason;
+
+//Post types
     public AppointmentFormPost() {
         postType = "submitAppointmentForm";
-        serviceCode = 7; // Assuming a unique service code for appointment form posts
+        serviceCode = 7; //service code number 7
     }
 
     public void debug() {
@@ -29,3 +38,4 @@ public class AppointmentFormPost extends ServicePost {
         sql.queryDatabase(queryString);
     }
 }
+

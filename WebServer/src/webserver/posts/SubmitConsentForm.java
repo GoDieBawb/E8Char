@@ -2,10 +2,17 @@ package webserver.posts;
 
 import webserver.SQLUtil;
 
-//Created a public class to make it more understandble
 public class ConsentFormPost extends ServicePost {
 
-    //Post types
+    public String procedure;
+    public String risks;
+    public String benefits;
+    public String anesthesia;
+    public String consentType;
+    public String additionalInfo;
+    public String personName;
+    public String consentGiven;
+
     public ConsentFormPost() {
         postType = "submitConsentForm";
         serviceCode = 6;  //Service code number for 6
