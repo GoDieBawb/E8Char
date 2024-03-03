@@ -20,6 +20,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.KeyStore;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
@@ -62,6 +65,7 @@ public class WebServer {
     //Creates the HTTPS Server
     public void start() throws Exception {
         System.out.println("Starting Server");
+        System.setProperty("http.keepAlive", "false");
         try {
 
             // initialise the HTTPS server
@@ -104,47 +108,81 @@ public class WebServer {
                 }
             });
             httpsServer.createContext("/", new Handler());
-            httpsServer.setExecutor(null); // creates a default executor
+            httpsServer.setExecutor(Executors.newCachedThreadPool()); // creates a default executor
             httpsServer.start();
-
         } catch (Exception exception) {
             System.out.println("Failed to create HTTPS server on port " + PORT + " of localhost");
-            exception.printStackTrace();
 
         }
         System.out.println("Server Started");
     }
     
+    public class NetworkRequestThread implements Runnable {
+
+        HttpExchange t;
+        Handler h;
+        String type;
+        
+        public NetworkRequestThread(String type, Handler h, HttpExchange t) {
+            this.t = t;
+            this.h = h;
+            this.type = type;
+        }
+        
+        @Override
+        public void run() {
+            if (type.equals("Post"))
+                new Handler().handlePost(t);
+            else
+                new Handler().handleGet(t);
+        }
+        
+    }
+    
     //Handles HTTP Requests
-    static class Handler implements HttpHandler {
+    class Handler implements HttpHandler {
+        
+        
+        public Handler() {
+        }
         
         @Override
         public void handle(HttpExchange t) throws IOException {
             
+            System.out.println("Received Exchange Type " + t.getRequestMethod());
+            Long start = System.currentTimeMillis();
+            
             if (t.getRequestMethod().equals("POST")) {
-                handlePost(t);
-                return;
+                NetworkRequestThread grt = new NetworkRequestThread("Post",this, t);
+                Thread th = new Thread(grt);
+                th.start();                
+                //handlePost(t);
             }
             
-            if (t.getRequestMethod().equals("GET")) {
-                handleGet(t);
-                return;
+            else if (t.getRequestMethod().equals("GET")) {
+                NetworkRequestThread grt = new NetworkRequestThread("Get",this, t);
+                Thread th = new Thread(grt);
+                th.start();
+                //handleGet(t);
             }
+            
+            System.out.println("Finished in " + (System.currentTimeMillis()-start) + "ms");
             
         }
         
         //Handles GET Calls From the Client
         public void handleGet(HttpExchange t) {
+            
             String path = t.getRequestURI().getPath();
             System.out.println("Handling GET: " + path);
-            
             //https://www.elechart.com/
             if (path.equals("")) path = "Login";
             
             if (path.contains("images")) {}
             else if (path.contains("scripts")) {}
             else if (path.contains("css")) {}
-            else if (path.contains("bootstrap")) {}        
+            else if (path.contains("bootstrap")) {}
+            else if (path.contains("favico")) {}     
             else if (!path.toLowerCase().contains("html")) path += ".html";
             
             File file = new File("html"+path);
@@ -152,10 +190,23 @@ public class WebServer {
             try (OutputStream os = t.getResponseBody()) {
                 t.sendResponseHeaders(200, file.length());
                 Files.copy(file.toPath(), os);
+                os.flush();
+                os.close();
             }
             catch (IOException e) {
+                System.out.println(e.getClass().getCanonicalName() + " thrown in handle get");
+                sendNoContentResponse(t);
+                //e.printStackTrace();
             }
             
+        }
+        
+        private void sendNoContentResponse(HttpExchange t) {
+            try {
+                t.sendResponseHeaders(204, 0L);
+            } catch (IOException ex) {
+                
+            }
         }
         
         //Handles POST calls to the Server
@@ -177,7 +228,9 @@ public class WebServer {
                 os.write(jsonResponse.getBytes());
                 os.close();
             }
-            catch (IOException f){}
+            catch (IOException f){
+                System.out.println("EXCEPTION THROWN IN HANDLE POST");
+            }
             
         }
         

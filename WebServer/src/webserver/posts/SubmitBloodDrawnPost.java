@@ -2,7 +2,7 @@ package webserver.posts;
 
 import webserver.SQLUtil;
 
-public class SubmitBloodDrawnRequestPost extends ServicePost {
+public class SubmitBloodDrawnPost extends ServicePost {
     
     public String patientName;
     public String dateOfBirth;
@@ -13,7 +13,7 @@ public class SubmitBloodDrawnRequestPost extends ServicePost {
     public String isFasting;
     public String signature;
     
-    public SubmitBloodDrawnRequestPost() {
+    public SubmitBloodDrawnPost() {
         postType = "submitBloodDrawnRequest";
         serviceCode = 3; 
     }

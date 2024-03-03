@@ -2,7 +2,7 @@ package webserver.posts;
 
 import webserver.SQLUtil;
 
-/
+
 public class SubmitMedicationRecordPost extends ServicePost {
     
     public String medicationName;

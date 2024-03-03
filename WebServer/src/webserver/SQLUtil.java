@@ -36,7 +36,7 @@ public class SQLUtil {
         
         //login(user, pass, "149.56.101.29", "Test");
 
-        //login(user, pass, "localhost", "Test");
+        login(user, pass, "localhost", "Test");
         //login(user, pass, "149.56.101.29", "Test");
     }
 
