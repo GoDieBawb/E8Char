@@ -102,7 +102,7 @@ public class PostHandler {
                 smp.publish(); 
                 return new BasicResponse("Success");    
                 
-            case "submitSurgicalHistoryForm":
+            case "submitSurgicalHistory":
                 SurgicalHistoryPost shp = g.fromJson(json, SurgicalHistoryPost.class);
                 shp.enteredby   = authenticator.getUserIdByToken(shp.accessToken);
                 shp.entereddate = LocalDate.now().toString();
