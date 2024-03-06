@@ -21,8 +21,6 @@ import java.nio.file.Files;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;

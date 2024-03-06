@@ -67,6 +67,48 @@ public class PostHandler {
         //Once Token Verified Determine Which Post Type
         switch (b.postType) {
             
+            case "submitAppointmentForm":
+                AppointmentFormPost afp = g.fromJson(json, AppointmentFormPost.class);
+                afp.enteredby   = authenticator.getUserIdByToken(afp.accessToken);
+                afp.entereddate = LocalDate.now().toString();
+                afp.publish();  
+                return new BasicResponse("Success");
+            
+            case "submitBloodDrawnRequest":
+                SubmitBloodDrawnPost sbp = g.fromJson(json, SubmitBloodDrawnPost.class);
+                sbp.enteredby   = authenticator.getUserIdByToken(sbp.accessToken);
+                sbp.entereddate = LocalDate.now().toString();
+                sbp.publish(); 
+                return new BasicResponse("Success");
+                
+            case "submitConsentForm":
+                ConsentFormPost cfp = g.fromJson(json, ConsentFormPost.class);
+                cfp.enteredby   = authenticator.getUserIdByToken(cfp.accessToken);
+                cfp.entereddate = LocalDate.now().toString();
+                cfp.publish(); 
+                return new BasicResponse("Success");
+
+            case "submitImmunizationRecord":
+                SubmitImmunizationRecordPost sip = g.fromJson(json, SubmitImmunizationRecordPost.class);
+                sip.enteredby   = authenticator.getUserIdByToken(sip.accessToken);
+                sip.entereddate = LocalDate.now().toString();
+                sip.publish(); 
+                return new BasicResponse("Success");
+                
+            case "submitMedicationRecord":
+                SubmitMedicationRecordPost smp = g.fromJson(json, SubmitMedicationRecordPost.class);
+                smp.enteredby   = authenticator.getUserIdByToken(smp.accessToken);
+                smp.entereddate = LocalDate.now().toString();
+                smp.publish(); 
+                return new BasicResponse("Success");    
+                
+            case "submitSurgicalHistoryForm":
+                SurgicalHistoryPost shp = g.fromJson(json, SurgicalHistoryPost.class);
+                shp.enteredby   = authenticator.getUserIdByToken(shp.accessToken);
+                shp.entereddate = LocalDate.now().toString();
+                shp.publish(); 
+                return new BasicResponse("Success");                  
+                
             case "submitDemographic":
                 SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
                 sdp.enteredby   = authenticator.getUserIdByToken(sdp.accessToken);
@@ -101,6 +143,7 @@ public class PostHandler {
                 return csr;
                 
             default:
+                System.out.println("Unknown Post: " + b.postType);
                 return new UnknownPostResponse();
                 
         }
