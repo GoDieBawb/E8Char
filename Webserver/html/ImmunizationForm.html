@@ -62,15 +62,17 @@
                 var vaccineName = document.getElementById('vaccineName').value;
                 var dateAdministered = document.getElementById('dateAdministered').value;
                 var administeringLocation = document.getElementById('administeringLocation').value;
-                var nextDoseDue = document.getElementById('nextDoseDue').value;
+                var nextDoseDate = document.getElementById('nextDoseDate').value;
                 var covidVaccination = document.getElementById('covidVaccination').value;
-                var covidFirstDoseDate = document.getElementById('covidFirstDoseDate').value;
-                var covidSecondDoseDate = document.getElementById('covidSecondDoseDate').value;
-                var firstBoosterDate = document.getElementById('firstBoosterDate').value;
-                var secondBoosterDate = document.getElementById('secondBoosterDate').value;
-                var vaccineTypeFirstDose = document.getElementById('vaccineTypeFirstDose').value;
-                var vaccineTypeSecondDose = document.getElementById('vaccineTypeSecondDose').value;
-                var vaccineTypeBooster = document.getElementById('vaccineTypeBooster').value;
+                //var covidFirstDoseDate = document.getElementById('covidFirstDoseDate').value;
+                //var covidSecondDoseDate = document.getElementById('covidSecondDoseDate').value;
+                //var firstBoosterDate = document.getElementById('firstBoosterDate').value;
+                //var secondBoosterDate = document.getElementById('secondBoosterDate').value;
+                //var vaccineTypeFirstDose = document.getElementById('vaccineTypeFirstDose').value;
+                //var vaccineTypeSecondDose = document.getElementById('vaccineTypeSecondDose').value;
+                //var vaccineTypeBooster = document.getElementById('vaccineTypeBooster').value;
+
+                
 
                 // Create object for submission
                 var obj = {
@@ -82,15 +84,15 @@
                     "administeringLocation": administeringLocation,
                     "nextDoseDate": nextDoseDate,
                     "covidVaccination": covidVaccination,
-                    "covidFirstDoseDate": covidFirstDoseDate,
-                    "covidSecondDoseDate": covidSecondDoseDate,
-                    "firstBoosterDate": firstBoosterDate,
-                    "secondBoosterDate": secondBoosterDate,
-                    "vaccineTypeFirstDose": vaccineTypeFirstDose,
-                    "vaccineTypeSecondDose": vaccineTypeSecondDose,
-                    "vaccineTypeBooster": vaccineTypeBooster
+                    //"covidFirstDoseDate": covidFirstDoseDate,
+                    //"covidSecondDoseDate": covidSecondDoseDate,
+                    //"firstBoosterDate": firstBoosterDate,
+                    //"secondBoosterDate": secondBoosterDate,
+                    //"vaccineTypeFirstDose": vaccineTypeFirstDose,
+                    //"vaccineTypeSecondDose": vaccineTypeSecondDose,
+                    //"vaccineTypeBooster": vaccineTypeBooster
                 };
-
+                console.log(JSON.stringify(obj));
                 // This code below will do the fetch request
                 fetch('localhost', {
                     method: 'POST',
@@ -163,7 +165,7 @@
                 <label for="covidVaccination">COVID-19 Vaccination:</label>
                 <!-- This select id function below creates the dropdown menu. When you click it has two options yes or no.-->
     <!-- The onchange attribute is set off when once you click either yes or no. If you click yes the additional information will be shown. If you click no then no information will pop up -->
-                <select id="covidVaccination" name="covidVaccination" required onchange="toggleVaccineBoosterDetails()">
+                <select id="covidVaccination" name="covidVaccination" required <!-onchange="toggleVaccineBoosterDetails()"->>
                     <option value="">Select</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
@@ -178,7 +180,7 @@
 
                     <label for="vaccineTypeFirstDose">First Dose Vaccine Type:</label>
     <!-- This select id function below creates the dropdown menu. When you click it has three options for the type of vaccination you took.-->
-                    <select id="vaccineTypeFirstDose" name="vaccineTypeFirstDose" required>
+                    <select id="vaccineTypeFirstDose" name="vaccineTypeFirstDose">
 
                         <option value="">Select</option>
                         <option value="Pfizer">Pfizer</option>
@@ -187,7 +189,7 @@
                     </select>
 
                     <label for="vaccineTypeSecondDose">Second Dose Vaccine Type:</label>
-                    <select id="vaccineTypeSecondDose" name="vaccineTypeSecondDose" required>
+                    <select id="vaccineTypeSecondDose" name="vaccineTypeSecondDose">
                         <option value="">Select</option>
                         <option value="Pfizer">Pfizer</option>
                         <option value="Moderna">Moderna</option>
@@ -207,7 +209,7 @@
                     <label for="vaccineTypeBooster">Booster Vaccine Type:</label>
                     
                     <!-- This select id function below creates the dropdow    n menu. When you click it has three options for the type of vaccination you took.--> 
-                <select id="vaccineTypeBooster" name="vaccineTypeBooster" required>
+                <select id="vaccineTypeBooster" name="vaccineTypeBooster">
                         <option value="">Select</option>
                         <option value="Pfizer">Pfizer</option>
                         <option value="Moderna">Moderna</option>
