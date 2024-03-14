@@ -6,6 +6,7 @@
 package webserver.responses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import webserver.SQLUtil;
 
 /**
@@ -16,14 +17,14 @@ public class ClientServicesResponse extends BasicResponse {
     
     public int clientId;
     public int userId;
-    public ArrayList<Service> services;
+    public HashMap<String,ArrayList<Service>> serviceMap;
     
     public ClientServicesResponse(int userId, int clientId) {
         this.userId   = userId;
         this.clientId = clientId;
         outcome       = "success";
         responseType  = "ClientServicesResponse";
-        services      = new ArrayList<>();
+        serviceMap    = new HashMap<>();
         getServices();
     }
     
@@ -55,8 +56,6 @@ public class ClientServicesResponse extends BasicResponse {
             
             Service svc = new Service();          
             String[] fieldStrings = s.split(", ");
-
-            services.add(svc);
             
             for (int i = 0; i < fieldStrings.length; i++) {
                 String fs    = fieldStrings[i];
@@ -71,6 +70,14 @@ public class ClientServicesResponse extends BasicResponse {
                 else if (fs.startsWith("FileName:"))
                     svc.serviceFile = value;
             }
+            
+            if (!serviceMap.containsKey(svc.serviceId)) {
+                ArrayList<Service> l = new ArrayList<>();
+                serviceMap.put(svc.serviceId, l);
+            }
+            
+            serviceMap.get(svc.serviceId).add(svc);
+            
         }
     }
 }
