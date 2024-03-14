@@ -71,12 +71,12 @@ public class ClientServicesResponse extends BasicResponse {
                     svc.serviceFile = value;
             }
             
-            if (!serviceMap.containsKey(svc.serviceId)) {
+            if (!serviceMap.containsKey(svc.serviceType)) {
                 ArrayList<Service> l = new ArrayList<>();
-                serviceMap.put(svc.serviceId, l);
+                serviceMap.put(svc.serviceType, l);
             }
             
-            serviceMap.get(svc.serviceId).add(svc);
+            serviceMap.get(svc.serviceType).add(svc);
             
         }
     }
