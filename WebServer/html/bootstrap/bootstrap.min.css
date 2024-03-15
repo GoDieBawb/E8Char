@@ -17,15 +17,22 @@
 .client-card {
     border: 2px solid rgb(94, 205, 183);
     border-radius: 10px;
-    background: linear-gradient(to left, rgb(249, 255, 249) 50px, rgb(224, 255, 249) 50px);
+    background: linear-gradient(to left, white 50px, rgb(224, 255, 249) 50px);
 }
 
 .service-group {
-    background: linear-gradient(to bottom, rgb(249, 255, 249) 35px, rgb(224, 255, 249) 35px);
+    background: linear-gradient(to bottom, white 35px, rgb(224, 255, 249) 35px);
     border: 2px solid rgb(94, 205, 183);
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+
+.service-group-item {
+    border: 1px solid rgb(94, 205, 183);
+    border-radius: 10px;
+    background: linear-gradient(to left, white 50px, rgb(237, 255, 251) 50px);
+}
+
 #services-list {
     overflow-y: scroll;
 }
