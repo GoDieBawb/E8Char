@@ -34,10 +34,8 @@ public class SQLUtil {
         String user = info.split(",")[0].replace(" ", "");
         String pass = info.split(",")[1].replace(" ", "");
         
-        //login(user, pass, "149.56.101.29", "Test");
-
-        login(user, pass, "localhost", "Test");
-        //login(user, pass, "149.56.101.29", "Test");
+        //login(user, pass, "localhost", "Test");
+        login(user, pass, "149.56.101.29", "Test");
     }
 
     private String getLoginString() {

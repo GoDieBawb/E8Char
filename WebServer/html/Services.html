@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="css/custom.css">
 		<script src="scripts/clientutils.js"></script>
         <title>Patient Services</title>
     </head>
@@ -12,39 +11,24 @@
         <div class="row align-items-center">
             <div class="col-4"><h1 class="col">Patient Services</h1></div>
             <div class="col-2">
-                <button class="btn-elechart-default" id="service-patient-btn" onclick="clientUtils.goto('PatientLookup.html')">Patient Lookup</button>
+                <button class="btn btn-primary" id="service-patient-btn" onclick="clientUtils.goto('PatientInquiry')">Patient Inquiry</button>
             </div>
         </div>
         <div class="row" id="services-page">
             <div class="col-4 bg-light">
                 <div class="row text-center border"><span>Service Records</span></div>
                 <div class="row" id="services-list">
+                    <div class="service-group mt-2">
+                        <h3 class="text-center">Phys</h3>
+                        <div>
+                            
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-8 bg-light">
                 <div class="row text-center border"><span>Mass Form Viewer</span></div>
             </div>
-
-            <!-- <div id="view-services-list">
-                <label>Filter</label>
-                <input type="text">
-                <br>
-                <br>
-                <div id="services-list">
-                    <span id="loading-services-display" hidden><img src="images/load_display.gif" width="64" height="64"></img><span></span></span>
-                </div>
-                <br>
-                <button onclick="newService()">New Service</button>
-            </div> -->
-
-            <!-- <div id="view-selected-service" hidden>
-                <br>
-                <button onclick="showServiceList('view-selected-service')">Services List</button>
-                <button onclick="showCreationForm()">New Service Record</button>
-                <br>
-                <br>
-                <iframe id="view-creation-form" src="./PhysicalEvaluation.html" title="new service form" style="width:-webkit-fill-available;" hidden></iframe>
-            </div> -->
         </div>
     </body>
 </html>
@@ -97,27 +81,27 @@
             return;
         }
 
+        console.log(serverResponse);
+
         // Load up the services and populate their corresponding records
         let servicesList = document.getElementById("services-list");
 
-        serverResponse.services.forEach(serv => {
-            let loadedEntry = loadedServices[serv.serviceType];
-
-            if (loadedEntry == null) {
-                const newServiceCard = new ServiceEntry(serv.serviceId, serv.serviceType, serv.serviceFile);
-                loadedServices[serv.serviceType] = newServiceCard;
-                loadedEntry = newServiceCard;
-                
-                servicesList.appendChild(newServiceCard.HTMLReference);
-                //newServiceCard.HTMLReference.children.findInParticular("tag", "a").addEventListener("click", () => newServiceCard.select(), false);
-            }
+        for (const serviceName in serverResponse.serviceMap) {
+            let serviceRecords = serverResponse.serviceMap[serviceName];
             
-            loadedEntry.serviceRecords.push(serv);
-        });
+        }
+            // if (loadedEntry == null) {
+            //     const newServiceCard = new ServiceEntry(serv.serviceId, serv.serviceType, serv.serviceFile);
+            //     loadedServices[serv.serviceType] = newServiceCard;
+            //     loadedEntry = newServiceCard;
+                
+            //     servicesList.appendChild(newServiceCard.HTMLReference);
+            //     //newServiceCard.HTMLReference.children.findInParticular("tag", "a").addEventListener("click", () => newServiceCard.select(), false);
+            // }
+            
+            //loadedEntry.serviceRecords.push(serv);
 
         //clientUtils.setLoadingStatus(false, "loading-services-display");
-
-        console.log(serverResponse.services);
     }
 
     ////////////////////////////////////////////////

@@ -6,7 +6,6 @@
 		<title>Login</title>
 		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="css/custom.css">
 		<script src="scripts/clientutils.js"></script>
 	</head>
 	<body id="login-background">
@@ -31,7 +30,7 @@
 								<input id="password-input" type="password" name="password">
 							</div>
 							<div class="row justify-content-center mt-2">
-								<button class="btn-elechart-default" type="button" onclick="attemptLogin()">Sign In</button>
+								<button class="btn btn-primary" type="button" onclick="attemptLogin()">Sign In</button>
 							</div>
 						</form>
 					</div>
@@ -70,9 +69,8 @@
 				else if (outcome == "success") {
 					document.cookie = "accessToken="+obj["accessToken"];
 					//alert("Login Success! Token: " + getCookie("accessToken"));
-					window.location.href = "Portal.html";
+					clientUtils.goto("PatientInquiry");
 				}
-
 			}
 
 			//Grabbed from w3
