@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="stylesheet" href="styles_dash.css" />
+    <title>Dashboard</title>
+
+    <script>
+			document.addEventListener("DOMContentLoaded", (event) => {
+			
+			    //changed to GET response once implemented
+			    var name = 'John Smith'
+          var dob = '1-1-1999'
+			    var id = 1
+          var weight = '160lb'
+          var age = 25
+          var sex = 'M'
+          var ethnicity = 'Italian'
+          var race = 'White'
+          var hPhone = '1234567890'
+          var wPhopn = '9999999999'
+          var ID = '345-43-5341'
+          var contact = '5661234534'
+			    var lastVisit = '1-1-2024'
+          var pharmacyName = 'GenInc'
+          var pharmacy = '55555555'
+          var insuranceName = 'ZincInc'
+          var insuranceID = '123098'
+          var lastVisit = '1-1-2024'
+          var recordNum = '67891405'
+			    var physician = 'Dr.K'
+          var firstLan = "English"
+			 
+			
+			    //Insert patient info into appropiate elements
+			    var info = [dob, weight, age, sex, ethnicity, race, hPhone, wPhopn, firstLan, contact,
+                      pharmacyName, insuranceName, insuranceID, recordNum]
+			    var ele = ['DOB', 'weight', 'age', 'sex', 'ethnicity', 'race', 'hPhone', 'wPhone', 'firstLan','contact',
+                      'pharmacy','insuranceName', 'insuranceID', 'recordNum']
+			    var i = 0
+			    ele.forEach(element => {
+			        var patientName = document.getElementById(element)
+			        patientName.insertAdjacentHTML('beforeend', '<strong>' + info[i] + '</strong>')
+			        i++
+			    });
+			    var pName = document.getElementById('pName')
+          pName.insertAdjacentHTML('beforeend', name)
+			    console.log("DOM fully loaded and parsed");
+          var physicianName = document.getElementById('hPhysician')
+          physicianName.insertAdjacentHTML('beforeend', '<i>' + physician + '</i>')
+			    console.log("DOM fully loaded and parsed");
+          var vst = document.getElementById('lastV')
+          vst.insertAdjacentHTML('beforeend', '<i>' + lastVisit + '</i>')
+			    console.log("DOM fully loaded and parsed");
+          var ssnAcc = document.getElementById('idt')
+          ssnAcc.insertAdjacentHTML('beforeend', '<i>' + ID + '</i>')
+			    console.log("DOM fully loaded and parsed");
+			    
+			});
+			
+		</script>
+</head>
+
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-white" id="sidebar-wrapper">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bm"><i
+                    class="fas fa-user me-2"></i>Patient</div>
+            <div class="list-group list-group-flush my-3">
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active"><i
+                        class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" id="summary" onclick="Open('MedicationSummary.html')"><i
+                        class="fas fa-list me-2"></i>Visit Summary</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold" onclick="Open('AppointmentForm.html')"><i
+                        class="fas fa-calendar me-2" ></i>Appointments</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-clipboard me-2"></i>Laboratory Reports</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i
+                        class="fas fa-medkit me-2"></i>Diagnosis</a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold" onclick="closeSession()"><i
+                        class="fas fa-arrow-alt-circle-left me-2"></i>Previous Session</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content & Nav Bar-->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                    <h2 class="fs-2 m-0">Dashboard</h2>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle second-text fw-bold" href="#" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user me-2"></i>John Doe
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Settings</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="closeSession()">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="container-fluid px-4">
+              <!-- TOP -->
+                <div class="row g-3 my-2 align-items-center">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">Physician</h3>
+                                <p class="fs-5" id="hPhysician"></p>
+                            </div>
+                            <i class="fas fa-head-side-mask fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">Last Visit</h3>
+                                <p class="fs-5" id="lastV"></p>
+                            </div>
+                            <i
+                                class="fas fa-calendar-day fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-2">SSN</h3>
+                                <p class="fs-5" id="idt"></p>
+                            </div>
+                            <i class="fas fa-address-card fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    
+                </div>
+                <!--Bottom-->
+                <!--Patinet Footer-->
+                <div class="row my-5 bg-white rounded" >
+                    <h3 class="fs-4 mt-3 mb-3 text-center" id="pName"></h3>
+                    <!--Patient Image-->
+                    <div class="col">
+                        <figure class="figure">
+                            <img src="images/default.png" class="figure-img img-fluid rounded" alt="..." style="height: 200px; width: 200px;">
+                            
+                          </figure>
+                    </div>
+                    <!--Patient Info-->
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                              
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <th scope="row">DOB</th>
+                                <td id="DOB"> </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Weight</th>
+                                <td id="weight"></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Age</th>
+                                <td id="age"> </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Sex</th>
+                                <td id="sex"></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Ethnicity</th>
+                                <td id="ethnicity"> </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Race</th>
+                                <td id="race"></td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Home Phone</th>
+                                <td id="hPhone"> </td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Work Phone</th>
+                                <td id="wPhone"></td>
+                              </tr>
+                                                           
+                            </tbody>
+                          </table>
+                    </div>
+                    <!--Patient Info left table end-->
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                              
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Primary Language</th>
+                                    <td id="firstLan"> </td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Emergency Contact</th>
+                                    <td id="contact"></td>
+                                  </tr>
+                                 
+                                  <tr>
+                                    <th scope="row">Source Pharmacy</th>
+                                    <td id="pharmacy"></td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">Insurance</th>
+                                    <td id="insuranceName"> </td>
+                                  </tr>
+                                  <tr>
+                                    <th scope="row">InsuranceID</th>
+                                    <td id="insuranceID"></td>
+                                  </tr>
+                                 
+                                  <tr>
+                                    <th scope="row">Record Number</th>
+                                    <td id="recordNum"></td>
+                                  </tr>
+                                                             
+                            </tbody>
+                          </table>
+                    </div>
+                    <!--Patient Info right table end-->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var el = document.getElementById("wrapper");
+        var toggleButton = document.getElementById("menu-toggle");
+
+        toggleButton.onclick = function () {
+            el.classList.toggle("toggled");
+        };
+
+        function closeSession() {
+        clientUtils.burnSession();
+        document.location.href = "Login.html";
+    }
+
+    function Open(lk) {
+            window.open(lk, "_blank");
+        }
+    </script>
+</body>
+
+</html>
