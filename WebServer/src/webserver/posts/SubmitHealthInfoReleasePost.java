@@ -13,12 +13,6 @@ public class SubmitHealthInfoReleasePost extends BasicPost {
         postType = "submitHealthInfoRelease";
     }
     
-    public void debug() {
-        System.out.println("clientName: " + clientName);
-        System.out.println("doctorName: " + doctorName);
-        System.out.println("date: " + date);
-    }
-    
     public void publish() {
         String queryString = "INSERT INTO HealthInfoRelease (ClientName, DoctorName, Date) VALUES ('" + clientName + "', '" + doctorName + "', '" + date + "');";
 

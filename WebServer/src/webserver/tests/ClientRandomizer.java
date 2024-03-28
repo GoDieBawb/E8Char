@@ -21,14 +21,14 @@ public class ClientRandomizer {
         SubmitDemographicPost client = new SubmitDemographicPost();
         client.enteredby   = 1;
         client.entereddate = randomDate(2024, 2024).toString();
-        client.dob         = randomDate(1950,2010).toString();
+        client.dob         = randomDate(1950, 2019).toString();
         client.firstname   = randomFirstName();
         client.lastname    = randomLastName();
         client.phonenumber = randomInt(100,999) + "" + randomInt(1000000, 9999999)+"";
         client.address     = randomInt(100, 5555) + " " + randomCity();
         client.city        = randomCity();
         client.state       = randomState();
-        client.zip         = randomInt(10000,99999)+"";
+        client.zip         = randomInt(10000, 99999);
         client.debug();
         client.publish();
     }

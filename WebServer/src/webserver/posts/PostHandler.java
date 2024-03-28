@@ -7,13 +7,9 @@ package webserver.posts;
 
 import com.google.gson.Gson;
 import java.time.LocalDate;
+import webserver.SQLUtil;
 import webserver.authentication.Authenticator;
-import webserver.responses.BadTokenResponse;
-import webserver.responses.BasicResponse;
-import webserver.responses.ClientServicesResponse;
-import webserver.responses.LoginResponse;
-import webserver.responses.UserClientsResponse;
-import webserver.responses.UnknownPostResponse;
+import webserver.responses.*;
 
 /**
  *
@@ -31,13 +27,15 @@ public class PostHandler {
         
         Gson      g   = new Gson();
         BasicPost b   = g.fromJson(json, BasicPost.class);
+        SQLUtil u = new SQLUtil();
         
         //Handle Login
         if (b.postType.equals("Login")) {
             LoginPost l = g.fromJson(json, LoginPost.class);
             //System.out.println("Checking Login: " + l.username + " " + l.password);
             String token    = authenticator.Authenticate(l.username, l.password);
-            LoginResponse r = new LoginResponse();
+            LoginResponse r = new LoginResponse(l.username);
+
             //If Token is Null Login Failed
             if (token == null) {
                 r.outcome       = "failed";
@@ -113,7 +111,8 @@ public class PostHandler {
                 SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
                 sdp.enteredby   = authenticator.getUserIdByToken(sdp.accessToken);
                 sdp.entereddate = LocalDate.now().toString();
-                sdp.publish();                    
+                sdp.publish();       
+                sdp.debug();             
                 return new BasicResponse("Success");
                 
             case "submitMentalHealthEvaluation":
@@ -133,7 +132,7 @@ public class PostHandler {
             case "requestUserClients":
                 int userId                          = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
-                //System.out.println("GSON CLIENTS: " + g.toJson(clientsResponse));
+                // System.out.println("GSON CLIENTS: " + g.toJson(clientsResponse));
                 return clientsResponse;
               
             case "requestClientServices":
@@ -141,11 +140,15 @@ public class PostHandler {
                 int requestingUser         = authenticator.getUserIdByToken(b.accessToken);
                 ClientServicesResponse csr = new ClientServicesResponse(requestingUser,selectedClient);
                 return csr;
-                
+            
+            case "requestClientDemographic":
+                selectedClient = g.fromJson(json, RequestClientDemographicPost.class).clientId;
+                ClientDemographicResponse cdr = new ClientDemographicResponse(selectedClient);
+                return cdr;
+
             default:
                 System.out.println("Unknown Post: " + b.postType);
                 return new UnknownPostResponse();
-                
         }
         
     }

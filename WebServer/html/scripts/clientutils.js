@@ -132,3 +132,11 @@ clientUtils.burnSession = function() {
 clientUtils.goto = function(url) {
     document.location.href = url;
 }
+
+clientUtils.ISOToLaymanDate = function(ISODate) {
+    return ISODate.split("T")[0];
+}
+
+clientUtils.toReadablePhone = function(rawPhone) {
+    return `(${rawPhone.substring(0, 3)}) ${rawPhone.substring(3, 6)}-${rawPhone.substring(6, 10)}`;
+}

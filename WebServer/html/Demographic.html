@@ -3,8 +3,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-		<script src="scripts/clientutils.js"></script>
 		<title>Register New Patient</title>
 		<style>
             body {
@@ -98,11 +96,25 @@
 				var zip   	    = document.getElementById('zip').value;
 				var enteredby	= "";
 				var entereddate = "";
+				var emergPhone = document.getElementById('emergency-phone').value;
+				var ethn = document.getElementById('ethnicity').value;
+				var ins = document.getElementById('insurance').value;
+				var insId = document.getElementById('insurance-id').value;
+				var pharmName = document.getElementById('pharmacy').value;
+				var lang = document.getElementById('prim-lang').value;
+				var race = document.getElementById('race').value;
+				var ssn = document.getElementById('ssn').value;
+				var sex = document.getElementById('sex').value;
+				var wgh = document.getElementById('weight').value;
 						
-				var obj = {"accessToken": accessToken, "postType": postType, "firstname": firstname, "lastname": lastname, "phonenumber": phonenumber, "dob": dob, "address": address, "city": city, "state": state, "zip": zip};
-			var postString = JSON.stringify(obj);
-			console.log(postString);
-			
+				var obj = {"accessToken": accessToken, "postType": postType, "firstname": firstname, "lastname": lastname, "phonenumber": phonenumber, 
+							"dob": dob, "address": address, "city": city, "state": state, "zip": zip, "emergencyPhone": emergPhone, "ethnicity": ethn,
+							"insurance": ins, "insuranceId": insId, "pharmacy": pharmName, "primaryLanguage": lang, "race": race, "ssn": ssn, "sex": sex, "weight": wgh};
+							
+				var postString = JSON.stringify(obj);
+				
+				console.log(postString);
+
 				fetch('localhost', {
 					method: 'POST',
 					mode: "cors",
@@ -110,7 +122,7 @@
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify(obj)
+					body: postString
 			
 					})
 					.then(response => response.json())
@@ -163,9 +175,11 @@
 				<label for="lastname">Last Name:</label>
 				<input type="text" id="lastname" name="lastname" required>
 				<label for="phonenumber">Phone Number:</label>
-				<input type="text" id="phonenumber" name="phonenumber" required>				
+				<input type="text" id="phonenumber" name="phonenumber" required>		
+				<br><br>		
 				<label for="dob">DOB:</label>
 				<input type="date" id="dob" name="dob" required>
+				<br><br>
 				<label for="address">Address:</label>
 				<input type="text" id="address" name="address">
 				<label for="city">City:</label>
@@ -173,7 +187,30 @@
 				<label for="state">State:</label>
 				<input type="text" id="state" name="state">
 				<label for="zip">Zip:</label>
-				<input type="text" id="zip" name="zip">			
+				<input type="number" id="zip" name="zip">	
+				<br><br>	
+				<label for="emergency-phone">Emergency Phone:</label>
+				<input type="text" id="emergency-phone" name="emergencyPhone">	
+				<label for="ethnicity">Ethnicity:</label>
+				<input type="text" id="ethnicity" name="ethnicity">	
+				<label for="insurance">Insurance:</label>
+				<input type="text" id="insurance" name="insurance">	
+				<label for="insurance-id">Insurance Identification Number:</label>
+				<input type="number" id="insurance-id" name="insuranceId">
+				<br><br>
+				<label for="pharmacy">Pharmacy Name:</label>
+				<input type="text" id="pharmacy" name="pharmacy">	
+				<label for="prim-lang">Primary Language:</label>
+				<input type="text" id="prim-lang" name="primaryLanguage">	
+				<label for="race">Race:</label>
+				<input type="text" id="race" name="race">	
+				<label for="ssn">Social Security Number:</label>
+				<input type="number" id="ssn" name="ssn">
+				<br><br>
+				<label for="sex">Sex:</label>
+				<input type="text" id="sex" name="sex">	
+				<label for="weight">Weight:</label>
+				<input type="number" id="weight" name="weight">		
 			</fieldset>
 			<!-- The submit button function -->
 			<button onclick = "submitDemographic()" type="button" class="btn btn-primary">Submit</button>

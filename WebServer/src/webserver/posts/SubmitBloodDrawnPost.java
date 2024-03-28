@@ -18,18 +18,6 @@ public class SubmitBloodDrawnPost extends ServicePost {
         serviceCode = 3; 
     }
     
-    public void debug() { 
-        System.out.println("patientName: " + patientName);
-        System.out.println("dateOfBirth: " + dateOfBirth);
-        System.out.println("medicalRecordNumber: " + medicalRecordNumber);
-        System.out.println("physicianName: " + physicianName);
-        System.out.println("bloodTest: " + bloodTest);
-        System.out.println("labLocation: " + labLocation);
-        System.out.println("isFasting: " + isFasting);
-        System.out.println("signature: " + signature);
-        System.out.println("serviceCode: " + serviceCode);
-    }
-    
     public void publish() {
         String serviceId = generateService();
         

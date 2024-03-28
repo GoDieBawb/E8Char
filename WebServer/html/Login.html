@@ -4,9 +4,10 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Login</title>
-		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-		<script src="scripts/clientutils.js"></script>
+		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="elechart/elechart.css">
+		<script defer src="scripts/clientutils.js"></script>
 	</head>
 	<body id="login-background">
 		<div class="container">
@@ -69,6 +70,7 @@
 				else if (outcome == "success") {
 					document.cookie = "accessToken="+obj["accessToken"];
 					//alert("Login Success! Token: " + getCookie("accessToken"));
+					clientUtils.setCookie("physicianName", obj.physicianName);
 					clientUtils.goto("PatientInquiry");
 				}
 			}
@@ -88,7 +90,6 @@
 			  }
 			  return "";
 			}
-
 		</script>
 	</body>
 </html>

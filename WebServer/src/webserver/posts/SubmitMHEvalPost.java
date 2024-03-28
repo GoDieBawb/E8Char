@@ -23,19 +23,7 @@ public class SubmitMHEvalPost  extends ServicePost {
         postType    = "submitMHEval";
         serviceCode = 2;
     }
-    
-    public void debug() {
-        System.out.println("clientId: " +        clientId);
-        System.out.println("enteredby: " +       enteredby);
-        System.out.println("entereddate: " +     entereddate);
-        System.out.println("stressLevel: " +     stressLevel);
-        System.out.println("anxietyLevel: " +    anxietyLevel);
-        System.out.println("depressionLevel: " + depressionLevel);
-        System.out.println("sleepQuality: " +    sleepQuality);
-        System.out.println("overallHealth: " +   overallHealth);
-        System.out.println("serviceCode: " +     serviceCode);    
-    }
-    
+
     public void publish() {
 
         String serviceId = this.generateService();

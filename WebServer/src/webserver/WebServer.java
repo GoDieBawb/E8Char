@@ -3,6 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
+ //https://www.elechart.com/
+
 package webserver;
 
 import com.google.gson.Gson;
@@ -18,6 +21,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -168,22 +172,16 @@ public class WebServer {
             
         }
         
-        //Handles GET Calls From the Client
+        /* Handles GET Calls From the Client. Assumes that all HTML files (and only HTML files) reside under the "html" directory.
+           An HTML page name with a ".html" extension in a URL is optional. */
         public void handleGet(HttpExchange t) {
-            
-            String path = t.getRequestURI().getPath();
-            System.out.println("Handling GET: " + path);
-            //https://www.elechart.com/
-            if (path.equals("")) path = "Login";
-            
-            if (path.contains("images")) {}
-            else if (path.contains("scripts")) {}
-            else if (path.contains("css")) {}
-            else if (path.contains("bootstrap")) {}
-            else if (path.contains("favico")) {}     
-            else if (!path.toLowerCase().contains("html")) path += ".html";
-            
-            File file = new File("html"+path);
+            final Path relativePath = Path.of(t.getRequestURI().getPath());
+            final String parentPath = relativePath.getParent().toString();
+            final String desiredPath = "html" + relativePath + ((parentPath.equals("\\") || parentPath.equals("/")) && !relativePath.toString().endsWith(".html") ? ".html" : "");
+
+            System.out.println("Handling GET: " + relativePath);
+
+            final File file = new File(desiredPath);
             
             try (OutputStream os = t.getResponseBody()) {
                 t.sendResponseHeaders(200, file.length());
@@ -192,11 +190,9 @@ public class WebServer {
                 os.close();
             }
             catch (IOException e) {
-                System.out.println(e.getClass().getCanonicalName() + " thrown in handle get");
+                System.out.println(e.getClass().getCanonicalName() + " thrown in handle get: " + e.getMessage());
                 sendNoContentResponse(t);
-                //e.printStackTrace();
             }
-            
         }
         
         private void sendNoContentResponse(HttpExchange t) {

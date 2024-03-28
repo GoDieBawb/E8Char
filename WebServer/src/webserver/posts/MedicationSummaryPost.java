@@ -13,13 +13,6 @@ public class MedicationSummaryPost extends ServicePost {
         serviceCode = 5; // Service code number 5
     }
 
-    public void debug() {
-        System.out.println("orderNumber: " + orderNumber);
-        System.out.println("contents: " + contents);
-        System.out.println("date: " + date);
-        System.out.println("serviceCode: " + serviceCode);
-    }
-
     public void publish() {
         String serviceId = generateService();
 

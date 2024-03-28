@@ -24,18 +24,6 @@ public class SubmitPhysicalPost extends ServicePost {
         serviceCode = 1;
     }    
     
-    public void debug() {
-        System.out.println("clientId: " + clientId);
-        System.out.println("enteredby: " + enteredby);
-        System.out.println("entereddate: " + entereddate);
-        System.out.println("serviceCode:  " + serviceCode);    
-        System.out.println("height: " + height);
-        System.out.println("weight: " + weight);
-        System.out.println("bloodPressure: " + bloodPressure);
-        System.out.println("heartRate: " + heartRate);
-        System.out.println("temperature:  " + temperature);        
-    }
-    
     public void publish() {
         
         String serviceId = generateService();

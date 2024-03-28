@@ -15,14 +15,6 @@ public class SurgicalHistoryPost extends ServicePost {
         serviceCode = 8; //service code number 8
     }
 
-    public void debug() {
-        System.out.println("patientName: " + patientName);
-        System.out.println("dateOfSurgery: " + dateOfSurgery);
-        System.out.println("procedurePerformed: " + procedurePerformed);
-        System.out.println("surgeonName: " + surgeonName);
-        System.out.println("hospitalName: " + hospitalName);
-    }
-
     public void publish() {
         String serviceId = generateService();
 

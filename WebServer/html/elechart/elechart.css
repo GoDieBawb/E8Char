@@ -1,0 +1,151 @@
+:root {
+    --color-elechart-light:#c1efde;
+    --color-elechart-mid: rgb(94, 205, 183);
+    --color-elechart-deep: #009d63;
+    --color-elechart-gradient: linear-gradient(to right,#baf3d7,#c2f5de,#cbf7e4,#d4f8ea,#ddfaef);
+
+    font-family: Helvetica, Arial, sans-serif!important;
+    scrollbar-color: var(--elechart-teal) transparent!important;
+    overflow-x: hidden;
+}
+
+.bg-elechart-light {
+    background: var(--color-elechart-light);
+}
+
+.bg-elechart-mid {
+    background: var(--color-elechart-mid);
+}
+
+.bg-elechart-gradient {
+    background: var(--color-elechart-gradient);
+}
+
+.color-elechart-deep {
+    color: var(--color-elechart-deep);
+}
+
+.btn-elechart {
+    outline: none;
+    width: 100%;
+    border: 1px solid var(--color-elechart-deep);
+    border-radius: 10px;
+    background: linear-gradient(to left, white 50px, rgb(224, 255, 249) 50px);
+}
+
+.btn-elechart.selected {
+    box-shadow: inset 0 0 0 3px var(--color-elechart-deep);
+    background: linear-gradient(to left, var(--color-elechart-deep) 50px, white 50px);
+}
+.client-card:hover, .btn-elechart:hover, .service-group-item:hover {
+    filter: brightness(90%);
+}
+
+.service-group-item {
+    border: 1px solid var(--elechart-teal);
+    border-radius: 5px;
+    background: linear-gradient(to left, white 50px, rgb(238, 255, 252) 50px);
+}
+
+.list-group-item {
+    border: none;
+    padding: 20px 30px;
+}
+
+.list-group-item.active {
+    background-color: transparent;
+    color: var(--color-elechart-deep);
+    font-weight: bold;
+    border: none;
+}
+
+.full-height-but-less {
+    max-height: calc(100vh - 100px)!important;
+}
+
+#service-view, #service-creation-view {
+    height: calc(100vh - 100px);
+}
+
+#service-group-list, #service-group-form {
+    background-color: #fdfdfd;
+}
+
+#service-creation-list {
+    border-top: 2px solid var(--elechart-teal);
+    border-bottom: 2px solid var(--elechart-teal);
+    border-left: 2px solid var(--elechart-teal);
+    border-right: 10px double var(--elechart-teal);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#elechart-logo {
+    --logo-size: 50%;
+    width: var(--logo-size);
+    height: var(--logo-size);
+}
+
+#elechart-title {
+    --title-size: 50%;
+    width: var(--title-size);
+    height: var(--title-size);
+}
+
+#login-background {
+    background: url("../images/elechart-bg.png") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#patients-list-window {
+    max-height: calc(100vh - 150px);
+    overflow-y: scroll;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin 0.25s ease-out;
+    -moz-transition: margin 0.25s ease-out;
+    -o-transition: margin 0.25s ease-out;
+    transition: margin 0.25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+#menu-toggle {
+    cursor: pointer;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}

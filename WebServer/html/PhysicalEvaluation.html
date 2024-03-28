@@ -4,8 +4,6 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Physical Evaluation Form</title>
-		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-		<script src="scripts/clientutils.js"></script>
 		<style>
 			body {
 			font-family: Arial, sans-serif;
@@ -133,7 +131,7 @@
 				<input type="number" id="temperature" name="temperature" step="0.1" required>
 			</fieldset>
 			<!-- Submit button -->
-			<button onclick="submitPhysicalEvaluation()" type="button">Submit</button>
+			<button class="btn btn-primary" onclick="submitPhysicalEvaluation()" type="button">Submit</button>
 		</form>
 	</body>
 </html>

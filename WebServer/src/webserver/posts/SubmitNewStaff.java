@@ -23,19 +23,6 @@ public class SubmitNewStaff extends ServicePost {
         //serviceCode = 3; 
     }
     
-    public void debug() { 
-        System.out.println("patientName: " + firstname + " " + lastname);
-        System.out.println("email: " + email);
-        System.out.println("dateOfBirth: " + dob);
-        System.out.println("phone: " + phone);
-        System.out.println("address: " + address);
-        System.out.println("location: " + city + ", " + state + " " + zip);
-        System.out.println("position: " + position);
-        System.out.println("department: " + department);
-        System.out.println("employmentDate: " + employmentdate);
-        System.out.println("pay: " + hourlyrate);
-    }
-    
     public void publish() {
         String serviceId = generateService();
         String queryString = "INSERT INTO Staff (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EmploymentDate, hourlyrate)"

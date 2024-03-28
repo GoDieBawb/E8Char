@@ -4,8 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Immunization Form</title>
-        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
-        <script src="scripts/clientutils.js"></script>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -164,7 +162,7 @@
                 <label for="covidVaccination">COVID-19 Vaccination:</label>
                 <!-- This select id function below creates the dropdown menu. When you click it has two options yes or no.-->
     <!-- The onchange attribute is set off when once you click either yes or no. If you click yes the additional information will be shown. If you click no then no information will pop up -->
-                <select id="covidVaccination" name="covidVaccination" required <!-onchange="toggleVaccineBoosterDetails()"->>
+                <select id="covidVaccination" name="covidVaccination" required>
                     <option value="">Select</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
@@ -219,7 +217,7 @@
 
             <!-- Submit button -->
            <!-- <button onclick="submitImmunizationRecord()" type="button">Submit</button> -->
-            <button type="submit">Submit</button>
+            <button class="btn btn-primary" type="submit">Submit</button>
 
 
         </form>

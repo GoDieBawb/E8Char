@@ -5,6 +5,8 @@
  */
 package webserver.posts;
 
+import java.lang.reflect.Field;
+
 import webserver.SQLUtil;
 
 /**
@@ -35,4 +37,16 @@ public class ServicePost extends BasicPost {
         return serviceId;
     }
     
+    public void debug()
+    {
+        Field[] members = this.getClass().getDeclaredFields();
+
+        for (Field member: members)
+        {
+            try {
+                System.out.println("(" + member.getType().getSimpleName() + ") " + member.getName() + ": " + member.get(this));
+            }
+            catch(Exception ex){}
+        }
+    }
 }

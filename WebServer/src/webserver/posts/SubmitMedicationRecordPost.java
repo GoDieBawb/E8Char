@@ -17,19 +17,6 @@ public class SubmitMedicationRecordPost extends ServicePost {
         serviceCode = 9; //Service Code number 9
     }
     
-    public void debug() {
-        System.out.println("clientId: " + clientId);
-        System.out.println("enteredby: " + enteredby);
-        System.out.println("entereddate: " + entereddate);
-        System.out.println("medicationName: " + medicationName);
-        System.out.println("dosage: " + dosage);
-        System.out.println("frequencyOfDosage: " + frequencyOfDosage);
-        System.out.println("prescribedBy: " + prescribedBy);
-        System.out.println("hasSideEffects: " + hasSideEffects);
-        System.out.println("hasAllergies: " + hasAllergies);
-        System.out.println("serviceCode: " + serviceCode);
-    }
-    
     public void publish() {
         String serviceId = this.generateService();
         

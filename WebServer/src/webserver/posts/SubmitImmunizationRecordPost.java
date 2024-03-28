@@ -22,22 +22,6 @@ public class SubmitImmunizationRecordPost extends ServicePost {
         serviceCode = 4; //Service code number 4 
     }
     
-    public void debug() {
-        System.out.println("vaccineName: " + vaccineName);
-        System.out.println("dateAdministered: " + dateAdministered);
-        System.out.println("administeringLocation: " + administeringLocation);
-        System.out.println("nextDoseDate: " + nextDoseDate);
-        System.out.println("covidVaccination: " + covidVaccination);
-        System.out.println("covidFirstDoseDate: " + covidFirstDoseDate);
-        System.out.println("covidSecondDoseDate: " + covidSecondDoseDate);
-        System.out.println("firstBoosterDate: " + firstBoosterDate);
-        System.out.println("secondBoosterDate: " + secondBoosterDate);
-        System.out.println("vaccineTypeFirstDose: " + vaccineTypeFirstDose);
-        System.out.println("vaccineTypeSecondDose: " + vaccineTypeSecondDose);
-        System.out.println("vaccineTypeBooster: " + vaccineTypeBooster);
-        System.out.println("serviceCode: " + serviceCode);
-    }
-    
     public void publish() {
         String serviceId = generateService();
         

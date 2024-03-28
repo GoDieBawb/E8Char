@@ -53,24 +53,24 @@ public class UserClientsResponse extends BasicResponse {
             return null;
 
         for (String s : clientStrings) {
-            
-            Client   c            = new Client();           
+            Client c = new Client();           
             String[] fieldStrings = s.split(", ");
-            clients.add(c);
             
             for (int i = 0; i < fieldStrings.length; i++) {
-                String fs    = fieldStrings[i];
-                String value = fs.split(":")[1];
-                
-                if (fs.contains("Id:"))
-                    c.clientId  = value;
-                else if (fs.contains("FirstName:"))
-                    c.firstName = value;
-                else if (fs.contains("LastName:"))
-                    c.lastName  = value;
-                else if (fs.contains("DOB:"))
-                    c.DOB       = value; 
+                String fieldName = fieldStrings[i].split(":")[0];
+                String fieldValue = fieldStrings[i].split(":")[1];
+
+                if (fieldName.equals("Id"))
+                    c.clientId = fieldValue;
+                else if (fieldName.equals("FirstName"))
+                    c.firstName = fieldValue;
+                else if (fieldName.equals("LastName"))
+                    c.lastName = fieldValue;
+                else if (fieldName.equals("DOB"))
+                    c.DOB = fieldValue; 
             }
+
+            clients.add(c);
         }
 
         return clients; 

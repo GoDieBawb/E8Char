@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.min.css">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css" >
+        <link rel="stylesheet" type="text/css" href="elechart/elechart.css" >
+        <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" >
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+        <script defer src="bootstrap/bootstrap.bundle.min.js"></script>
+        <script defer src="scripts/clientutils.js"></script>
         <title>Patient Inquiry</title>
-        <script src="scripts/clientutils.js"></script>
     </head>
     <body>
-        <div class="container">
-            <div class="row">
-                <h1 class="col">Patient Inquiry</h1>
+        <div class="d-flex overflow-x-hidden" id="wrapper">
+            <!-- Sidebar -->
+            <div class="bg-white" id="sidebar-wrapper">
+                <div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i class="fas fa-user me-2"></i>Portal</div>
+                <div class="list-group list-group-flush">
+                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
+                        <i class="fas fa-user-md me-2"></i>Service Patient</button>
+                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="clientUtils.goto('Demographic')"><i class="fas fa-user-tag me-2"></i>Register New Patient</button>
+                    <button type="button" class="btn btn-danger rounded-0 fw-bold" onclick="closeSession()">
+                        <i class="fas fa-arrow-alt-circle-left me-2"></i>Close Session</button>
+                  </div>
             </div>
-            <div class="row">
-                <div class="col-3 bg-light border">
-                    <div class="col text-center">
-                        <div class="row mb-2">
-                            <input id="lookup-name" class="mb-2" type="text">
-                            <input id="lookup-dob" type="date">
+
+            <!-- Page Content & Nav Bar -->
+            <div class="bg-elechart-light" id="page-content-wrapper">
+                <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                        <h2 class="fs-2 m-0">Patient Inquiry</h2>
+                    </div>
+    
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+    
+                    <div class="collapse navbar-collapse me-3" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user me-2"></i>John Doe</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                    <li><a class="dropdown-item" href="#">Settings</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <!-- Patient History List -->
+                <div class="container-fluid px-4">
+                    <div class="bg-white rounded p-3 shadow-sm" id="patients-list-window">
+                        <div class="row row-cols-4 g-2" id="patients-list">
                         </div>
-                        <button class="btn btn-primary" onclick="patientSearchSort()">Find Patient</button>
-                        <button class="btn btn-primary" onclick="patientSearchSort(true)">Show All</button>
-                    </div>
-                    <div class="row border-top p-2">
-                        <h5 class="text-center">Actions</h5>
-                        <button class="btn btn-primary disabled" id="service-patient-btn" onclick="clientUtils.goto('Services')">Service Patient</button>
-                        <button class="btn btn-primary mt-2" id="service-patient-btn" onclick="clientUtils.goto('Demographic')">Register Patient</button>
-                        <button class="btn btn-primary mt-2" onclick="closeSession()">Close Session</button>
-                    </div>
-                </div>
-                <div class="col-9">
-                    <div id="card-list" class="row gy-3">
-                        <span id="loading-patients-display" hidden><img src="images/load_display.gif" width="64" height="64"><span></span></span>
                     </div>
                 </div>
             </div>
@@ -41,8 +68,6 @@
 
 <script>
     "use strict"
-
-    const CACHE_ENABLED = true;
 
     var loadedUICards = [];
 
@@ -55,58 +80,32 @@
         this.clientDOB = clientDOB;
         this.cardID = "card" + clientID;
         this.referenceCard = new DOMParser().parseFromString(`
-            <div class="col-4">
-                <div class="client-card" id="${this.cardID}">
-                    <button class="btn w-100 text-start">
-                        <h5 class="fw-bold m-0">${this.clientLastName}, ${this.clientFirstName}</h5>
-                        <span class="card-title">${this.clientDOB}</span>
-                    </button>
-                </div>
-            </div>`, "text/html").getElementById(this.cardID);
+            <div class="col">
+                <button class="btn-elechart text-start">
+                    <h5 class="fw-bold m-0">${clientLastName}, ${clientFirstName}</h5>
+                    <h6 class="m-0">${clientDOB}</h6>
+                    <small>#${clientID}</small>
+                </button>
+            </div>`, "text/html").querySelector(".col");
 
         this.select = function() {
             loadedUICards.forEach(card => {
                 if (this !== card)
                     card.deselect();
                 
-                let servicePatientBtn = document.getElementById("service-patient-btn");
-                servicePatientBtn.className = "btn btn-primary";
+                document.querySelector("#service-btn").classList.remove("disabled");
             });
             
-            this.referenceCard.style.boxShadow = "inset 0 0 0 3px rgb(94, 205, 183)";
-            this.referenceCard.style.background = "linear-gradient(to left, rgb(94, 205, 183) 50px, #fafffa 50px)";
-
+            this.referenceCard.querySelector(".btn-elechart").classList.add("selected");
+            
             clientUtils.setCookie("clientID", this.clientID);
             clientUtils.setCookie("clientFriendlyName", `${clientLastName}, ${clientFirstName}`);
         }
 
         this.deselect = function() {
-            this.referenceCard.style.boxShadow = "";
-            this.referenceCard.style.background = "linear-gradient(to left, rgb(249, 255, 249) 50px, rgb(224, 255, 249) 50px)";
+            this.referenceCard.querySelector(".btn-elechart").classList.remove("selected");
         }
     }   
-
-    //On window load we get a list of the user's available clients
-    window.onload = function() {
-        clientUtils.setLoadingStatus(true, "loading-patients-display", "retrieving patient list ..");
-
-        let dashboardListCache = sessionStorage.getItem("dashboardListCache");
-
-        if (dashboardListCache != null && CACHE_ENABLED) {
-            // Client list had been cached. Load that instead.
-            responseCallback(JSON.parse(dashboardListCache));
-            return;
-        }
-
-        var newClientPost = new clientUtils.ClientPost(
-            "requestUserClients",
-            clientUtils.getCookie("accessToken"),
-            responseCallback
-        );
-        
-        clientUtils.webPost(newClientPost);
-
-    };
     
     //Handles the response from the server for the client response
     function responseCallback(serverResponse) {
@@ -116,28 +115,29 @@
             return;
         }
 
+        console.log(serverResponse);
+
         clientUtils.delCookie("clientID");
         clientUtils.delCookie("clientFriendlyName");
 
-        let clientCardList = document.getElementById("card-list");
         let clients = serverResponse.clients;
 
         if (clients.length == 0)
             console.warn("There are no clients to read from!");
 
         for (let i = 0; i < clients.length; i++) {
-            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clients[i].DOB.split("T")[0], clients[i].clientId);
+            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clientUtils.ISOToLaymanDate(clients[i].DOB), clients[i].clientId);
 
             newUICard.referenceCard.addEventListener("click", () => newUICard.select(), false);
-            clientCardList.appendChild(newUICard.referenceCard.parentElement);
             loadedUICards.push(newUICard);
+            document.getElementById("patients-list").appendChild(newUICard.referenceCard);
         }
 
-        if (sessionStorage.getItem("dashboardListCache") == null && CACHE_ENABLED)
-            // Cache the result list and match it to that of the server's json response format
-            sessionStorage.setItem("dashboardListCache", JSON.stringify( {clients: clients} ));
+        // Store the server response as preloaded data.
+        if (!sessionStorage.getItem("preloadedPatientInquiryData"))
+            sessionStorage.setItem("preloadedPatientInquiryData", JSON.stringify( {clients: clients} ));
 
-        clientUtils.setLoadingStatus(false, "loading-patients-display");
+        //clientUtils.setLoadingStatus(false, "loading-patients-display");
     }
 
     function patientSearchSort(showAll)
@@ -178,4 +178,25 @@
         clientUtils.burnSession();
         document.location.href = "Login.html";
     }
+
+    //On window load we get a list of the user's available clients
+    document.addEventListener("DOMContentLoaded", (event) => {
+        // clientUtils.setLoadingStatus(true, "loading-patients-display", "retrieving patient list ..");
+
+        let preloadedPatientInquiryData= sessionStorage.getItem("preloadedPatientInquiryData");
+        
+        // If the serve response has been received before, use the preloaded version instead.
+        if (preloadedPatientInquiryData) {
+            responseCallback(JSON.parse(preloadedPatientInquiryData));
+            return;
+        }
+
+        var newClientPost = new clientUtils.ClientPost(
+            "requestUserClients",
+            clientUtils.getCookie("accessToken"),
+            responseCallback
+        );
+        
+        clientUtils.webPost(newClientPost);
+    });
 </script>
