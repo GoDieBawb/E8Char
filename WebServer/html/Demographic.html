@@ -131,19 +131,19 @@
 			}
 			
 			function handleResponse(response) {
-			console.log("Handle: " + response);
-			var obj = JSON.parse(response);
-			var outcome = obj["outcome"];
-			var respType = obj["responseType"];
-			console.log("Outcome: " + outcome);
-			
-			if (outcome == "failed") {
-			alert("Post Failed: " + respType);
-			}
-			else if (outcome == "success") {
-			alert("Submit Success!");
-			}
-			
+				console.log("Handle: " + response);
+				var obj = JSON.parse(response);
+				var outcome = obj["outcome"];
+				var respType = obj["responseType"];
+
+				console.log("Outcome: " + outcome);
+				
+				if (outcome == "failed") {
+				alert("Post Failed: " + respType);
+				}
+				else if (outcome == "success") {
+					parent.location.reload();
+				}
 			}		
 			
 			//Grabbed from w3

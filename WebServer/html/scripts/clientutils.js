@@ -140,3 +140,8 @@ clientUtils.ISOToLaymanDate = function(ISODate) {
 clientUtils.toReadablePhone = function(rawPhone) {
     return `(${rawPhone.substring(0, 3)}) ${rawPhone.substring(3, 6)}-${rawPhone.substring(6, 10)}`;
 }
+
+clientUtils.clearHTMLList = function(HTMLListReference) {
+    while (HTMLListReference.children.length > 0)
+        HTMLListReference.firstChild.remove();
+}

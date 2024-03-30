@@ -70,42 +70,42 @@ public class PostHandler {
                 afp.enteredby   = authenticator.getUserIdByToken(afp.accessToken);
                 afp.entereddate = LocalDate.now().toString();
                 afp.publish();  
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
             
             case "submitBloodDrawnRequest":
                 SubmitBloodDrawnPost sbp = g.fromJson(json, SubmitBloodDrawnPost.class);
                 sbp.enteredby   = authenticator.getUserIdByToken(sbp.accessToken);
                 sbp.entereddate = LocalDate.now().toString();
                 sbp.publish(); 
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
                 
             case "submitConsentForm":
                 ConsentFormPost cfp = g.fromJson(json, ConsentFormPost.class);
                 cfp.enteredby   = authenticator.getUserIdByToken(cfp.accessToken);
                 cfp.entereddate = LocalDate.now().toString();
                 cfp.publish(); 
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
 
             case "submitImmunizationRecord":
                 SubmitImmunizationRecordPost sip = g.fromJson(json, SubmitImmunizationRecordPost.class);
                 sip.enteredby   = authenticator.getUserIdByToken(sip.accessToken);
                 sip.entereddate = LocalDate.now().toString();
                 sip.publish(); 
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
                 
             case "submitMedicationRecord":
                 SubmitMedicationRecordPost smp = g.fromJson(json, SubmitMedicationRecordPost.class);
                 smp.enteredby   = authenticator.getUserIdByToken(smp.accessToken);
                 smp.entereddate = LocalDate.now().toString();
                 smp.publish(); 
-                return new BasicResponse("Success");    
+                return new BasicResponse("success");    
                 
             case "submitSurgicalHistory":
                 SurgicalHistoryPost shp = g.fromJson(json, SurgicalHistoryPost.class);
                 shp.enteredby   = authenticator.getUserIdByToken(shp.accessToken);
                 shp.entereddate = LocalDate.now().toString();
                 shp.publish(); 
-                return new BasicResponse("Success");                  
+                return new BasicResponse("success");                  
                 
             case "submitDemographic":
                 SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
@@ -113,21 +113,21 @@ public class PostHandler {
                 sdp.entereddate = LocalDate.now().toString();
                 sdp.publish();       
                 sdp.debug();             
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
                 
             case "submitMentalHealthEvaluation":
                 SubmitMHEvalPost smhe = g.fromJson(json, SubmitMHEvalPost.class);
                 smhe.enteredby   = authenticator.getUserIdByToken(smhe.accessToken);
                 smhe.entereddate = LocalDate.now().toString();
                 smhe.publish();
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
                
             case "submitPhysicalEvaluation":
                 SubmitPhysicalPost smpe = g.fromJson(json, SubmitPhysicalPost.class);
                 smpe.enteredby   = authenticator.getUserIdByToken(smpe.accessToken);
                 smpe.entereddate = LocalDate.now().toString();
                 smpe.publish();
-                return new BasicResponse("Success");
+                return new BasicResponse("success");
                 
             case "requestUserClients":
                 int userId                          = authenticator.getUserIdByToken(b.accessToken);

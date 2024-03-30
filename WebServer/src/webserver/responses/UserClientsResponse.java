@@ -26,7 +26,7 @@ public class UserClientsResponse extends BasicResponse {
     
     public UserClientsResponse(int userId) {
         this.userId  = userId;
-        outcome      = "Success";
+        outcome      = "success";
         responseType = "UserClientsResponse";
         getClients();
     }

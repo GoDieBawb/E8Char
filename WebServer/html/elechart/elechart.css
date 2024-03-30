@@ -1,4 +1,5 @@
 :root {
+    --color-elechart-extra-light:#d4f7ea;
     --color-elechart-light:#c1efde;
     --color-elechart-mid: rgb(94, 205, 183);
     --color-elechart-deep: #009d63;
@@ -7,6 +8,11 @@
     font-family: Helvetica, Arial, sans-serif!important;
     scrollbar-color: var(--elechart-teal) transparent!important;
     overflow-x: hidden;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
 }
 
 .bg-elechart-light {
@@ -29,7 +35,7 @@
     outline: none;
     width: 100%;
     border: 1px solid var(--color-elechart-deep);
-    border-radius: 10px;
+    border-radius: 0.375rem;
     background: linear-gradient(to left, white 50px, rgb(224, 255, 249) 50px);
     padding-right: 50px;
 }
@@ -38,6 +44,7 @@
     box-shadow: inset 0 0 0 3px var(--color-elechart-deep);
     background: linear-gradient(to left, var(--color-elechart-deep) 50px, white 50px);
 }
+
 .client-card:hover, .btn-elechart:hover, .service-group-item:hover {
     filter: brightness(90%);
 }
@@ -60,16 +67,21 @@
     border: none;
 }
 
-.full-height-but-less {
-    max-height: calc(100vh - 100px)!important;
+.full-height-minus-100 {
+    height: calc(100vh - 100px);
+}
+
+.full-height-minus-300 {
+    height: calc(100vh - 300px);
+}
+
+.btn.pressed {
+    background-color: var(--color-elechart-extra-light);
+    border-color: var(--color-elechart-deep);
 }
 
 #service-view, #service-creation-view {
     height: calc(100vh - 100px);
-}
-
-#service-group-list, #service-group-form {
-    background-color: #fdfdfd;
 }
 
 #service-creation-list {
@@ -101,13 +113,12 @@
     background-size: cover;
 }
 
-#patients-list-window {
-    max-height: calc(100vh - 150px);
-    overflow-y: scroll;
+#service-record-list, #service-group-list, #service-creation-group-list {
+    height: 180px;
 }
 
 #sidebar-wrapper {
-    min-height: 100vh;
+    height: 100vh;
     margin-left: -15rem;
     -webkit-transition: margin 0.25s ease-out;
     -moz-transition: margin 0.25s ease-out;
@@ -116,7 +127,7 @@
 }
 
 #sidebar-wrapper .sidebar-heading {
-    padding: 0.875rem 1.25rem;
+    /* padding: 0.875rem 1.25rem; */
     font-size: 1.2rem;
 }
 
@@ -124,29 +135,8 @@
     width: 15rem;
 }
 
-#page-content-wrapper {
-    min-width: 100vw;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-    margin-left: 0;
-}
-
-#menu-toggle {
-    cursor: pointer;
-}
-
 @media (min-width: 768px) {
     #sidebar-wrapper {
         margin-left: 0;
-    }
-
-    #page-content-wrapper {
-        min-width: 0;
-        width: 100%;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        margin-left: -15rem;
     }
 }

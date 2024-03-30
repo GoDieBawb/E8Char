@@ -50,15 +50,15 @@
                 var obj = JSON.parse(response);
                 var outcome = obj["outcome"];
                 var respType = obj["responseType"];
+
                 console.log("Outcome: " + outcome);
 
-                if (outcome == "failed") {
+                if (outcome == "Failed") {
                     alert("Post Failed: " + respType);
                 }
-                else if (outcome == "success") {
-                    alert("Submit Success!");
+                else if (outcome == "Success") {
+                    parent.location.reload();
                 }
-
             }
 
             // Grabbed from w3

@@ -11,7 +11,6 @@
 		<script defer src="scripts/clientutils.js"></script>
 		<title>Services</title>
 	</head>
-
 	<body>
 		<div class="d-flex" id="wrapper">
 			<!-- Sidebar -->
@@ -19,118 +18,56 @@
 				<div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i
 						class="fas fa-user me-2"></i>Services</div>
 				<div class="list-group list-group-flush">
-					<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold"><i class="fas fa-user-tag me-2"></i>New Service</button>
-					<button type="button" class="btn btn-success rounded-0 fw-bold" onclick="clientUtils.goto('PatientDashboard')"><i class="fas fa-arrow-alt-circle-left me-2"></i>Dashboard</button>
+					<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" id="btn-new-service" onclick="switchView(1)"><i class="fas fa-user-tag me-2"></i>New Service</button>
+					<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" id="btn-cancel" onclick="switchView(0)" hidden>Cancel</button>
+					<button type="button" class="btn btn-success rounded-0 fw-bold" id="btn-dashboard" onclick="clientUtils.goto('PatientDashboard')"><i class="fas fa-arrow-alt-circle-left me-2"></i>Dashboard</button>
 				</div>
 			</div>
 			<!-- /#sidebar-wrapper -->
 
-			<!-- Page Content & Nav Bar -->
-			<div class="bg-elechart-light" id="page-content-wrapper">
+			<!-- Read-only service record view -->
+			<div class="bg-elechart-light w-100" id="readonly-service-view">
                 <div class="container-fluid px-4">
-                    <div class="row">
-                        <!-- Service tab list -->
-                        <div class="col">
+                    <div class="row my-4">
+                        <div class="col-2 overflow-y-scroll overflow-x-hidden">
+                            <div class="row">
+                                <div class="col p-0" id="service-group-list">
+                                </div>
+                            </div>
                         </div>
-
-                        <!-- Service records list -->
-                        <div class="col bg-white rounded shadow-sm h-100">
-                            <h3 class="row fs-4 justify-content-center">Service Records</h3>
-                            <div class="row mx-1 overflow-y-scroll" id="service-records-list">
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
-                                <button class="btn-elechart text-start my-2">
-                                    <span class="col">service name</span>
-                                    <span class="col">patient name</span>
-                                    <span class="col">d.o.b</span>
-                                    <span class="col">servicing doctor</span>
-                                    <span class="col">service date</span>
-                                </button>
+                        <div class="col bg-white shadow-sm py-2">
+                            <h3 class="row m-0 fs-4 justify-content-center">Service Records</h3>
+                            <div class="overflow-y-scroll overflow-x-hidden" id="service-record-list">
                             </div>
                         </div>
                     </div>
+                    
+                    <div class="row full-height-minus-300 bg-white shadow-sm rounded">
+                        <iframe class="py-3" id="service-form-viewer" src=""></iframe>
+                    </div>
+                </div>
+            </div>
 
-                    <div class="row">
-                        <div class="col">
+            <!-- Service creation form view -->
+            <div class="bg-elechart-light w-100" id="creation-service-view" hidden>
+                <div class="container-fluid px-4 pt-4">
+                    <div class="row mt-4">
+                        <div class="col-3 my-4">
+                            <div class="bg-white rounded">
+                                <h3 class="text-center">Service Type</h3>
+                                <div class="overflow-y-scroll overflow-x-hidden">
+                                    <div id="service-creation-group-list">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col full-height-minus-100 bg-white shadow-sm rounded">
+                            <iframe class="py-3" id="service-creation-form-viewer" src=""></iframe>
                         </div>
                     </div>
                 </div>
-			</div>
+            </div>
 		</div>
 	</body>
 </html>
@@ -146,34 +83,59 @@
     function ServiceGroup(name) {
         this.name = name;
         this.records = new Array(); // Array<ServiceRecord>
-        this.HTMLReference =  new DOMParser().parseFromString(
-            `<div class="service-group mt-2 px-2">
-                <h3>${name}</h3>
-            </div>
-            `, "text/html").querySelector(".service-group");
-        
-        this.add = function(record) {
-            this.records.push(record);
-            this.HTMLReference.innerHTML += `
-                <div class="service-group-item mb-2">
-                    <button class="btn btn-service-record w-100 text-start">
-                        <span class="me-3">(${record.serviceId})</span><span class="me-2">${record.date}</span>|<span class="ms-2">${clientUtils.getCookie("clientFriendlyName")}</span>
-                    </button>
-                </div>`;
+        this.HTMLReference =  new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100">${this.name}</button>`, "text/html").querySelector(".btn");
+        this.clonedHTMLReference = null;
+        this.serviceFile = null;
+
+        this.select = function(viewMode) {
+            for (const serviceName in serviceGroupList)
+                serviceGroupList[serviceName].deselect(viewMode)
+
+            if (viewMode == 1)
+            {
+                this.clonedHTMLReference.classList.add("pressed");
+                document.querySelector("#service-creation-form-viewer").setAttribute("src", this.serviceFile);
+            }
+            else
+            {
+                this.HTMLReference.classList.add("pressed");
+                
+                const serviceRecordsListHTML = document.querySelector("#service-record-list");
+                clientUtils.clearHTMLList(serviceRecordsListHTML);
+            
+                for (const record of this.records)
+                    serviceRecordsListHTML.appendChild(record.HTMLReference);
+            }
         }
 
-        //document.getElementById("service-group-list").appendChild(this.HTMLReference);
+        this.deselect = function(viewMode) {
+            if (viewMode == 1)
+                this.clonedHTMLReference.classList.remove("pressed");
+            else
+                this.HTMLReference.classList.remove("pressed");
+        }
+        
+        this.HTMLReference.addEventListener("click", () => this.select(0), false);
+        document.getElementById("service-group-list").appendChild(this.HTMLReference);
+
+        // Clone a separate service group button for the service creation form view.
+        this.clonedHTMLReference = this.HTMLReference.cloneNode(true);
+        this.clonedHTMLReference.addEventListener("click", () => this.select(1), false);
+        document.getElementById("service-creation-group-list").appendChild(this.clonedHTMLReference);
     }
 
     // This object represents a record belonging to a specific service.
     function ServiceRecord(recordData) {
         this.data = recordData;
         this.HTMLReference = new DOMParser().parseFromString(
-            `<div class="service-group-item mb-2">
-                <button class="btn btn-service-record w-100 text-start">
-                    <span class="me-3">(${recordData.serviceId})</span><span class="me-2">${recordData.date}</span>|<span class="ms-2">${clientUtils.getCookie("clientFriendlyName")}</span>
-                </button>
-            </div>`, "text/html").querySelector(".service-group-item");
+            `<button class="btn-elechart text-start my-1 py-1">
+                <span class="col mx-4">#${recordData.serviceId}</span>|
+                <span class="col mx-4">${recordData.serviceType}</span>|
+                <span class="col mx-4">${clientUtils.getCookie("clientFriendlyName")}</span>|
+                <span class="col mx-4">d.o.b</span>|
+                <span class="col mx-4">servicing doctor</span>|
+                <span class="col mx-4">${recordData.date}</span>
+            </button>`, "text/html").querySelector(".btn-elechart");
 
         this.select = function() {
             serviceGroupRecordsList.forEach(record => {
@@ -182,18 +144,18 @@
             });
 
             selectedGroupRecord = this;
-            this.HTMLReference.querySelector(".btn-service-record").classList.add("selected");
+            this.HTMLReference.classList.add("selected");
 
-            // Show the matching service form file to the right.
-            //document.querySelector("#service-group-form").setAttribute("src", this.data.serviceFile);
+            // Display the matching service form file.
+            document.querySelector("#service-form-viewer").setAttribute("src", this.data.serviceFile);
         }
 
         this.deselect = function() {
-            this.HTMLReference.querySelector(".btn-service-record").classList.remove("selected");
+            this.HTMLReference.classList.remove("selected");
         }
 
         // Make the select() function for this record listen for clicks.
-        this.HTMLReference.querySelector(".btn-service-record").addEventListener("click", () => this.select(), false);
+        this.HTMLReference.addEventListener("click", () => this.select(), false);
     }
     
     // Handles the response from the server for the client response.
@@ -207,8 +169,8 @@
         console.log(serverResponse);
 
         // load up the services and populate their corresponding records
-        for (const serviceGroup in serverResponse.serviceMap) {
-            const serviceGroupItems = serverResponse.serviceMap[serviceGroup];
+        for (const serviceGroupName in serverResponse.serviceMap) {
+            const serviceGroupItems = serverResponse.serviceMap[serviceGroupName];
 
             for (const record of serviceGroupItems) {
                 const serviceName = record.serviceType;
@@ -217,6 +179,7 @@
                 if (specificServiceGroup == null) {
                     // add a new service group
                     specificServiceGroup = new ServiceGroup(serviceName);
+                    specificServiceGroup.serviceFile = record.serviceFile;
                     serviceGroupList[serviceName] = specificServiceGroup;
                 }
                 
@@ -224,11 +187,10 @@
                 let newRecord = new ServiceRecord(record);
                 specificServiceGroup.records.push(newRecord);
                 serviceGroupRecordsList.push(newRecord);
-                specificServiceGroup.HTMLReference.appendChild(newRecord.HTMLReference);
             }
         }
 
-        console.log(serviceGroupRecordsList);
+        console.log(serviceGroupList);
 
         //clientUtils.setLoadingStatus(false, "loading-services-display");
     }
@@ -248,31 +210,23 @@
         clientUtils.webPost(newClientPost);
     };
 
-    ////////////////////////////////////////////////
+    // viewMode: 0 = service viewing, 1 = service creation
+    function switchView(viewMode) {
+        if (viewMode == 0) {
+            document.querySelector("#btn-cancel").setAttribute("hidden", null);
+            document.querySelector("#creation-service-view").setAttribute("hidden", null);
 
-    function setElementVisiblity(elementName, visible) {
-        let el = document.getElementById(elementName);
-        el.hidden = !visible;
-    }
-
-    function showServiceList(elementNameToHide) {
-        if (elementNameToHide != null)
-            setElementVisiblity(elementNameToHide, false);
-
-        setElementVisiblity('view-services-list', true);
-        clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
-    }
-
-    function showCreationForm() {
-        if (!selectedServiceEntry) {
-            console.error("Tried showing the creation form for this service but its service isn't selected!");
-            return;
+            document.querySelector("#btn-new-service").removeAttribute("hidden")
+            document.querySelector("#btn-dashboard").removeAttribute("hidden")
+            document.querySelector("#readonly-service-view").removeAttribute("hidden")
         }
+        else if (viewMode == 1) {
+            document.querySelector("#btn-cancel").removeAttribute("hidden")
+            document.querySelector("#creation-service-view").removeAttribute("hidden")
 
-        let creationFormView = document.getElementById("view-creation-form")
-        creationFormView.innerHTML = "";
-        creationFormView.setAttribute("src", `./${selectedServiceEntry.serviceFile}`);
-        creationFormView.setAttribute("height", 500);
-        creationFormView.hidden = false;
+            document.querySelector("#btn-new-service").setAttribute("hidden", null);
+            document.querySelector("#btn-dashboard").setAttribute("hidden", null);
+            document.querySelector("#readonly-service-view").setAttribute("hidden", null);
+        }
     }
 </script>

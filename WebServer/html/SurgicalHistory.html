@@ -140,14 +140,15 @@
 			}
 			
 			function handleResponse(response) {
-			    var outcome = response.outcome;
-			    var respType = response.responseType;
+				var obj = JSON.parse(response);
+			    var outcome = obj.outcome;
+			    var respType = obj.responseType;
 			
 			    if (outcome == "failed") {
 			        alert("Post Failed: " + respType);
 			    }
 			    else if (outcome == "success") {
-			        alert("Submit Success!");
+					parent.location.reload();
 			    }
 			}
 			

@@ -88,7 +88,7 @@
 			}
 			
 			function handleResponse(response) {
-			    var obj = JSON.parse(response);
+				var obj = JSON.parse(response);
 			    var outcome = obj["outcome"];
 			    var respType = obj["responseType"];
 			
@@ -96,7 +96,7 @@
 			        alert("Post Failed: " + respType);
 			    }
 			    else if (outcome == "success") {
-			        alert("Submit Success!");
+			        parent.location.reload();
 			    }
 			}
 			
