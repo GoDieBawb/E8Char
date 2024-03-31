@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
+	</head>
+	<body>
+		<h2>Form Header Here</h2>
+		<form class="row g-3" id="main-form" method="post">
+
+			<!-- Add or change fieldset blocks here. -->
+			<fieldset>
+				<legend>Fieldset Header Here</legend>
+				<!-- Add or change input controls here. -->
+			</fieldset>
+			
+			<!-- Submit button -->
+			<button type="submit" class="btn btn-success" onclick="onFormSubmit()">Submit</button>
+		</form>
+	</body>
+</html>
+<script>
+	// JavaScript code here. Use our "clientutils" library for necessary functions. Delete this comment after.
+
+	function onFormSubmit() {
+		// Do not remove.
+		event.preventDefault();
+
+		const accessToken = clientUtils.getCookie("accessToken");
+		const clientId = clientUtils.getCookie("clientID");
+		const postType = "requestUserClients";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+
+		// Your own code here (delete this comment.)
+
+		// Submit form to server.
+		let newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("clientId", clientId);
+
+		clientUtils.webPost(newClientPost);
+	}
+
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + resp.responseType);
+			return;
+		}
+
+		// Do something (or nothing) with the serverResponse here.
+
+	}
+
+	function onPageLoaded() {
+		// Do something (or nothing) when the page finishes loading here.
+
+	}
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
+</script>

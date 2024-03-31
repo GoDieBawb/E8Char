@@ -1,128 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Information Release Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        fieldset {
-            margin-bottom: 20px;
-            padding: 10px;
-            border: 1px solid #ccc; 
-            border-radius: 5px; 
-        }
-        legend {
-            font-weight: bold;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        div {
-            display: flex;
-            flex-direction: column;
-        }
-    </style>
-
-<script>
-    function submitHealthInfoRelease() {
-            var clientName = document.getElementById('clientName').value;
-            var doctorName = document.getElementById('doctorName').value;
-            var date = document.getElementById('date').value;
-
-         
-            var obj = {
-                "clientName": clientName,
-                "doctorName": doctorName,
-                "date": date
-            };
-            fetch('localhost', {
-			        method: 'POST',
-			        mode: 'cors',
-			        headers: {
-			            'Accept': 'application/json',
-			            'Content-Type': 'application/json'
-			        },
-			        body: JSON.stringify(obj)
-			    })
-			    .then(response => response.json())
-			    .then(response => handleResponse(response))
-			}
-			
-			function handleResponse(response) {
-			    var obj = JSON.parse(response);
-			    var outcome = obj["outcome"];
-			    var respType = obj["responseType"];
-			
-			    if (outcome == "failed") {
-			        alert("Post Failed: " + respType);
-			    }
-			    else if (outcome == "success") {
-			        parent.location.reload();
-			    }
-			}
-			
-			function getCookie(cname) {
-			    let name = cname + "=";
-			    let ca = document.cookie.split(';');
-			    for(let i = 0; i < ca.length; i++) {
-			        let c = ca[i];
-			        while (c.charAt(0) == ' ') {
-			            c = c.substring(1);
-			        }
-			        if (c.indexOf(name) == 0) {
-			            return c.substring(name.length, c.length);
-			        }
-			    }
-			    return "";
-			}
-</script>
-</head>
-
-
-<body>
-    <h2>Health Information Release Form</h2>
-    <form action="#" method="post">
-        <fieldset>
-            <legend>Consent to Share Medical Records to Another Doctor</legend>
-            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+        <script defer src="scripts/clientutils.js"></script>
+        <title>Health Information Release Form</title>
+    </head>
+    <body>
+        <form action="#" method="post">
+            <fieldset>
+                <legend>Consent to Share Medical Records to Another Doctor</legend>
                 <label for="clientName">Patient's Name:</label>
                 <input type="text" id="clientName" name="clientName" required>
                 <label for="doctorName">Doctor's Name:</label>
                 <input type="text" id="doctorName" name="doctorName" required>
                 <label for="date">Date:</label>
                 <input type="date" id="date" name="date" required>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend>Consent Statement</legend>
-            <div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-                <p>I, <span id="clientNameOutput"></span>consent for this doctor to access my other medical records. <span id="doctorNameOutput"></span><span id="dateOutput"></span></p>
-                <input type="checkbox" id="consentCheckbox" required>
-            </div>
-        </fieldset>
-        <button type="button" onclick="submitHealthInfoRelease()">Submit</button>
-    </form>
-</body>
+            </fieldset>
+            <fieldset>
+                <legend>Consent Statement</legend>
+                <p>I, <span id="clientNameOutput">patient name</span>, consent for this doctor, <span id="doctorNameOutput">doctor name</span>, to access my other medical records.</p>
+                <label for="consentCheckbox">I consent.</label>
+                <input type="checkbox" id="consentCheckbox" name="consentValue" required>
+            </fieldset>
+            <button type="button" onclick="submitHealthInfoRelease()">Submit</button>
+        </form>
+    </body>
 </html>
+<script>
+    function submitHealthInfoRelease() {
+        var clientName = document.getElementById('clientName').value;
+        var doctorName = document.getElementById('doctorName').value;
+        var date = document.getElementById('date').value;
+
+
+        var obj = {
+            "clientName": clientName,
+            "doctorName": doctorName,
+            "date": date
+        };
+        fetch('localhost', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+        })
+            .then(response => response.json())
+            .then(response => handleResponse(response))
+    }
+
+    function handleResponse(response) {
+        var obj = JSON.parse(response);
+        var outcome = obj["outcome"];
+        var respType = obj["responseType"];
+
+        if (outcome == "failed") {
+            alert("Post Failed: " + respType);
+        }
+        else if (outcome == "success") {
+            parent.location.reload();
+        }
+    }
+</script>

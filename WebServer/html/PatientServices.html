@@ -14,7 +14,7 @@
 	<body>
 		<div class="d-flex" id="wrapper">
 			<!-- Sidebar -->
-			<div class="bg-white" id="sidebar-wrapper">
+			<div class="bg-white shadow" id="sidebar-wrapper">
 				<div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i
 						class="fas fa-user me-2"></i>Services</div>
 				<div class="list-group list-group-flush">
@@ -36,14 +36,15 @@
                             </div>
                         </div>
                         <div class="col bg-white shadow-sm py-2">
-                            <h3 class="row m-0 fs-4 justify-content-center">Service Records</h3>
+                            <p class="h3">Service Records</p>
                             <div class="overflow-y-scroll overflow-x-hidden" id="service-record-list">
                             </div>
                         </div>
                     </div>
                     
                     <div class="row full-height-minus-300 bg-white shadow-sm rounded">
-                        <iframe class="py-3" id="service-form-viewer" src=""></iframe>
+                        <iframe class="py-3" id="service-form-viewer" src="InstructionalMessage">
+                        </iframe>
                     </div>
                 </div>
             </div>
@@ -63,7 +64,7 @@
                         </div>
                         
                         <div class="col full-height-minus-100 bg-white shadow-sm rounded">
-                            <iframe class="py-3" id="service-creation-form-viewer" src=""></iframe>
+                            <iframe class="py-3" id="service-creation-form-viewer" src="InstructionalMessage"></iframe>
                         </div>
                     </div>
                 </div>
@@ -196,6 +197,8 @@
     }
 
     window.onload = function() {
+        clientUtils.changeInstructionalMessage(document.querySelector("#service-form-viewer"), "To view a record, select a service type tab, then select a record entry on the top left window.");
+
         //clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
         //clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
 
@@ -216,14 +219,13 @@
             document.querySelector("#btn-cancel").setAttribute("hidden", null);
             document.querySelector("#creation-service-view").setAttribute("hidden", null);
 
-            document.querySelector("#btn-new-service").removeAttribute("hidden")
-            document.querySelector("#btn-dashboard").removeAttribute("hidden")
-            document.querySelector("#readonly-service-view").removeAttribute("hidden")
+            document.querySelector("#btn-new-service").removeAttribute("hidden");
+            document.querySelector("#btn-dashboard").removeAttribute("hidden");
+            document.querySelector("#readonly-service-view").removeAttribute("hidden");
         }
         else if (viewMode == 1) {
-            document.querySelector("#btn-cancel").removeAttribute("hidden")
-            document.querySelector("#creation-service-view").removeAttribute("hidden")
-
+            document.querySelector("#btn-cancel").removeAttribute("hidden");
+            document.querySelector("#creation-service-view").removeAttribute("hidden");
             document.querySelector("#btn-new-service").setAttribute("hidden", null);
             document.querySelector("#btn-dashboard").setAttribute("hidden", null);
             document.querySelector("#readonly-service-view").setAttribute("hidden", null);

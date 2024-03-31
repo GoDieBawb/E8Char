@@ -3,11 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Login</title>
 		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
 		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="elechart/elechart.css">
 		<script defer src="scripts/clientutils.js"></script>
+		<title>Login</title>
 	</head>
 	<body id="login-background">
 		<div class="container">
@@ -38,58 +38,41 @@
 				</div>
 			</div>
 		</div>
-		<script>
-			function attemptLogin() {
-				var accessToken = "None";
-				var postType    = "Login";
-				var formData = new FormData(document.getElementById("login-form"));
-
-				fetch('localhost', {
-					method: 'POST',
-					mode: "cors",
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({"accessToken": accessToken, "postType": postType, "username": formData.get("username"), "password": formData.get("password") })
-
-				})
-				   .then(response => response.json())
-				   .then(response => handleResponse(JSON.stringify(response)))
-			}
-
-			function handleResponse(response) {
-				console.log("Handle: " + response);
-				var obj = JSON.parse(response);
-				var outcome = obj["outcome"];
-				console.log("Outcome: " + outcome);
-
-				if (outcome == "failed") {
-					alert("Login Failed");
-				}
-				else if (outcome == "success") {
-					document.cookie = "accessToken="+obj["accessToken"];
-					//alert("Login Success! Token: " + getCookie("accessToken"));
-					clientUtils.setCookie("physicianName", obj.physicianName);
-					clientUtils.goto("PatientInquiry");
-				}
-			}
-
-			//Grabbed from w3
-			function getCookie(cname) {
-			  let name = cname + "=";
-			  let ca = document.cookie.split(';');
-			  for(let i = 0; i < ca.length; i++) {
-				let c = ca[i];
-				while (c.charAt(0) == ' ') {
-				  c = c.substring(1);
-				}
-				if (c.indexOf(name) == 0) {
-				  return c.substring(name.length, c.length);
-				}
-			  }
-			  return "";
-			}
-		</script>
 	</body>
 </html>
+<script>
+	function attemptLogin() {
+		var accessToken = "None";
+		var postType    = "Login";
+		var formData = new FormData(document.getElementById("login-form"));
+
+		fetch('localhost', {
+			method: 'POST',
+			mode: "cors",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({"accessToken": accessToken, "postType": postType, "username": formData.get("username"), "password": formData.get("password") })
+
+		})
+		   .then(response => response.json())
+		   .then(response => handleResponse(JSON.stringify(response)))
+	}
+
+	function handleResponse(response) {
+		console.log("Handle: " + response);
+		var obj = JSON.parse(response);
+		var outcome = obj["outcome"];
+		console.log("Outcome: " + outcome);
+
+		if (outcome == "failed") {
+			alert("Login Failed");
+		}
+		else if (outcome == "success") {
+			document.cookie = "accessToken="+obj["accessToken"];
+			clientUtils.setCookie("physicianName", obj.physicianName);
+			clientUtils.goto("PatientInquiry");
+		}
+	}
+</script>

@@ -3,200 +3,100 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Appointment Form</title>
-		<style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-
-            fieldset {
-                margin-bottom: 20px;
-                padding: 20px;
-                border: 2px solid #ccc;
-                border-radius: 10px;
-            }
-
-            legend {
-                font-weight: bold;
-                font-size: 1.2em;
-                color: #333;
-            }
-
-            label {
-                display: block;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }
-
-            input[type="text"],
-            textarea {
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 10px;
-                box-sizing: border-box;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            textarea {
-                resize: vertical;
-            }
-
-            select {
-                width: 100%;
-                padding: 8px;
-                margin-bottom: 10px;
-                box-sizing: border-box;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            .checkbox-label {
-                display: block;
-                margin-bottom: 5px;
-                font-weight: normal;
-            }
-
-            .signature-line {
-                margin-top: 20px;
-                border-bottom: 1px solid #333;
-                width: 50%;
-                padding-bottom: 10px;
-            }
-
-            .consent-disclaimer {
-                margin-bottom: 20px;
-            }
-
-            button {
-                padding: 10px 20px;
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
-
-            button:hover {
-                background-color: #45a049;
-            }
-        </style>
-		<script>
-			function submitAppointmentForm() {
-			    var accessToken = getCookie("accessToken");
-			    var clientId = getCookie("clientID");
-			    var postType = "submitAppointmentForm";
-			
-			    //
-			    var firstname = document.getElementById('fName').value;
-			    var lastname = document.getElementById('lName').value;
-			    var email = document.getElementById('email').value;
-			    var phonenumber = document.getElementById('phone').value;
-			    var physician = document.getElementById('doctor').value;
-			    var appointment = document.getElementById('appointment').value;
-			    var reasonForVisit = document.getElementById('floatingTextarea2').value;
-			
-			
-			    //
-			    var obj = {
-			        "accessToken": accessToken,
-			        "clientId": clientId,
-			        "postType": postType,
-			        "firstname": firstname,
-			        "lastname": lastname,
-			        "email": email,
-			        "phonenumber": phonenumber,
-			        "physician": physician,
-			        "date": appointment,
-			        "reason": reasonForVisit
-			
-			    };
-			
-			    // 
-			    fetch('localhost', {
-			        method: 'POST',
-			        mode: "cors",
-			        headers: {
-			            'Accept': 'application/json',
-			            'Content-Type': 'application/json'
-			        },
-			        body: JSON.stringify(obj)
-			    })
-			        .then(response => response.json())
-			        .then(response => handleResponse(JSON.stringify(response)));
-			}
-			
-			function handleResponse(response) {
-			    console.log("Handle: " + response);
-			    var obj = JSON.parse(response);
-			    var outcome = obj["outcome"];
-			    var respType = obj["responseType"];
-			    console.log("Outcome: " + outcome);
-			
-			    if (outcome == "failed") {
-			        alert("Post Failed: " + respType);
-			    }
-			    else if (outcome == "success") {
-			        parent.location.reload();
-			    }
-			}
-			
-			// 
-			function getCookie(cname) {
-			    let name = cname + "=";
-			    let ca = document.cookie.split(';');
-			    for (let i = 0; i < ca.length; i++) {
-			        let c = ca[i];
-			        while (c.charAt(0) == ' ') {
-			            c = c.substring(1);
-			        }
-			        if (c.indexOf(name) == 0) {
-			            return c.substring(name.length, c.length);
-			        }
-			    }
-			    return "";
-			
-			}
-		</script>
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
 	</head>
 	<body>
+		<h2>Appointment Registration Form</h2>
 		<form class="row g-3" action="#" method="post">
-			<div class="col-md-5 ms-5">
+			<fieldset>
+				<legend>Patient Name</legend>
 				<label for="fName" class="form-label">First</label>
 				<input type="text" class="form-control" id="fName">
-			</div>
-			<div class="col-md-5">
+			
 				<label for="lName" class="form-label">Last</label>
 				<input type="text" class="form-control" id="lName">
-			</div>
-			<div class="col-md-10 ms-5">
+			</fieldset>
+			
+			<fieldset>
+				<legend>Contact</legend>
 				<label for="phone" class="form-label">Contact Number</label>
 				<input type="text" class="form-control" id="phone" placeholder="555 555 555">
-			</div>
-			<div class="col-md-10 ms-5">
+
 				<label for="email" class="form-label">Email Address</label>
 				<input type="text" class="form-control" id="email" placeholder="john@example.com">
-			</div>
-			<div class="col-md-10 ms-5">
+			</fieldset>
+
+			<fieldset>
+				<legend>Appointment Details</legend>
 				<label for="doctor" class="form-label">Preferred Doctor</label>
-				<input type="text" class="form-control" id="doctor"
-					placeholder="Leave blank if you do not have a preferred doctor">
-			</div>
-			<div class="col-md-6 mx-5">
+				<input type="text" class="form-control" id="doctor" placeholder="Leave blank if you do not have a preferred doctor">
+
 				<label for="appointment">Preferred Appointment Date and Time</label>
 				<input type="datetime-local" id="appointment" name="appointment">
-			</div>
-			<div class="col-md-10 ms-5">
-				<div class="form-floating">Reason For Visit
-					<textarea class="form-control" placeholder="comment here" id="floatingTextarea2"
-						style="height: 100px"></textarea>
-					<label for="floatingTextarea2"></label>
-				</div>
-			</div>
-			<div class="col-12 ms-5">
-				<button type="submit" class="btn btn-success" onclick="submitAppointmentForm()">Make Appointment</button>
-			</div>
+				
+				<label for="reason">Reason for Visit</label>
+				<textarea class="form-control" placeholder="Comment here" id="reason" style="height: 100px"></textarea>
+			</fieldset>
+			
+			<!-- Submit button -->
+			<button type="submit" class="btn btn-success" onclick="submitAppointmentForm()">Make Appointment</button>
 		</form>
 	</body>
 </html>
+<script>
+	function submitAppointmentForm() {
+		var accessToken = clientUtils.getCookie("accessToken");
+		var clientId = clientUtils.getCookie("clientID");
+		var postType = "submitAppointmentForm";
+	
+		var firstname = document.getElementById('fName').value;
+		var lastname = document.getElementById('lName').value;
+		var email = document.getElementById('email').value;
+		var phonenumber = document.getElementById('phone').value;
+		var physician = document.getElementById('doctor').value;
+		var appointment = document.getElementById('appointment').value;
+		var reasonForVisit = document.getElementById('floatingTextarea2').value;
+	
+		var obj = {
+			"accessToken": accessToken,
+			"clientId": clientId,
+			"postType": postType,
+			"firstname": firstname,
+			"lastname": lastname,
+			"email": email,
+			"phonenumber": phonenumber,
+			"physician": physician,
+			"date": appointment,
+			"reason": reasonForVisit
+	
+		};
+	
+		fetch('localhost', {
+			method: 'POST',
+			mode: "cors",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(obj)
+		})
+			.then(response => response.json())
+			.then(response => handleResponse(JSON.stringify(response)));
+	}
+	
+	function handleResponse(response) {
+		console.log("Handle: " + response);
+		var obj = JSON.parse(response);
+		var outcome = obj["outcome"];
+		var respType = obj["responseType"];
+		console.log("Outcome: " + outcome);
+	
+		if (outcome == "failed") {
+			alert("Post Failed: " + respType);
+		}
+		else if (outcome == "success") {
+			parent.location.reload();
+		}
+	}
+</script>

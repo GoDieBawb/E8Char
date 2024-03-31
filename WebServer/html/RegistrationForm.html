@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
+	</head>
+	<body>
+		<h2>Patient Registration Form</h2>
+		<form action="#" method="post">
+			<!-- Patient Information -->
+			<fieldset>
+				<legend>Patient Name & Birth</legend>
+				<label for="firstname">First Name:</label>
+				<input type="text" id="firstname" name="firstname" required>
+
+				<label for="lastname">Last Name:</label>
+				<input type="text" id="lastname" name="lastname" required>
+
+				<label for="dob">DOB:</label>
+				<input type="date" id="dob" name="dob" required>
+			</fieldset>
+
+			<fieldset>
+				<legend>Contact</legend>
+				<label for="prim-lang">Primary Language:</label>
+				<select id="prim-lang" name="primaryLanguage">
+				</select>
+
+				<label for="phonenumber">Phone Number:</label>
+				<input type="text" id="phonenumber" name="phonenumber" required>
+
+				<label for="emergency-phone">Emergency Phone:</label>
+				<input type="text" id="emergency-phone" name="emergencyPhone">
+
+				<label for="address">Address:</label>
+				<input type="text" id="address" name="address">
+
+				<label for="city">City:</label>
+				<input type="text" id="city" name="city">
+
+				<label for="state">State:</label>
+				<input type="text" id="state" name="state">
+
+				<label for="zip">Zip:</label>
+				<input type="number" id="zip" name="zip">
+
+				<label for="ssn">Social Security Number:</label>
+				<input type="number" id="ssn" name="ssn">
+
+				<label for="pharmacy">Pharmacy Name:</label>
+				<input type="text" id="pharmacy" name="pharmacy">
+
+				<label for="insurance">Insurance:</label>
+				<input type="text" id="insurance" name="insurance">
+
+				<label for="insurance-id">Insurance Identification Number:</label>
+				<input type="number" id="insurance-id" name="insuranceId">
+			</fieldset>
+
+			<fieldset>
+				<legend>Diversity & Physicality</legend>
+				<label for="ethnicity">Ethnicity:</label>
+				<select id="ethnicity" name="ethnicity">
+				</select>
+
+				<label for="race">Race:</label>
+				<select id="race" name="race">
+				</select>
+
+				<label for="sex">Sex:</label>
+				<select id="sex" name="sex">
+				</select>
+
+				<label for="weight">Weight (lb.):</label>
+				<input type="number" id="weight" name="weight">
+			</fieldset>
+
+			<!-- The submit button function -->
+			<button onclick="submitDemographic()" type="button" class="btn btn-primary">Submit Registration</button>
+		</form>
+	</body>
+</html>
+<script>
+	function submitDemographic() {
+		var accessToken = clientUtils.getCookie("accessToken");
+		var postType = "submitDemographic";
+		var firstname = document.getElementById('firstname').value;
+		var lastname = document.getElementById('lastname').value;
+		var phonenumber = document.getElementById('phonenumber').value;
+		var dob = document.getElementById('dob').value;
+		var address = document.getElementById('address').value;
+		var city = document.getElementById('city').value;
+		var state = document.getElementById('state').value;
+		var zip = document.getElementById('zip').value;
+		var enteredby = "";
+		var entereddate = "";
+		var emergPhone = document.getElementById('emergency-phone').value;
+		var ethn = document.getElementById('ethnicity').value;
+		var ins = document.getElementById('insurance').value;
+		var insId = document.getElementById('insurance-id').value;
+		var pharmName = document.getElementById('pharmacy').value;
+		var lang = document.getElementById('prim-lang').value;
+		var race = document.getElementById('race').value;
+		var ssn = document.getElementById('ssn').value;
+		var sex = document.getElementById('sex').value;
+		var wgh = document.getElementById('weight').value;
+
+		var obj = {
+			"accessToken": accessToken, "postType": postType, "firstname": firstname, "lastname": lastname, "phonenumber": phonenumber,
+			"dob": dob, "address": address, "city": city, "state": state, "zip": zip, "emergencyPhone": emergPhone, "ethnicity": ethn,
+			"insurance": ins, "insuranceId": insId, "pharmacy": pharmName, "primaryLanguage": lang, "race": race, "ssn": ssn, "sex": sex, "weight": wgh
+		};
+
+		var postString = JSON.stringify(obj);
+
+		console.log(postString);
+
+		fetch('localhost', {
+			method: 'POST',
+			mode: "cors",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: postString
+
+		})
+			.then(response => response.json())
+			.then(response => handleResponse(JSON.stringify(response)))
+	}
+
+	function handleResponse(response) {
+		console.log("Handle: " + response);
+		var obj = JSON.parse(response);
+		var outcome = obj["outcome"];
+		var respType = obj["responseType"];
+
+		console.log("Outcome: " + outcome);
+
+		if (outcome == "failed") {
+			alert("Post Failed: " + respType);
+		}
+		else if (outcome == "success") {
+			parent.location.reload();
+		}
+	}	
+</script>

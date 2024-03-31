@@ -4,60 +4,8 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Summary Panel</title>
-		<script>
-			document.addEventListener("DOMContentLoaded", (event) => {
-			
-			    //changed to GET response once implemented
-			    var name = 'John Smith'
-			    var id = 1
-			    var admissionDate = '1-1-2024'
-			    var allergiesList = 'penicillin'
-			    var contraIndications = 'inflamed skin'
-			
-			    var physician = 'Dr.K'
-			    var abgCode = 12345
-			    var ward = 'USC Med'
-			
-			    //Insert patient info into appropiate elements
-			    var info = [name, id, admissionDate, allergiesList, contraIndications, physician, abgCode, ward]
-			    var ele = ['patientName', 'patientId', 'admission', 'allergies', 'contraindications', 'doctor', 'abg', 'ward']
-			    var i = 0
-			    ele.forEach(element => {
-			        var patientName = document.getElementById(element)
-			        patientName.insertAdjacentHTML('beforeend', '<strong>' + info[i] + '</strong>')
-			        i++
-			    });
-			    
-			
-			    console.log("DOM fully loaded and parsed");
-			    
-			});
-			var count = 3;
-			function newList(){
-			//var medicationList = document.getElementById('medList');
-			
-			// Get the table and insert a new row at the end 
-			    let table = document.getElementById("medList"); 
-			    let newRow = table.insertRow(table.rows.length); 
-			    
-			    // Insert data into cells of the new row 
-			    newRow.insertCell(0).innerHTML = count; 
-			    newRow.insertCell(1).innerHTML = 'filler';
-			    newRow.insertCell(2).innerHTML = 'filler';
-			    newRow.insertCell(3).innerHTML = 
-			        '<button onclick="deleteData(this)">Delete</button>'; 
-			    count += 1;
-			}
-			function deleteData(button){
-			       // Get the parent row of the clicked button 
-			       let row = button.parentNode.parentNode; 
-			
-			        // Remove the row from the table 
-			        row.parentNode.removeChild(row);
-			}
-			
-		</script>
 	</head>
+
 	<body>
 		<div class="container text-center">
 			<div class="row mt-5 mx-5">
@@ -90,7 +38,7 @@
 						<th>Action</th>
 					</tr>
 				</thead>
-				<tbody >
+				<tbody>
 					<tr>
 						<th>1</th>
 						<td>filler</td>
@@ -106,9 +54,62 @@
 				</tbody>
 			</table>
 			<div class="col-12 ">
-				<button type="submit" class="btn btn-success" onclick= newList()>Add</button>
+				<button type="submit" class="btn btn-success" onclick=newList()>Add</button>
 				<button type="submit" class="btn btn-success">Amend</button>
 			</div>
 		</div>
 	</body>
 </html>
+<script>
+	var count = 3;
+
+	document.addEventListener("DOMContentLoaded", (event) => {
+		//changed to GET response once implemented
+		var name = 'John Smith'
+		var id = 1
+		var admissionDate = '1-1-2024'
+		var allergiesList = 'penicillin'
+		var contraIndications = 'inflamed skin'
+
+		var physician = 'Dr.K'
+		var abgCode = 12345
+		var ward = 'USC Med'
+
+		//Insert patient info into appropiate elements
+		var info = [name, id, admissionDate, allergiesList, contraIndications, physician, abgCode, ward]
+		var ele = ['patientName', 'patientId', 'admission', 'allergies', 'contraindications', 'doctor', 'abg', 'ward']
+		var i = 0
+
+		ele.forEach(element => {
+			var patientName = document.getElementById(element)
+			patientName.insertAdjacentHTML('beforeend', '<strong>' + info[i] + '</strong>')
+			i++
+		});
+
+		console.log("DOM fully loaded and parsed");
+	});
+
+	function newList() {
+		//var medicationList = document.getElementById('medList');
+
+		// Get the table and insert a new row at the end 
+		let table = document.getElementById("medList");
+		let newRow = table.insertRow(table.rows.length);
+
+		// Insert data into cells of the new row 
+		newRow.insertCell(0).innerHTML = count;
+		newRow.insertCell(1).innerHTML = 'filler';
+		newRow.insertCell(2).innerHTML = 'filler';
+		newRow.insertCell(3).innerHTML = '<button onclick="deleteData(this)">Delete</button>';
+		count += 1;
+	}
+
+	function deleteData(button) {
+		// Get the parent row of the clicked button 
+		let row = button.parentNode.parentNode;
+
+		// Remove the row from the table 
+		row.parentNode.removeChild(row);
+	}
+
+</script>

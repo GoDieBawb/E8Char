@@ -3,178 +3,114 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Blood Drawn Request Form</title>
-		<style>
-			body {
-			font-family: Arial, sans-serif;
-			margin: 20px;
-			}
-			fieldset {
-			margin-bottom: 20px;
-			padding: 10px;
-			border: 1px solid #ccc; 
-			border-radius: 5px; 
-			}
-			legend {
-			font-weight: bold;
-			}
-			label {
-			display: block;
-			margin-bottom: 5px;
-			}
-			input, select {
-			width: 100%;
-			padding: 8px;
-			margin-bottom: 10px;
-			box-sizing: border-box;
-			}
-			button {
-			padding: 10px;
-			background-color: #4CAF50;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			}
-			button:hover {
-			background-color: #45a049;
-			}
-			div {
-			display: flex;
-			flex-direction: column;
-			}
-			input[type="radio"] {
-			margin-top: 5px;
-			}
-		</style>
-		<script>
-			function submitBloodDrawnRequest() {
-			    var accessToken = getCookie("accessToken");
-			    var postType = "submitBloodDrawnRequest";
-			
-			    var patientName = document.getElementById('patientName').value;
-			    var dateOfBirth = document.getElementById('dateOfBirth').value;
-			    var medicalRecordNumber = document.getElementById('medicalRecordNumber').value;
-			    var physicianName = document.getElementById('physicianName').value;
-			    var bloodTest = document.getElementById('bloodTest').value;
-			    var labLocation = document.getElementById('labLocation').value;
-			    var isFasting = document.querySelector('input[name="fasting"]:checked').value;
-			    var signature = document.getElementById('signature').value;
-			
-			    var obj = {
-			        "accessToken": accessToken,
-			        "postType": postType,
-			        "patientName": patientName,
-			        "dateOfBirth": dateOfBirth,
-			        "medicalRecordNumber": medicalRecordNumber,
-			        "physicianName": physicianName,
-			        "bloodTest": bloodTest,
-			        "labLocation": labLocation,
-			        "isFasting": isFasting,
-			        "signature": signature
-			    };
-			
-			    fetch('localhost', {
-			        method: 'POST',
-			        mode: 'cors',
-			        headers: {
-			            'Accept': 'application/json',
-			            'Content-Type': 'application/json'
-			        },
-			        body: JSON.stringify(obj)
-			    })
-			    .then(response => response.json())
-			    .then(response => handleResponse(response))
-			}
-			
-			function handleResponse(response) {
-				var obj = JSON.parse(response);
-			    var outcome = obj["outcome"];
-			    var respType = obj["responseType"];
-			
-			    if (outcome == "failed") {
-			        alert("Post Failed: " + respType);
-			    }
-			    else if (outcome == "success") {
-			        parent.location.reload();
-			    }
-			}
-			
-			function getCookie(cname) {
-			    let name = cname + "=";
-			    let ca = document.cookie.split(';');
-			    for(let i = 0; i < ca.length; i++) {
-			        let c = ca[i];
-			        while (c.charAt(0) == ' ') {
-			            c = c.substring(1);
-			        }
-			        if (c.indexOf(name) == 0) {
-			            return c.substring(name.length, c.length);
-			        }
-			    }
-			    return "";
-			}
-		</script>
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
 	</head>
 	<body>
-		<h2>Blood Drawn Request Form</h2>
+		<h2>Blood Drawn Form</h2>
 		<form action="#" method="post">
 			<fieldset>
 				<legend>Patient Information</legend>
-				<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-					<label for="patientName">Patient Name:</label>
-					<input type="text" id="patientName" name="patientName" required>
-					<label for="dateOfBirth">Date of Birth:</label>
-					<input type="date" id="dateOfBirth" name="dateOfBirth" required>
-					<label for="medicalRecordNumber">Medical Record Number:</label>
-					<input type="text" id="medicalRecordNumber" name="medicalRecordNumber" required>
-				</div>
+				<label for="patientName">Patient Name:</label>
+				<input type="text" id="patientName" name="patientName" required>
+				<label for="dateOfBirth">Date of Birth:</label>
+				<input type="date" id="dateOfBirth" name="dateOfBirth" required>
+				<br><br>
+				<label for="medicalRecordNumber">Medical Record Number:</label>
+				<input type="text" id="medicalRecordNumber" name="medicalRecordNumber" required>
 			</fieldset>
+
 			<fieldset>
 				<legend>Ordering Physician Information</legend>
-				<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-					<label for="physicianName">Physician Name:</label>
-					<input type="text" id="physicianName" name="physicianName" required>
-				</div>
+				<label for="physicianName">Physician Name:</label>
+				<input type="text" id="physicianName" name="physicianName" required>
 			</fieldset>
+
 			<fieldset>
 				<legend>Type of Blood Test(s) Requested</legend>
-				<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-					<label for="bloodTest">Blood Test:</label>
-					<select id="bloodTest" name="bloodTest">
-						<option value="Complete Blood Count">Complete Blood Count</option>
-						<option value="Blood Chemistry Panel">Blood Chemistry Panel</option>
-						<option value="Blood Glucose Test">Blood Glucose Test</option>
-					</select>
-				</div>
+				<label for="bloodTest">Blood Test:</label>
+				<select id="bloodTest" name="bloodTest">
+					<option value="Complete Blood Count">Complete Blood Count</option>
+					<option value="Blood Chemistry Panel">Blood Chemistry Panel</option>
+					<option value="Blood Glucose Test">Blood Glucose Test</option>
+				</select>
 			</fieldset>
+
 			<fieldset>
 				<legend>Lab Location for Blood Sample</legend>
-				<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-					<label for="labLocation">Lab Location:</label>
-					<input type="text" id="labLocation" name="labLocation" required>
-				</div>
+				<label for="labLocation">Lab Location:</label>
+				<input type="text" id="labLocation" name="labLocation" required>
 			</fieldset>
+
 			<fieldset>
 				<legend>Ordering Healthcare Provider</legend>
-				<div style="border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
-					<label for="signature">Signature:</label>
-					<input type="text" id="signature" name="signature" required>
-				</div>
+				<label for="signature">Signature:</label>
+				<input type="text" id="signature" name="signature" required>
 			</fieldset>
+
 			<fieldset>
 				<legend>Additional Information</legend>
 				<label><strong>Fasting:</strong></label>
-				<div>
-					<label for="fastingYes">Yes</label>
-					<input type="radio" id="fastingYes" name="fasting" value="Yes">
-				</div>
-				<div>
-					<label for="fastingNo">No</label>
-					<input type="radio" id="fastingNo" name="fasting" value="No">
-				</div>
+				<label for="fastingYes"><span>Yes</span></label>
+				<input type="radio" id="fastingYes" name="fasting" value="Yes">
+				<label for="fastingNo">No</label>
+				<input type="radio" id="fastingNo" name="fasting" value="No">
 			</fieldset>
+
+			<!-- Submit button -->
 			<button onclick="submitBloodDrawnRequest()" type="button">Submit</button>
 		</form>
 	</body>
 </html>
+<script>
+	function submitBloodDrawnRequest() {
+		var accessToken = clientUtils.getCookie("accessToken");
+		var postType = "submitBloodDrawnRequest";
+
+		var patientName = document.getElementById('patientName').value;
+		var dateOfBirth = document.getElementById('dateOfBirth').value;
+		var medicalRecordNumber = document.getElementById('medicalRecordNumber').value;
+		var physicianName = document.getElementById('physicianName').value;
+		var bloodTest = document.getElementById('bloodTest').value;
+		var labLocation = document.getElementById('labLocation').value;
+		var isFasting = document.querySelector('input[name="fasting"]:checked').value;
+		var signature = document.getElementById('signature').value;
+
+		var obj = {
+			"accessToken": accessToken,
+			"postType": postType,
+			"patientName": patientName,
+			"dateOfBirth": dateOfBirth,
+			"medicalRecordNumber": medicalRecordNumber,
+			"physicianName": physicianName,
+			"bloodTest": bloodTest,
+			"labLocation": labLocation,
+			"isFasting": isFasting,
+			"signature": signature
+		};
+
+		fetch('localhost', {
+			method: 'POST',
+			mode: 'cors',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(obj)
+		})
+			.then(response => response.json())
+			.then(response => handleResponse(response))
+	}
+
+	function handleResponse(response) {
+		var obj = JSON.parse(response);
+		var outcome = obj["outcome"];
+		var respType = obj["responseType"];
+
+		if (outcome == "failed") {
+			alert("Post Failed: " + respType);
+		}
+		else if (outcome == "success") {
+			parent.location.reload();
+		}
+	}
+</script>

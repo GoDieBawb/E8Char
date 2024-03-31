@@ -3,133 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Mental Evaluation Form</title>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        fieldset {
-            margin-bottom: 20px;
-            padding: 10px;
-        }
-
-        legend {
-            font-weight: bold;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            box-sizing: border-box;
-        }
-
-        button {
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-        </style>
-
-        <script>
-            function submitMentalHealthEvaluation() {
-                var accessToken = getCookie("accessToken");
-                var clientId    = getCookie("clientID");
-                var postType    = "submitMentalHealthEvaluation";
-                
-                // will get the form data
-                var stressLevel     = document.getElementById('stressLevel').value;
-                var anxietyLevel    = document.getElementById('anxietyLevel').value;
-                var depressionLevel = document.getElementById('depressionLevel').value;
-                var sleepQuality    = document.getElementById('sleepQuality').value;
-                var overallHealth   = document.getElementById('overallHealth').value;
-
-                // Create object for submission
-                var obj = {
-                    "accessToken": accessToken,
-                    "clientId": clientId,
-                    "postType": postType,
-                    "stressLevel": stressLevel,
-                    "anxietyLevel": anxietyLevel,
-                    "depressionLevel": depressionLevel,
-                    "sleepQuality": sleepQuality,
-                    "overallHealth": overallHealth
-                };
-
-                // This code below will do the fetch request
-                fetch('localhost', {
-                    method: 'POST',
-                    mode: 'cors',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(obj)
-                })
-                    .then(response => response.json())
-                    .then(response => handleResponse(JSON.stringify(response)))	
-
-            }
-
-
-            function handleResponse(response) {
-                console.log("Handle: " + response);
-                var obj = JSON.parse(response);
-                var outcome = obj["outcome"];
-                var respType = obj["responseType"];
-                console.log("Outcome: " + outcome);
-
-                if (outcome == "failed") {
-                    alert("Post Failed: " + respType);
-                }
-                else if (outcome == "success") {
-                    parent.location.reload();
-                }
-
-            }
-
-            // Grabbed from w3
-            function getCookie(cname) {
-                let name = cname + "=";
-                let ca = document.cookie.split(';');
-                for(let i = 0; i < ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) == ' ') {
-                        c = c.substring(1);
-                    }
-                    if (c.indexOf(name) == 0) {
-                        return c.substring(name.length, c.length);
-                    }
-                }
-                return "";
-            }
-        </script>
+        <link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+        <script defer src="scripts/clientutils.js"></script>
     </head>
     <body>
-
-
-
         <h2>Mental Health Evaluation Form</h2>
-
         <form action="#" method="post">
-
             <!-- This Information for the patient to fill out -->
             <fieldset>
-                <legend>Self-Assessment</legend>
+                <legend>Health State</legend>
                 <label for="stressLevel">Stress Level:</label>
                 <input type="number" id="stressLevel" name="stressLevel" min="0" max="10" required>
 
@@ -153,9 +35,61 @@
 
             <!-- This function below is just to Submit the form -->
             <button onclick="submitMentalHealthEvaluation()" type="button">Submit</button>
-
         </form>
-
     </body>
 </html>
+<script>
+    function submitMentalHealthEvaluation() {
+        var accessToken = clientUtils.getCookie("accessToken");
+        var clientId = clientUtils.getCookie("clientID");
+        var postType = "submitMentalHealthEvaluation";
 
+        // will get the form data
+        var stressLevel = document.getElementById('stressLevel').value;
+        var anxietyLevel = document.getElementById('anxietyLevel').value;
+        var depressionLevel = document.getElementById('depressionLevel').value;
+        var sleepQuality = document.getElementById('sleepQuality').value;
+        var overallHealth = document.getElementById('overallHealth').value;
+
+        // Create object for submission
+        var obj = {
+            "accessToken": accessToken,
+            "clientId": clientId,
+            "postType": postType,
+            "stressLevel": stressLevel,
+            "anxietyLevel": anxietyLevel,
+            "depressionLevel": depressionLevel,
+            "sleepQuality": sleepQuality,
+            "overallHealth": overallHealth
+        };
+
+        // This code below will do the fetch request
+        fetch('localhost', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(obj)
+        })
+            .then(response => response.json())
+            .then(response => handleResponse(JSON.stringify(response)))
+
+    }
+
+    function handleResponse(response) {
+        console.log("Handle: " + response);
+        var obj = JSON.parse(response);
+        var outcome = obj["outcome"];
+        var respType = obj["responseType"];
+        console.log("Outcome: " + outcome);
+
+        if (outcome == "failed") {
+            alert("Post Failed: " + respType);
+        }
+        else if (outcome == "success") {
+            parent.location.reload();
+        }
+    }
+</script>

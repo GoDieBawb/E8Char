@@ -3,114 +3,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Physical Evaluation Form</title>
-		<style>
-			body {
-			font-family: Arial, sans-serif;
-			margin: 20px;
-			}
-			fieldset {
-			margin-bottom: 20px;
-			padding: 10px;
-			}
-			legend {
-			font-weight: bold;
-			}
-			label {
-			display: block;
-			margin-bottom: 5px;
-			}
-			input, select {
-			width: 100%;
-			padding: 8px;
-			margin-bottom: 10px;
-			box-sizing: border-box;
-			}
-			button {
-			padding: 10px;
-			background-color: #4CAF50;
-			color: white;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			}
-			button:hover {
-			background-color: #45a049;
-			}
-		</style>
-		<script>
-			function submitPhysicalEvaluation() {
-			    var accessToken = getCookie("accessToken");
-			    var clientId    = getCookie("clientID");
-			    var postType = "submitPhysicalEvaluation";
-			
-			    // will get the form data
-			    var height = document.getElementById('height').value;
-			    var weight = document.getElementById('weight').value;
-			    var bloodPressure = document.getElementById('bloodPressure').value;
-			    var heartRate = document.getElementById('heartRate').value;
-			    var temperature = document.getElementById('temperature').value;
-			
-			    // Create object for submission
-			    var obj = {
-			        "accessToken": accessToken,
-			        "clientId": clientId,
-			        "postType": postType,
-			        "height": height,
-			        "weight": weight,
-			        "bloodPressure": bloodPressure,
-			        "heartRate": heartRate,
-			        "temperature": temperature
-			    };
-			
-			    // This code below will do the fetch request
-			    fetch('localhost', {
-			        method: 'POST',
-			        mode: "cors",
-			        headers: {
-			            'Accept': 'application/json',
-			            'Content-Type': 'application/json'
-			        },
-			        body: JSON.stringify(obj)
-			    })
-			    .then(response => response.json())
-			    .then(response => handleResponse(JSON.stringify(response)))	
-			
-			}
-			
-			function handleResponse(response) {
-				console.log("Handle: " + response);
-				var obj = JSON.parse(response);
-				var outcome = obj["outcome"];
-				var respType = obj["responseType"];
-				console.log("Outcome: " + outcome);
-				
-				if (outcome == "failed") {
-					alert("Post Failed: " + respType);
-				}
-				else if (outcome == "success") {
-					parent.location.reload();
-				}
-			}
-			
-			
-			
-			// Grabbed from w3
-			function getCookie(cname) {
-			    let name = cname + "=";
-			    let ca = document.cookie.split(';');
-			    for(let i = 0; i < ca.length; i++) {
-			        let c = ca[i];
-			        while (c.charAt(0) == ' ') {
-			            c = c.substring(1);
-			        }
-			        if (c.indexOf(name) == 0) {
-			            return c.substring(name.length, c.length);
-			        }
-			    }
-			    return "";
-			}
-		</script>
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
 	</head>
 	<body>
 		<h2>Physical Evaluation Form</h2>
@@ -120,17 +14,77 @@
 				<legend>Measurements</legend>
 				<label for="height">Height (inches):</label>
 				<input type="number" id="height" name="height" required>
+				
 				<label for="weight">Weight (lb):</label>
 				<input type="number" id="weight" name="weight" required>
+
 				<label for="bloodPressure">Blood Pressure:</label>
 				<input type="text" id="bloodPressure" name="bloodPressure" placeholder="e.g., 120/80" required>
+
 				<label for="heartRate">Heart Rate (bpm):</label>
 				<input type="number" id="heartRate" name="heartRate" required>
+
 				<label for="temperature">Temperature (°F):</label>
 				<input type="number" id="temperature" name="temperature" step="0.1" required>
 			</fieldset>
+			
 			<!-- Submit button -->
 			<button class="btn btn-primary" onclick="submitPhysicalEvaluation()" type="button">Submit</button>
 		</form>
 	</body>
 </html>
+<script>
+	function submitPhysicalEvaluation() {
+		var accessToken = clientUtils.getCookie("accessToken");
+		var clientId  = clientUtils.getCookie("clientID");
+		var postType = "submitPhysicalEvaluation";
+	
+		// will get the form data
+		var height = document.getElementById('height').value;
+		var weight = document.getElementById('weight').value;
+		var bloodPressure = document.getElementById('bloodPressure').value;
+		var heartRate = document.getElementById('heartRate').value;
+		var temperature = document.getElementById('temperature').value;
+	
+		// Create object for submission
+		var obj = {
+			"accessToken": accessToken,
+			"clientId": clientId,
+			"postType": postType,
+			"height": height,
+			"weight": weight,
+			"bloodPressure": bloodPressure,
+			"heartRate": heartRate,
+			"temperature": temperature
+		};
+	
+		// This code below will do the fetch request
+		fetch('localhost', {
+			method: 'POST',
+			mode: "cors",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(obj)
+		})
+		.then(response => response.json())
+		.then(response => handleResponse(JSON.stringify(response)))	
+	
+	}
+	
+	function handleResponse(response) {
+		console.log("Handle: " + response);
+		var obj = JSON.parse(response);
+		var outcome = obj["outcome"];
+		var respType = obj["responseType"];
+		console.log("Outcome: " + outcome);
+		
+		if (outcome == "failed") {
+			alert("Post Failed: " + respType);
+		}
+		else if (outcome == "success") {
+			parent.location.reload();
+		}
+	}
+</script>

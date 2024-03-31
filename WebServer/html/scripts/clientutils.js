@@ -73,14 +73,16 @@ clientUtils.delCookie = function(cname) {
 /* 
     initiates a POST request to the server.
     it takes in a ClientPost object as its only argument.
-    if successful, it calls clientPostObject.responseCallback with the json OBJECT 
-    as its only argument as the response.
+    if successful, it calls clientPostObject.responseCallback with 
+    the json OBJECT (the json is parsed for you) as its only argument as the response.
 */
 clientUtils.webPost = async function(clientPostObject) {
     if (clientPostObject.constructor != clientUtils.ClientPost) {
         console.error("webPost: malformed clientPostObject; type must be clientUtils.ClientPost!");
         return;
     }
+
+    let jsonObject = null;
 
     try {
         const serverResponse = await fetch('localhost', {
@@ -99,11 +101,14 @@ clientUtils.webPost = async function(clientPostObject) {
         if (!serverResponse.ok)
             throw serverResponse.statusText;
 
-        const jsonObject = await serverResponse.json();
-        clientPostObject.responseCallback(jsonObject);
+        jsonObject = await serverResponse.json();
     }
     catch (error) {
         console.error(`webPost: error!\npostType: ${clientPostObject.postType}\nreason: ${error}`);
+    }
+    finally {
+        if (jsonObject != null)
+            clientPostObject.responseCallback(jsonObject);
     }
 }
 
@@ -144,4 +149,22 @@ clientUtils.toReadablePhone = function(rawPhone) {
 clientUtils.clearHTMLList = function(HTMLListReference) {
     while (HTMLListReference.children.length > 0)
         HTMLListReference.firstChild.remove();
+}
+
+clientUtils.changeInstructionalMessage = function(iframeReference, msg) {
+    iframeReference.contentWindow.document.querySelector("#template-message").innerText = msg;
+}
+
+/* Returns a dictionary (key-value pairs) representing the given form element.
+   The passed form element must be a valid (with valid input elements).
+
+   https://www.w3schools.com/html/html_form_elements.asp
+*/
+clientUtils.getFormData = function(formElement) {
+    const formData = new FormData(formElement);
+    let obj = {};
+
+    formData.forEach((val, key) => obj[key] = val);
+
+    return obj;
 }
