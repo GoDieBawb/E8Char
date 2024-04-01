@@ -8,35 +8,35 @@
 	</head>
 	<body>
 		<h2>Appointment Registration Form</h2>
-		<form class="row g-3" action="#" method="post">
+		<form id="main-form" method="post">
 			<fieldset>
 				<legend>Patient Name</legend>
-				<label for="fName" class="form-label">First</label>
-				<input type="text" class="form-control" id="fName">
+				<label for="first-name">First</label>
+				<input type="text" id="first-name" name="firstName" autocomplete="given-name" required>
 			
-				<label for="lName" class="form-label">Last</label>
-				<input type="text" class="form-control" id="lName">
+				<label for="last-name">Last</label>
+				<input type="text" id="last-name" name="lastName" required>
 			</fieldset>
 			
 			<fieldset>
 				<legend>Contact</legend>
-				<label for="phone" class="form-label">Contact Number</label>
-				<input type="text" class="form-control" id="phone" placeholder="555 555 555">
+				<label for="phone-number">Contact Number</label>
+				<input type="text" id="phone-number" name="phoneNumber" placeholder="555 555 555" required>
 
-				<label for="email" class="form-label">Email Address</label>
-				<input type="text" class="form-control" id="email" placeholder="john@example.com">
+				<label for="email-address">Email Address</label>
+				<input type="text" id="email-address" name="email" placeholder="john@example.com" autocomplete="email" required>
 			</fieldset>
 
 			<fieldset>
 				<legend>Appointment Details</legend>
-				<label for="doctor" class="form-label">Preferred Doctor</label>
-				<input type="text" class="form-control" id="doctor" placeholder="Leave blank if you do not have a preferred doctor">
+				<label for="clinician-name">Preferred Doctor</label>
+				<input type="text" id="clinician-name" name="clinicianName" placeholder="Leave blank if you do not have a preferred doctor" required>
 
 				<label for="appointment">Preferred Appointment Date and Time</label>
-				<input type="datetime-local" id="appointment" name="appointment">
+				<input type="datetime-local" id="appointment" name="dateTime" required>
 				
-				<label for="reason">Reason for Visit</label>
-				<textarea class="form-control" placeholder="Comment here" id="reason" style="height: 100px"></textarea>
+				<label for="visit-reason">Reason for Visit</label>
+				<textarea class="form-control h-100" placeholder="Comment here" id="visit-reason" name="reason" required></textarea>
 			</fieldset>
 			
 			<!-- Submit button -->
@@ -46,56 +46,27 @@
 </html>
 <script>
 	function submitAppointmentForm() {
-		var accessToken = clientUtils.getCookie("accessToken");
-		var clientId = clientUtils.getCookie("clientID");
-		var postType = "submitAppointmentForm";
+		event.preventDefault();
+		
+		const accessToken = clientUtils.getCookie("accessToken");
+		const clientId = clientUtils.getCookie("clientID");
+		const postType = "appointmentFormPost";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
-		var firstname = document.getElementById('fName').value;
-		var lastname = document.getElementById('lName').value;
-		var email = document.getElementById('email').value;
-		var phonenumber = document.getElementById('phone').value;
-		var physician = document.getElementById('doctor').value;
-		var appointment = document.getElementById('appointment').value;
-		var reasonForVisit = document.getElementById('floatingTextarea2').value;
-	
-		var obj = {
-			"accessToken": accessToken,
-			"clientId": clientId,
-			"postType": postType,
-			"firstname": firstname,
-			"lastname": lastname,
-			"email": email,
-			"phonenumber": phonenumber,
-			"physician": physician,
-			"date": appointment,
-			"reason": reasonForVisit
-	
-		};
-	
-		fetch('localhost', {
-			method: 'POST',
-			mode: "cors",
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(obj)
-		})
-			.then(response => response.json())
-			.then(response => handleResponse(JSON.stringify(response)));
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("clientId", clientId);
+		
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
+
+		clientUtils.webPost(newClientPost);
 	}
-	
-	function handleResponse(response) {
-		console.log("Handle: " + response);
-		var obj = JSON.parse(response);
-		var outcome = obj["outcome"];
-		var respType = obj["responseType"];
-		console.log("Outcome: " + outcome);
-	
-		if (outcome == "failed") {
-			alert("Post Failed: " + respType);
+
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
 		}
-		else if (outcome == "success") {
+		else if (serverResponse.outcome == "success") {
 			parent.location.reload();
 		}
 	}

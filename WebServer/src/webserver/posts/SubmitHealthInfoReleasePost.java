@@ -4,14 +4,10 @@ import webserver.SQLUtil;
 
 
 public class SubmitHealthInfoReleasePost extends BasicPost {
-    
     public String clientName;
     public String doctorName;
-    public String date; 		
-    
-    public SubmitHealthInfoReleasePost() {
-        postType = "submitHealthInfoRelease";
-    }
+    public String date;
+    public String consented;
     
     public void publish() {
         String queryString = "INSERT INTO HealthInfoRelease (ClientName, DoctorName, Date) VALUES ('" + clientName + "', '" + doctorName + "', '" + date + "');";

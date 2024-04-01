@@ -12,7 +12,6 @@ import java.lang.reflect.Field;
  * @author MeanC
  */
 public class BasicPost {
-    
     public String accessToken;
     public String postType;
     

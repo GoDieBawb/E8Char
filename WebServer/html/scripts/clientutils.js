@@ -82,6 +82,8 @@ clientUtils.webPost = async function(clientPostObject) {
         return;
     }
 
+    console.log(clientPostObject);
+
     let jsonObject = null;
 
     try {

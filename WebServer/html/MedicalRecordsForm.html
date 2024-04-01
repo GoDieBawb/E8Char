@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+        <script defer src="scripts/clientutils.js"></script>
+    </head>
+    <body>
+        <!-- Below code is the html aspect of the form -->
+        <h2>Medication Form</h2>
+        <form id="main-form" method="post">
+            <!-- Information for the medication record -->
+            <fieldset>
+                <legend>Medication Record</legend>
+                <label for="medicationName">Medication Name:</label>
+                <input type="text" id="medicationName" name="medicationName" required>
+
+                <label for="dosage">Dosage:</label>
+                <input type="text" id="dosage" name="dosage" required>
+
+                <label for="frequencyOfDosage">Frequency of Dosage:</label>
+                <input type="text" id="frequencyOfDosage" name="frequencyOfDosage" required>
+
+                <label for="prescribedBy">Prescribed By:</label>
+                <input type="text" id="prescribedBy" name="prescribedBy" required>
+
+                <label><strong>Side Effects:</strong></label>
+                <br>
+
+                <label for="sideEffectsYes">Yes</label>
+                <input type="radio" id="sideEffectsYes" name="hasSideEffects" value="Yes">
+
+                <label for="sideEffectsNo">No</label>
+                <input type="radio" id="sideEffectsNo" name="hasSideEffects" value="No">
+                <br><br>
+
+                <label><strong>Allergies:</strong></label>
+                <br>
+                
+                <label for="allergiesYes">Yes</label>
+                <input type="radio" id="allergiesYes" name="hasAllergies" value="Yes">
+
+                <label for="allergiesNo">No</label>
+                <input type="radio" id="allergiesNo" name="hasAllergies" value="No">
+            </fieldset>
+            
+            <!-- Submit button -->
+            <button onclick="submitMedicationRecord()" type="submit">Submit</button>
+        </form>
+    </body>
+</html>
+<script>
+    function submitMedicationRecord() {
+        event.preventDefault();
+        
+        var accessToken = clientUtils.getCookie("accessToken");
+        var postType = "medicationRecordFormPost";
+        const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+        newClientPost.addParam("clientId", clientId);
+        
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
+
+		clientUtils.webPost(newClientPost);
+    }
+
+    function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
+		}
+		else if (serverResponse.outcome == "success") {
+			parent.location.reload();
+		}
+	}
+</script>

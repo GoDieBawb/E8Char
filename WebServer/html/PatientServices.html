@@ -14,7 +14,7 @@
 	<body>
 		<div class="d-flex" id="wrapper">
 			<!-- Sidebar -->
-			<div class="bg-white shadow" id="sidebar-wrapper">
+			<div class="bg-white shadow border-end" id="sidebar-wrapper">
 				<div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i
 						class="fas fa-user me-2"></i>Services</div>
 				<div class="list-group list-group-flush">
@@ -26,7 +26,7 @@
 			<!-- /#sidebar-wrapper -->
 
 			<!-- Read-only service record view -->
-			<div class="bg-elechart-light w-100" id="readonly-service-view">
+			<div class="bg-elechart-light elechart-bg w-100" id="readonly-service-view">
                 <div class="container-fluid px-4">
                     <div class="row my-4">
                         <div class="col-2 overflow-y-scroll overflow-x-hidden">
@@ -35,14 +35,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col bg-white shadow-sm py-2">
+                        <div class="col bg-white shadow-sm border py-2">
                             <p class="h3">Service Records</p>
                             <div class="overflow-y-scroll overflow-x-hidden" id="service-record-list">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="row full-height-minus-300 bg-white shadow-sm rounded">
+                    <div class="row full-height-minus-300 bg-white shadow-sm rounded border">
                         <iframe class="py-3" id="service-form-viewer" src="InstructionalMessage">
                         </iframe>
                     </div>
@@ -50,11 +50,11 @@
             </div>
 
             <!-- Service creation form view -->
-            <div class="bg-elechart-light w-100" id="creation-service-view" hidden>
+            <div class="bg-elechart-light elechart-bg w-100" id="creation-service-view" hidden>
                 <div class="container-fluid px-4 pt-4">
                     <div class="row mt-4">
                         <div class="col-3 my-4">
-                            <div class="bg-white rounded">
+                            <div class="bg-white rounded border">
                                 <h3 class="text-center">Service Type</h3>
                                 <div class="overflow-y-scroll overflow-x-hidden">
                                     <div id="service-creation-group-list">
@@ -63,7 +63,7 @@
                             </div>
                         </div>
                         
-                        <div class="col full-height-minus-100 bg-white shadow-sm rounded">
+                        <div class="col full-height-minus-100 bg-white shadow-sm rounded border">
                             <iframe class="py-3" id="service-creation-form-viewer" src="InstructionalMessage"></iframe>
                         </div>
                     </div>
@@ -191,8 +191,6 @@
             }
         }
 
-        console.log(serviceGroupList);
-
         //clientUtils.setLoadingStatus(false, "loading-services-display");
     }
 
@@ -203,13 +201,9 @@
         //clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
 
         // retrieve a list of services for this particular patient
-        let newClientPost = new clientUtils.ClientPost(
-            "requestClientServices",
-            clientUtils.getCookie("accessToken"),
-            responseCallback
-        );
-
+        let newClientPost = new clientUtils.ClientPost("requestClientServices", clientUtils.getCookie("accessToken"), responseCallback);
         newClientPost.addParam("clientId", clientUtils.getCookie("clientID"));
+        
         clientUtils.webPost(newClientPost);
     };
 

@@ -10,8 +10,6 @@ package webserver.posts;
  * @author MeanC
  */
 public class LoginPost extends BasicPost {
-    
     public String username;
     public String password;
-    
 }

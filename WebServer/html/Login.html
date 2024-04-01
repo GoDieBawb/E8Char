@@ -19,19 +19,19 @@
 					<div class="row justify-content-center">
 						<img id="elechart-title" src="images/elechart-title.png" alt="EleChart">
 					</div>
-					<div class="bg-white rounded row justify-content-center p-2 mt-4 elechart-style-1">
+					<div class="bg-white rounded border row justify-content-center p-3 mt-4 elechart-style-1">
 						<form id="login-form">
 							<h2 class="text-center m-0">Portal Sign-In</h2>
 							<div class="row justify-content-center">
-								<label for="username-input">Username</label>
-								<input id="username-input" type="text" name="username">
-							</div>
-							<div class="row justify-content-center">
-								<label for="password-input">Password</label>
-								<input id="password-input" type="password" name="password">
+								<label class="fs-5" for="username-input">Username</label>
+								<input id="username-input" type="text" name="username" autocomplete="username" required>
 							</div>
 							<div class="row justify-content-center mt-2">
-								<button class="btn btn-success" type="button" onclick="attemptLogin()">Sign In</button>
+								<label class="fs-5" for="password-input">Password</label>
+								<input id="password-input" type="password" name="password" required>
+							</div>
+							<div class="row justify-content-center mt-4">
+								<button class="btn btn-success fs-5" id="login-button" type="submit" onclick="attemptLogin()">Sign In</button>
 							</div>
 						</form>
 					</div>
@@ -41,37 +41,39 @@
 	</body>
 </html>
 <script>
+	var loginDebounce = false;
+
 	function attemptLogin() {
-		var accessToken = "None";
-		var postType    = "Login";
-		var formData = new FormData(document.getElementById("login-form"));
+		event.preventDefault();
+		
+		if (loginDebounce)
+			return;
+		else
+			loginDebounce = true;
 
-		fetch('localhost', {
-			method: 'POST',
-			mode: "cors",
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({"accessToken": accessToken, "postType": postType, "username": formData.get("username"), "password": formData.get("password") })
+		const accessToken = "None";
+		const postType = "Login";
+		const formData = clientUtils.getFormData(document.querySelector("#login-form"));
+		
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("username", formData.username);
+		newClientPost.addParam("password", formData.password);
 
-		})
-		   .then(response => response.json())
-		   .then(response => handleResponse(JSON.stringify(response)))
+		clientUtils.webPost(newClientPost);
+
+		document.querySelector("#login-button").classList.add("active");
 	}
 
-	function handleResponse(response) {
-		console.log("Handle: " + response);
-		var obj = JSON.parse(response);
-		var outcome = obj["outcome"];
-		console.log("Outcome: " + outcome);
-
-		if (outcome == "failed") {
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
 			alert("Login Failed");
+
+			document.querySelector("#login-button").classList.remove("active");
+			loginDebounce = false;
 		}
-		else if (outcome == "success") {
-			document.cookie = "accessToken="+obj["accessToken"];
-			clientUtils.setCookie("physicianName", obj.physicianName);
+		else if (serverResponse.outcome == "success") {
+			clientUtils.setCookie("accessToken", serverResponse.accessToken);
+			clientUtils.setCookie("physicianName", serverResponse.physicianName);
 			clientUtils.goto("PatientInquiry");
 		}
 	}

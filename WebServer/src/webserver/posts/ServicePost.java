@@ -14,7 +14,6 @@ import webserver.SQLUtil;
  * @author MeanC
  */
 public class ServicePost extends BasicPost {
-    
     public int         clientId;
     public int         enteredby;
     public String      entereddate;    

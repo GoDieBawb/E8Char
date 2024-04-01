@@ -8,7 +8,7 @@
         <title>Health Information Release Form</title>
     </head>
     <body>
-        <form action="#" method="post">
+        <form id="main-form" method="post">
             <fieldset>
                 <legend>Consent to Share Medical Records to Another Doctor</legend>
                 <label for="clientName">Patient's Name:</label>
@@ -22,47 +22,35 @@
                 <legend>Consent Statement</legend>
                 <p>I, <span id="clientNameOutput">patient name</span>, consent for this doctor, <span id="doctorNameOutput">doctor name</span>, to access my other medical records.</p>
                 <label for="consentCheckbox">I consent.</label>
-                <input type="checkbox" id="consentCheckbox" name="consentValue" required>
+                <input type="checkbox" id="consentCheckbox" name="consented" required>
             </fieldset>
-            <button type="button" onclick="submitHealthInfoRelease()">Submit</button>
+            <button type="submit" onclick="submitHealthInfoRelease()">Submit</button>
         </form>
     </body>
 </html>
 <script>
     function submitHealthInfoRelease() {
-        var clientName = document.getElementById('clientName').value;
-        var doctorName = document.getElementById('doctorName').value;
-        var date = document.getElementById('date').value;
+        event.preventDefault();
+        
+        var accessToken = clientUtils.getCookie("accessToken");
+        var clientId = clientUtils.getCookie("clientID");
+        var postType = "submitHealthReleaseForm";
+        const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
 
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
 
-        var obj = {
-            "clientName": clientName,
-            "doctorName": doctorName,
-            "date": date
-        };
-        fetch('localhost', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        })
-            .then(response => response.json())
-            .then(response => handleResponse(response))
+		clientUtils.webPost(newClientPost);
     }
 
-    function handleResponse(response) {
-        var obj = JSON.parse(response);
-        var outcome = obj["outcome"];
-        var respType = obj["responseType"];
-
-        if (outcome == "failed") {
-            alert("Post Failed: " + respType);
-        }
-        else if (outcome == "success") {
-            parent.location.reload();
-        }
-    }
+    function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
+		}
+		else if (serverResponse.outcome == "success") {
+			parent.location.reload();
+		}
+	}
 </script>

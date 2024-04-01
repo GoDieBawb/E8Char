@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<h2>Blood Drawn Form</h2>
-		<form action="#" method="post">
+		<form id="main-form" method="post">
 			<fieldset>
 				<legend>Patient Information</legend>
 				<label for="patientName">Patient Name:</label>
@@ -57,59 +57,32 @@
 			</fieldset>
 
 			<!-- Submit button -->
-			<button onclick="submitBloodDrawnRequest()" type="button">Submit</button>
+			<button onclick="submitBloodDrawnRequest()" type="submit">Submit</button>
 		</form>
 	</body>
 </html>
 <script>
 	function submitBloodDrawnRequest() {
+		event.preventDefault();
+
 		var accessToken = clientUtils.getCookie("accessToken");
-		var postType = "submitBloodDrawnRequest";
+		var postType = "bloodDrawnFormPost";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("clientId", clientId);
+		
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
 
-		var patientName = document.getElementById('patientName').value;
-		var dateOfBirth = document.getElementById('dateOfBirth').value;
-		var medicalRecordNumber = document.getElementById('medicalRecordNumber').value;
-		var physicianName = document.getElementById('physicianName').value;
-		var bloodTest = document.getElementById('bloodTest').value;
-		var labLocation = document.getElementById('labLocation').value;
-		var isFasting = document.querySelector('input[name="fasting"]:checked').value;
-		var signature = document.getElementById('signature').value;
-
-		var obj = {
-			"accessToken": accessToken,
-			"postType": postType,
-			"patientName": patientName,
-			"dateOfBirth": dateOfBirth,
-			"medicalRecordNumber": medicalRecordNumber,
-			"physicianName": physicianName,
-			"bloodTest": bloodTest,
-			"labLocation": labLocation,
-			"isFasting": isFasting,
-			"signature": signature
-		};
-
-		fetch('localhost', {
-			method: 'POST',
-			mode: 'cors',
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(obj)
-		})
-			.then(response => response.json())
-			.then(response => handleResponse(response))
+		clientUtils.webPost(newClientPost);
 	}
 
-	function handleResponse(response) {
-		var obj = JSON.parse(response);
-		var outcome = obj["outcome"];
-		var respType = obj["responseType"];
-
-		if (outcome == "failed") {
-			alert("Post Failed: " + respType);
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
 		}
-		else if (outcome == "success") {
+		else if (serverResponse.outcome == "success") {
 			parent.location.reload();
 		}
 	}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
+	</head>
+	<body>
+		<h2>Surgical History Form</h2>
+		<form id="main-form" method="post">
+			<fieldset>
+				<legend>Patient Information</legend>
+				<label for="patient-name">Patient Name</label>
+				<input type="text" id="patient-name" name="patientName" required>
+			</fieldset>
+
+			<fieldset>
+				<legend>Surgery Details</legend>
+				<label for="surgeon-name">Surgeon Name</label>
+				<input type="text" id="surgeon-name" name="surgeonName" required>
+
+				<label for="date-of-surgery">Date of Surgery</label>
+				<input type="date" id="date-of-surgery" name="dateOfSurgery" required>
+
+				<label for="procedure-performed">Procedure Performed</label>
+				<input type="text" id="procedure-performed" name="procedurePerformed" required>
+				
+				<label for="hospital-name">Hospital Name</label>
+				<input type="text" id="hospital-name" name="hospitalName" required>
+			</fieldset>
+
+			<fieldset>
+				<legend>Past Surgeries</legend>
+				<label>Past Surgeries (if any):</label>
+
+				<div id="pastSurgeriesContainer">
+					<!-- Past Surgeries Fields will be dynamically added here -->
+				</div>
+				<br>
+				<button type="button" class="btn btn-secondary mb-3" onclick="addPastSurgery()">Add Past Surgery</button>
+			</fieldset>
+
+			<!-- Submit button -->
+			<button class="btn-submit" onclick="submitSurgicalHistory()" type="submit">Submit</button>
+		</form>
+	</body>
+</html>
+<script>
+	/**
+	* Function to add a new past surgery input field to the pastSurgeriesContainer.
+	*/
+	
+	function addPastSurgery() {
+		// Retrieve the element in the container that has the history of surgeries.
+		const pastSurgeriesContainer = document.getElementById('pastSurgeriesContainer');
+		// HTML template for new input fields for previous surgeries.
+		const pastSurgeryFields = `
+			<div class="mb-3">
+				<input type="text" placeholder="Surgery Name">
+				<input type="date" placeholder="Date of Surgery">
+				<textarea rows="4" placeholder="Details of Surgery"></textarea>
+			</div>
+		`;
+		// At the end, insert the HTML for the new prior surgery input fields into the container.
+		pastSurgeriesContainer.insertAdjacentHTML('beforeend', pastSurgeryFields);
+	}
+	
+	function submitSurgicalHistory() {
+		event.preventDefault();
+		
+		var accessToken = clientUtils.getCookie("accessToken");
+		var postType = "surgicalHistoryFormPost";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("clientId", clientId);
+		
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
+
+		clientUtils.webPost(newClientPost);
+	}
+	
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
+		}
+		else if (serverResponse.outcome == "success") {
+			parent.location.reload();
+		}
+	}
+</script>

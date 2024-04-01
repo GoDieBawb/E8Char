@@ -114,10 +114,8 @@ public class SQLUtil {
         }        
         //Catches if there's Something wrong with the command
         catch (SQLException e) {
-            
             //Try Statement as an Update
             updateDatabase(sql);
-            
         }
         
         //Close the Connection to the Database

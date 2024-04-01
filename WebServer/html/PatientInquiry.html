@@ -14,7 +14,7 @@
     <body>
         <div class="d-flex overflow-x-hidden">
             <!-- Sidebar -->
-            <div class="bg-white" id="sidebar-wrapper">
+            <div class="bg-white border-left" id="sidebar-wrapper">
                 <div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i class="fas fa-user me-2"></i>Portal</div>
                 <div class="list-group list-group-flush">
                     <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
@@ -26,7 +26,7 @@
             </div>
 
             <!-- Page Content & Nav Bar -->
-            <div class="bg-elechart-light w-100" id="page-content-wrapper">
+            <div class="bg-elechart-light elechart-bg w-100" id="page-content-wrapper">
                 <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
@@ -38,25 +38,11 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-    
-                    <div class="collapse navbar-collapse me-3" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle fw-bold" href="#" id="navbarDropdown"
-                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user me-2"></i>John Doe</a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
                 </nav>
 
                 <!-- Patient History List -->
                 <div class="container-fluid px-4">
-                    <div class="bg-white rounded p-3 shadow-sm">
+                    <div class="bg-white rounded border p-3 shadow-sm">
                         <div class="row row-cols-4 g-2" id="patients-list">
                         </div>
                     </div>

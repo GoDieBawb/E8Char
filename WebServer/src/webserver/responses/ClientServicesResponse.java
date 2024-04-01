@@ -29,19 +29,16 @@ public class ClientServicesResponse extends BasicResponse {
     }
     
     public class Service {
-    
         public String date;
         public String serviceType;
         public String serviceId;
         public String serviceFile;
-        
     }
     
     private void getServices() {
-    
         String query            = "SELECT Service.Id, Service.ServiceDate, ServiceType, ServiceType.FileName FROM Service "
                                 + "JOIN Test.ServiceType on ServiceCode = ServiceType.Id "
-                                + "WHERE ClientId = " + clientId + " AND EnteredBy = " + userId;
+                                + "WHERE ClientId = '" + clientId + "' AND EnteredBy = " + userId;
                                 
         //System.out.println(query);
         SQLUtil sql             = new SQLUtil();
@@ -77,7 +74,6 @@ public class ClientServicesResponse extends BasicResponse {
             }
             
             serviceMap.get(svc.serviceType).add(svc);
-            
         }
     }
 }

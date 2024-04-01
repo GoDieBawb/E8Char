@@ -14,7 +14,8 @@ import webserver.SQLUtil;
 public class LoginResponse extends BasicResponse {
     
     public String accessToken;
-    public String physicianName;
+    public String clinicianName;
+    public String clinicianId;
     
     public LoginResponse(String username) {
         responseType = "login";
@@ -23,7 +24,8 @@ public class LoginResponse extends BasicResponse {
         String response = u.queryDatabase("select FirstName, LastName from Staff where username = '" + username + "'");
         response = response.replaceAll("[\\[\\],:]|FirstName|LastName", "");
 
-        physicianName = response;
+        clinicianName = "dr. clinican";
+        clinicianId = response;
     }
     
 }

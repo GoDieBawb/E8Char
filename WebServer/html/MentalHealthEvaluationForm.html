@@ -8,7 +8,7 @@
     </head>
     <body>
         <h2>Mental Health Evaluation Form</h2>
-        <form action="#" method="post">
+        <form id="main-form" method="post">
             <!-- This Information for the patient to fill out -->
             <fieldset>
                 <legend>Health State</legend>
@@ -34,62 +34,35 @@
             </fieldset>
 
             <!-- This function below is just to Submit the form -->
-            <button onclick="submitMentalHealthEvaluation()" type="button">Submit</button>
+            <button onclick="submitMentalHealthEvaluation()" type="submit">Submit</button>
         </form>
     </body>
 </html>
 <script>
     function submitMentalHealthEvaluation() {
+        event.preventDefault();
+        
         var accessToken = clientUtils.getCookie("accessToken");
         var clientId = clientUtils.getCookie("clientID");
-        var postType = "submitMentalHealthEvaluation";
+        var postType = "mentalHealthEvaluationFormPost";
+        const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+        newClientPost.addParam("clientId", clientId);
+        
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
 
-        // will get the form data
-        var stressLevel = document.getElementById('stressLevel').value;
-        var anxietyLevel = document.getElementById('anxietyLevel').value;
-        var depressionLevel = document.getElementById('depressionLevel').value;
-        var sleepQuality = document.getElementById('sleepQuality').value;
-        var overallHealth = document.getElementById('overallHealth').value;
-
-        // Create object for submission
-        var obj = {
-            "accessToken": accessToken,
-            "clientId": clientId,
-            "postType": postType,
-            "stressLevel": stressLevel,
-            "anxietyLevel": anxietyLevel,
-            "depressionLevel": depressionLevel,
-            "sleepQuality": sleepQuality,
-            "overallHealth": overallHealth
-        };
-
-        // This code below will do the fetch request
-        fetch('localhost', {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(obj)
-        })
-            .then(response => response.json())
-            .then(response => handleResponse(JSON.stringify(response)))
+		clientUtils.webPost(newClientPost);
 
     }
 
-    function handleResponse(response) {
-        console.log("Handle: " + response);
-        var obj = JSON.parse(response);
-        var outcome = obj["outcome"];
-        var respType = obj["responseType"];
-        console.log("Outcome: " + outcome);
-
-        if (outcome == "failed") {
-            alert("Post Failed: " + respType);
-        }
-        else if (outcome == "success") {
-            parent.location.reload();
-        }
-    }
+    function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
+		}
+		else if (serverResponse.outcome == "success") {
+			parent.location.reload();
+		}
+	}
 </script>

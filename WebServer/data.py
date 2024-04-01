@@ -1,5 +1,4 @@
-import random
-import datetime
+import random, datetime
 
 today = datetime.datetime.now()
 
@@ -54,8 +53,8 @@ people = [
         "Skylar Anderson", "Adeline Campbell", "Connor Lewis", "Maya Hernandez", "Davidson Foster", 
         "Lydia Mitchell", "Gavin Collins", "Ellie Murphy", "Nicholas Gonzales", 
         "Stella King", "Elijah Evans", "Violet Thompson", "Jameson Perez", "Makayla White", 
-"Emmett Turner", "Claire Rivera", "Luca Brooks", "Sadie Parker", 
-        "Hudson Harris", "Elena Phillips", "Christian Hall", "Hazel Foster"
+        "Emmett Turner", "Claire Rivera", "Luca Brooks", "Sadie Parker", 
+        "Hudson Harris", "Elena Phillips", "Christian Hall", "Hazel Foster", "Shooty Kontofos", "Ping Kowalski"
         ]
 
 Staff_Names = [
@@ -77,10 +76,9 @@ Staff_Names = [
         "Taylor Gomez", "Jordan Brooks", "Bailey Russell", "Dakota Bell", "Peyton Simmons",
         "Logan Richardson", "Morgan Coleman", "Sydney Diaz", "Hayden Stewart", "Cameron Powell",
         "Taylor Oliver", "Jordan Armstrong", "Bailey Turner", "Dakota Foster", "Peyton Richardson",
-        "Logan Cook", "Morgan Murphy", "Sydney Diaz", "Hayden Gray", "Cameron Bell"
-        ]
-
-
+        "Logan Cook", "Morgan Murphy", "Sydney Diaz", "Hayden Gray", "Cameron Bell", "Bob McTest",
+        "Thomas Testington", "Petras Testerton", "Gail Test", "Nicola Tesla"
+]
 
 streets = [
         "5th Avenue", "Union Street", "School Street", "Eagle Street", "Railroad Street", "Arlington Avenue", "North Street", "Lake Street", "State Street", "Somerset Drive", 
@@ -111,8 +109,7 @@ streets = [
         "Golden Gate Avenue", "Cottonwood Lane", "Trinity Lane", "Meadow View Drive", "Blossom Drive", "Maple Lane", "Peachtree Lane", "Emerald Lane", "Silver Springs Lane", 
         "Greenwood Lane", "Rosewood Drive", "Crystal Creek Lane", "Harbor Lane", "Gardenia Drive", "Dreamland Lane", "Shadow Way", "Sunny Shores Drive", "Crestwood Drive", 
         "Tranquility Lane", "Golden Way", "Starlight Lane", "Tranquil Drive", "Harmony Drive", "Serenity Drive", "Crystal Way", "Bluebird Drive", "Willow Lane"
-        ]
-
+]
 
 cities = [
         "Evergreen Heights", "Silverbrook", "Havenfield", "Willowdale", "Stonewall", "Amberwood", "Riverside", "Maplewood", "Sunnyvale", "Whispering Pines", "Meadowbrook",
@@ -133,25 +130,21 @@ cities = [
         "Aspen Grove", "Bluebird Meadows", "Ponderosa", "Majestic Hills", "Meadowlark Lane", "Starlight Valley", "Stonegate", "Serene Springs", "Greenfield", "Mossy Oak",
         "Tranquil Lake", "Autumn Ridge", "Woodland Creek", "Morning Mist", "Windy Hill", "Meadowbrook", "Whispering Pines", "Willow Glen", "Pine Ridge", "Serenity Springs",
         "Crystal Springs", "Harmony Hills", "Sunny Valley", "Silver Creek", "Oak Ridge", "Golden Meadow", "Summerfield"
-        ]
+ ]
 
 states = [
         "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", 
         "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", 
         "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", 
         "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "West Virginia", "Wisconsin", "Wyoming" 
-        ]
+]
 
-sex = [
-        "male", "female"
-        ]
-
+sex = ["male", "female"]
 
 pharmacy =  [
         "Walgreens", "CVS Pharmacy", "Rite Aid", "Boots Pharmacy", "Guardian Pharmacy", 
         "MediMart Pharmacy", "HealthFirst Pharmacy", "QuickScript Pharmacy", "CarePlus Pharmacy", "MediCare Pharmacy"
-        ]
-
+]
 
 primary_languages = [
         "English", "Mandarin Chinese", "Hindi", "Spanish", "French", "Standard Arabic", "Bengali", "Russian", "Portuguese", "Urdu",
@@ -165,8 +158,7 @@ primary_languages = [
         "Setswana", "Swati", "Tsonga", "Venda", "Amharic", "Tigrinya", "Oromo", "Igbo", "Hausa", "Yoruba",
         "Akan", "Wolof", "Fula", "Mandinka", "Malagasy", "Samoan", "Tongan", "Hawaiian", "Maori", "Fijian",
         "Marshallese", "Chamorro", "Palauan", "Nauruan", "Kiribati", "Tuvaluan", "Tokelauan", "Hiri Motu", "Tetum", "Bislama"
-        ]
-
+]
 
 ethnicities = [
         "African Americans", "Hispanic and Latino Americans", "Puerto Ricans", "Americans", "Pacific Islander", 
@@ -177,17 +169,17 @@ ethnicities = [
         "Assyrian people", "Maya peoples", "Nùng people", "Kongo people", "Yamato people", "Kurds", "Catalans", 
         "Ilocano people", "Cherokee", "Hutu", "Caldoche", "Hani people", "Chumash people", "Aleuts", "Aimaq people", 
         "Bosniaks", "Czechs", "Bulgarians", "Germans", "Manchu people", "Chams", "Lhoba people"
-        ]
+]
 
 races = [
-        "Caucasian", "African", "Asian", "Hispanic or Latino", "Native American or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Middle Eastern", "Mixed Race"
-        ]
-
+        "Caucasian", "African", "Asian", "Hispanic or Latino", "Native American or Alaska Native", "Native Hawaiian or Other Pacific Islander", 
+        "Middle Eastern", "Mixed Race"
+]
 
 Health_Insurance = [
-        "WellCare Health Insurance", "MediSure Health Insurance", "HealthGuard Insurance", "CareLink Health Insurance", "Vitality Health Insurance", "MediCover Health Insurance", "TrueCare Health Insurance", "CompleteCare Health Insurance", "Optima Health Insurance", "TotalHealth Insurance"
-        ]
-
+        "WellCare Health Insurance", "MediSure Health Insurance", "HealthGuard Insurance", "CareLink Health Insurance", "Vitality Health Insurance", 
+        "MediCover Health Insurance", "TrueCare Health Insurance", "CompleteCare Health Insurance", "Optima Health Insurance", "TotalHealth Insurance"
+]
 
 #randEmailExt = ["@gmail.com", "@hotmail.com", "@blogspot.com", "@aol.net", "@mailtrap.io", "@outlook.com", "@yahoo.com", "@protonmail.me", "@zoho.com"]
 

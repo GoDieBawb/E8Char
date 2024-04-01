@@ -9,7 +9,7 @@ public class ClientDemographicResponse extends BasicResponse {
 
     public ClientDemographicResponse(int clientID) {
         outcome = "success";
-        responseType = "ClientServicesResponse";
+        responseType = "ClientDemographicResponse";
         demographicData = new HashMap<String, Object>();
 
         getDemographicData(clientID);
@@ -31,9 +31,8 @@ public class ClientDemographicResponse extends BasicResponse {
             String[] fieldStrings = s.split(", ");
             
             for (int i = 0; i < fieldStrings.length; i++) {
-                String fs = fieldStrings[i];
-                String key = fs.split(":")[0];
-                String value = fs.split(":")[1];
+                String key = fieldStrings[i].split(":")[0];
+                String value = fieldStrings[i].split(":")[1];
 
                 if (!key.equals("Id") && !key.equals("EnteredDate"))
                     demographicData.put(key, value);

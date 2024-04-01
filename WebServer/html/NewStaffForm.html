@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
+	</head>
+	<body>
+		<h2>Staff Registration Form</h2>
+		<form id="main-form" method="post">
+			<!-- Staff Information -->
+			<!-- The label and input also create the text boxes around first name and etc. -->
+			<fieldset>
+				<legend>Personal Information</legend>
+				<label for="firstname">First Name:</label>
+				<input type="text" id="firstname" name="firstName" required>
+
+				<label for="lastname">Last Name:</label>
+				<input type="text" id="lastname" name="lastName" required>
+
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" required>
+
+				<label for="phonenumber">Phone Number:</label>
+				<input type="text" id="phonenumber" name="phoneNumber" required>
+
+				<label for="dob">Date of Birth:</label>
+				<input type="date" id="dob" name="dob" required>
+
+				<label for="address">Address:</label>
+				<input type="text" id="address" name="address">
+
+				<label for="city">City:</label>
+				<input type="text" id="city" name="city">
+
+				<label for="state">State:</label>
+				<input type="text" id="state" name="state">
+
+				<label for="zip">Zip:</label>
+				<input type="number" id="zip" name="zip">
+			</fieldset>
+
+			<!-- Additional Staff Information -->
+			<fieldset>
+				<legend>Additional Information</legend>
+				<label for="position">Position:</label>
+				<input type="text" id="position" name="position" required>
+
+				<label for="department">Department:</label>
+				<input type="text" id="department" name="department">
+
+				<label for="employmentdate">Employment Date:</label>
+				<input type="date" id="employmentdate" name="employmentDate" required>
+
+				<label for="hourlyrate">Hourly Rate:</label>
+				<input type="number" id="hourlyrate" name="hourlyRate" min="0" required>
+			</fieldset>
+			
+			<!-- The submit button function -->
+			<button onclick="submitStaff()" type="submit">Submit</button>
+		</form>
+	</body>
+</html>
+<script>
+	//The code below is too handle the submission of the form.
+	//Below is also where the javascript aspect of the form begins.
+
+	function submitStaff() {
+		event.preventDefault();
+		
+		var accessToken = clientUtils.getCookie("accessToken");
+		var postType = "submitStaff";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("clientId", clientId);
+		
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
+
+		clientUtils.webPost(newClientPost);
+	}
+	
+	//The code below will handle the response of the server 
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
+		}
+		else if (serverResponse.outcome == "success") {
+			parent.location.reload();
+		}
+	}
+</script>
