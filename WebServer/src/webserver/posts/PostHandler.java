@@ -7,7 +7,6 @@ package webserver.posts;
 
 import com.google.gson.Gson;
 import java.time.LocalDate;
-import webserver.SQLUtil;
 import webserver.authentication.Authenticator;
 import webserver.responses.*;
 
@@ -27,7 +26,6 @@ public class PostHandler {
 
         Gson      g   = new Gson();
         BasicPost b   = g.fromJson(json, BasicPost.class);
-        SQLUtil u = new SQLUtil();
 
         //Handle Login
         if (b.postType.equals("Login")) {

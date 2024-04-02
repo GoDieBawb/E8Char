@@ -1,6 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 public class SubmitBloodDrawnPost extends ServicePost {
     public String patientName;
@@ -17,9 +17,11 @@ public class SubmitBloodDrawnPost extends ServicePost {
         
         String serviceId = generateService();
         String queryString = "INSERT INTO BloodDrawnRequest (PatientName, DateOfBirth, MedicalRecordNumber, PhysicianName, BloodTest, LabLocation, IsFasting, Signature, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
-                + "VALUES ('" + patientName + "', '" + dateOfBirth + "', '" + medicalRecordNumber + "', '" + physicianName + "', '" + bloodTest + "', '" + labLocation + "', '" + isFasting + "', '" + signature + "', '" + serviceCode + "', '" + enteredby + "', '" + entereddate + "', '" + serviceId + "')";
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            patientName , dateOfBirth , medicalRecordNumber , physicianName , bloodTest , labLocation , 
+            isFasting , signature , serviceCode , enteredby , entereddate , serviceId
+        });
     }
 }

@@ -5,7 +5,7 @@
  */
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 /**
  *
@@ -23,20 +23,12 @@ public class SubmitMHEvalPost  extends ServicePost {
         
         String serviceId = this.generateService();
         String queryString = "INSERT INTO MHEval (ClientId, StressLevel, AnxietyLevel, DepressionLevel, SleepQuality, OverallHealth, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
-                + "VALUES ("
-                + "'" + clientId        + "', "
-                + "'" + stressLevel     + "', "
-                + "'" + anxietyLevel    + "', "
-                + "'" + depressionLevel + "', "
-                + "'" + sleepQuality    + "', "
-                + "'" + overallHealth   + "', "
-                + "'" + serviceCode     + "', "
-                + "'" + enteredby       + "', "
-                + "'" + entereddate     + "', "
-                + "'" + serviceId       + "')";
+                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
-        SQLUtil sql         = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            clientId, stressLevel, anxietyLevel, depressionLevel, sleepQuality, overallHealth,
+            serviceCode, enteredby, entereddate, serviceId
+        });
     }    
     
 }

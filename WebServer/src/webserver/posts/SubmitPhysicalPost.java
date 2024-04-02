@@ -5,7 +5,7 @@
  */
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 /**
  *
@@ -23,19 +23,11 @@ public class SubmitPhysicalPost extends ServicePost {
         
         String serviceId = generateService();
         String queryString = "INSERT INTO PhysicalEval (ClientId, Height, Weight, BloodPressure, HeartRate, Temperature, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
-                + "VALUES ("
-                + "'"  + clientId      + "',"
-                + " '" + height        + "',"
-                + " '" + weight        + "',"
-                + " '" + bloodPressure + "',"
-                + " '" + heartRate     + "',"
-                + " '" + temperature   + "',"
-                + " '" + serviceCode   + "',"
-                + " '" + enteredby     + "',"
-                + " '" + entereddate   + "',"
-                + " '" + serviceId     + "')";
+                + "VALUES(?,?,?,?,?,?,?,?,?,?)";
         
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            clientId , height , weight , bloodPressure , heartRate , temperature , 
+            serviceCode , enteredby , entereddate , serviceId
+        });
     }        
 }

@@ -50,6 +50,8 @@ public class WebServer {
 //        System.out.println("Server Started");
 //        
 //    }
+
+    public static final DataOMatic dbHandler = new DataOMatic();
     
     static int PORT = 80;
     private final static PostHandler POSTHANDLER = new PostHandler();

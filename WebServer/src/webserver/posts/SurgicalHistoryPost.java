@@ -1,6 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 public class SurgicalHistoryPost extends ServicePost {
     public String patientName;
@@ -14,9 +14,10 @@ public class SurgicalHistoryPost extends ServicePost {
 
         String serviceId = generateService();
         String queryString = "INSERT INTO SurgicalHistory (PatientName, DateOfSurgery, ProcedurePerformed, SurgeonName, HospitalName, EnteredBy, EnteredDate, ServiceId) "
-                + "VALUES ('" + patientName + "', '" + dateOfSurgery + "', '" + procedurePerformed + "', '" + surgeonName + "', '" + hospitalName + "', '" + enteredby + "', '" + entereddate + "', '" + serviceId + "')";
+                + "VALUES (?,?,?,?,?,?,?,?)";
 
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            patientName , dateOfSurgery , procedurePerformed , surgeonName , hospitalName , enteredby , entereddate , serviceId
+        });
     }
 }

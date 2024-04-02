@@ -1,7 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
-
+import webserver.WebServer;
 
 public class SubmitMedicationRecordPost extends ServicePost {
     public String medicationName;
@@ -15,21 +14,12 @@ public class SubmitMedicationRecordPost extends ServicePost {
         serviceCode = 9;
         
         String serviceId = this.generateService();
-        String queryString = "INSERT INTO MedicationRecords (ClientId, MedicationName, Dosage, FrequencyOfDosage, PrescribedBy, HasSideEffects, HasAllergies, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
-                + "VALUES ("
-                + "'" + clientId        + "', "
-                + "'" + medicationName  + "', "
-                + "'" + dosage          + "', "
-                + "'" + frequencyOfDosage + "', "
-                + "'" + prescribedBy    + "', "
-                + "'" + hasSideEffects  + "', "
-                + "'" + hasAllergies    + "', "
-                + "'" + serviceCode     + "', "
-                + "'" + enteredby       + "', "
-                + "'" + entereddate     + "', "
-                + "'" + serviceId       + "')";
+        String queryString = "INSERT INTO MedicationRecords (ClientId, MedicationName, Dosage, FrequencyOfDosage, PrescribedBy, HasSideEffects, HasAllergies, ServiceCode, EnteredBy, EnteredDate, ServiceId) " +
+                             "values(?,?,?,?,?,?,?,?,?,?,?)";
 
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            clientId, medicationName, dosage, frequencyOfDosage, prescribedBy, hasSideEffects,
+            hasAllergies, serviceCode, enteredby, entereddate, serviceId
+        });
     }    
 }

@@ -1,6 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 public class SubmitProcedureConsentFormPost extends ServicePost {
     public String procedure;
@@ -18,11 +18,11 @@ public class SubmitProcedureConsentFormPost extends ServicePost {
 
         String serviceId = generateService();
         String queryString = "INSERT INTO ConsentFormData (ConsentProcedure, Risks, Benefits, Anesthesia, ConsentType, AdditionalInfo, PersonName, ConsentGiven, EnteredBy, EnteredDate, ServiceId) " +
-                "VALUES('" + procedure + "', '" + risks + "', '" + benefits + "', '" + anesthesia + "', '" + consentType + "', '" + additionalInfo + "', '" + personName + "', '" + consentGiven + "', '" + enteredby + "', '" + entereddate + "', '" + serviceId + "')";
+                "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         
-        System.out.println(queryString);
-        
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            procedure , risks , benefits , anesthesia , consentType , additionalInfo , personName , 
+            consentGiven , enteredby , entereddate , serviceId
+        });
     }
 }

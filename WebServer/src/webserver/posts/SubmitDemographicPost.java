@@ -5,7 +5,7 @@
  */
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 /**
  *
@@ -34,18 +34,13 @@ public class SubmitDemographicPost extends BasicPost {
     public int         weight;
     
     public void publish() {
-        String queryString = String.format("insert into Client (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EnteredBy, EnteredDate, " +
-                                            "EmergencyPhone, Ethnicity, Insurance, InsuranceId, Pharmacy, PrimaryLanguage, Race, SSN, Sex, Weight) " +
-                                            "values('%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, '%s', '%s', '%s', '%s', %d, '%s', '%s', '%s', %d, '%s', %d)",
-                                            firstName, lastName, phoneNumber, dob, address, city, state, zip, enteredBy, enteredDate, emergencyPhone, ethnicity,
-                                            insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, weight);
+        String queryString = "insert into Client (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EnteredBy, EnteredDate, " +
+                             "EmergencyPhone, Ethnicity, Insurance, InsuranceId, Pharmacy, PrimaryLanguage, Race, SSN, Sex, Weight) " +
+                             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
-
-        String idQuery = "SELECT MAX(id) FROM Client;";
-        String id = sql.queryDatabase(idQuery).split(":")[1]; //Grabs the most recent ID. Sus but works
-        System.out.println("ADDED CLIENT ID: " + id);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            firstName, lastName, phoneNumber, dob, address, city, state, zip, enteredBy, enteredDate, 
+            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, weight
+        });
     }
-    
 }

@@ -7,7 +7,9 @@ package webserver.responses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import webserver.SQLUtil;
+
+import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -38,41 +40,33 @@ public class ClientServicesResponse extends BasicResponse {
     private void getServices() {
         String query            = "SELECT Service.Id, Service.ServiceDate, ServiceType, ServiceType.FileName FROM Service "
                                 + "JOIN Test.ServiceType on ServiceCode = ServiceType.Id "
-                                + "WHERE ClientId = '" + clientId + "' AND EnteredBy = " + userId;
+                                + "WHERE ClientId = ? AND EnteredBy = ?";
                                 
-        //System.out.println(query);
-        SQLUtil sql             = new SQLUtil();
-        String response         = sql.queryDatabase(query).replace("[", "");
-        String[] serviceStrings = response.split("]");
-
+        DataResponse dr = WebServer.dbHandler.secureGet(query, new Object[] { clientId, userId });
+        
         // if there's no results, then return nothing.
-        if (response.equals(""))
+        if (dr.size() == 0)
             return;
+        
+        System.out.println("================== " + dr.size());
 
-        for (String s : serviceStrings) {
-            
-            Service svc = new Service();          
-            String[] fieldStrings = s.split(", ");
-            
-            for (int i = 0; i < fieldStrings.length; i++) {
-                String fs    = fieldStrings[i];
-                String value = fs.split(":")[1];
+        // Make an organized list of services for a given patient.
+        for (int i = 1; i <= dr.size(); i++) {
+            Service svc = new Service(); 
 
-                if (fs.contains("ServiceDate:"))
-                    svc.date = value;
-                else if (fs.contains("ServiceType:"))
-                    svc.serviceType = value;
-                else if (fs.startsWith("Id:"))
-                    svc.serviceId = value;
-                else if (fs.startsWith("FileName:"))
-                    svc.serviceFile = value;
-            }
-            
+            svc.serviceId = Integer.toString((Integer)dr.getValueAtRowAndColumn(i, "Id"));
+            svc.date = (String)dr.getValueAtRowAndColumn(i, "ServiceDate");
+            svc.serviceType = (String)dr.getValueAtRowAndColumn(i, "ServiceType");
+            svc.serviceFile = (String)dr.getValueAtRowAndColumn(i, "FileName");
+
+            /* If not already present in the serviceMap, make a list of services
+               of this service type and insert it into the service map for subsequent
+               insertions of this service type.*/
             if (!serviceMap.containsKey(svc.serviceType)) {
                 ArrayList<Service> l = new ArrayList<>();
                 serviceMap.put(svc.serviceType, l);
             }
-            
+
             serviceMap.get(svc.serviceType).add(svc);
         }
     }

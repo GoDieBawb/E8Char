@@ -1,6 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 public class AppointmentFormPost extends ServicePost {
     public String firstName;
@@ -16,10 +16,12 @@ public class AppointmentFormPost extends ServicePost {
 
         String serviceId = generateService();
         String queryString = "INSERT INTO AppointmentFormData (FirstName, LastName, Email, PhoneNumber, Physician, Date, Reason, EnteredBy, EnteredDate, ServiceId) "
-                + "VALUES ('" + firstName + "', '" + lastName + "', '" + email + "', '" + phoneNumber + "', '" + physicianName + "', '" + dateTime + "', '" + reason + "', '" + enteredby + "', '" + entereddate + "', '" + serviceId + "')";
+                + "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            firstName, lastName, email, phoneNumber, physicianName, 
+            dateTime, reason, enteredby, entereddate, serviceId
+        });
     }
 }
 

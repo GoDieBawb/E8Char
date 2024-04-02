@@ -5,9 +5,8 @@
  */
 package webserver.posts;
 
-import java.lang.reflect.Field;
-
-import webserver.SQLUtil;
+import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -20,32 +19,14 @@ public class ServicePost extends BasicPost {
     public int         serviceCode;
     
     protected String generateService() {
-        SQLUtil sql         = new SQLUtil();
-        String serviceQuery = "INSERT INTO Service (ServiceCode, ClientId, ServiceDate, EnteredBy)"
-            + "VALUES ("
-                + "'" + serviceCode + "', "
-                + "'" + clientId    + "', "
-                + "'" + entereddate + "', "
-                + "'" + enteredby   + "')";
+        String serviceQuery = "INSERT INTO Service (ServiceCode, ClientId, ServiceDate, EnteredBy) VALUES (?, ?, ?, ?)";
 
-        sql.queryDatabase(serviceQuery);
-        
-        String idQuery   = "SELECT MAX(id) FROM Service;";
-        String s         = sql.queryDatabase(idQuery);
-        String serviceId = s.split(":")[1].replace("]", "");
-        return serviceId;
-    }
-    
-    public void debug()
-    {
-        Field[] members = this.getClass().getDeclaredFields();
+        WebServer.dbHandler.securePost(serviceQuery, new Object[] {
+            serviceCode, clientId, entereddate, enteredby
+        });
 
-        for (Field member: members)
-        {
-            try {
-                System.out.println("(" + member.getType().getSimpleName() + ") " + member.getName() + ": " + member.get(this));
-            }
-            catch(Exception ex){}
-        }
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM Service", new Object[0]);
+
+        return Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "MAX(id)"));
     }
 }

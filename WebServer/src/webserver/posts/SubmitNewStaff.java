@@ -1,6 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 public class SubmitNewStaff extends ServicePost {
     public String firstName;
@@ -19,11 +19,11 @@ public class SubmitNewStaff extends ServicePost {
     
     public void publish() {
         String queryString = "INSERT INTO Staff (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EmploymentDate, hourlyrate)"
-                + "VALUES ('" + firstName + "', '" + lastName + "', '" + phoneNumber + "', '" + dob + "', '" + address + "', '" + city 
-                + "', '" + state + "', '" + zip + "', '" + employmentDate + "', '" + hourlyRate + "'); ";
-
+                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
         
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            firstName , lastName , phoneNumber , dob , address , city , 
+            state , zip , employmentDate , hourlyRate
+        });
     }
 }

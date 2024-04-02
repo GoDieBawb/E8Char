@@ -5,7 +5,8 @@
  */
 package webserver.responses;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -20,12 +21,16 @@ public class LoginResponse extends BasicResponse {
     public LoginResponse(String username) {
         responseType = "login";
 
-        SQLUtil u = new SQLUtil();
-        String response = u.queryDatabase("select FirstName, LastName from Staff where username = '" + username + "'");
-        response = response.replaceAll("[\\[\\],:]|FirstName|LastName", "");
+        DataResponse dr = WebServer.dbHandler.secureGet("select Id, FirstName, LastName from Staff where username = ?", new Object[] { username });
+        
+        if (dr.size() == 0) {
+            outcome = "failed";
+            responseType = "LoginResponse";
+            return;
+        }
 
-        clinicianName = "dr. clinican";
-        clinicianId = response;
+        clinicianName = (String)dr.getValueAtRowAndColumn(1, "FirstName") + " " + (String)dr.getValueAtRowAndColumn(1, "LastName");
+        clinicianId = Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "Id"));
     }
     
 }

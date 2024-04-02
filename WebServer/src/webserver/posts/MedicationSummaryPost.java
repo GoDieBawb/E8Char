@@ -1,6 +1,6 @@
 package webserver.posts;
 
-import webserver.SQLUtil;
+import webserver.WebServer;
 
 public class MedicationSummaryPost extends ServicePost {
     public String orderNumber;
@@ -10,9 +10,11 @@ public class MedicationSummaryPost extends ServicePost {
     public void publish() {
         String serviceId = generateService();
         String queryString = "INSERT INTO MedicationSummary (OrderNumber, Contents, Date, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
-                + "VALUES ('" + orderNumber + "', '" + contents + "', '" + date + "', '" + serviceCode + "', '" + enteredby + "', '" + entereddate + "', '" + serviceId + "')";
+                + "VALUES(?, ?, ?, ?, ?, ?, ?)";
 
-        SQLUtil sql = new SQLUtil();
-        sql.queryDatabase(queryString);
+        WebServer.dbHandler.securePost(queryString, new Object[] {
+            orderNumber, contents, date, serviceCode, enteredby, 
+            entereddate, serviceId
+        });
     }
 }

@@ -7,7 +7,10 @@ import util.FileReader;
 /**
  *
  * @author Bawb
+ * @deprecated Use the dbHandler member of the WebServer class instead.
  */
+
+ @Deprecated
 public class SQLUtil {
     
    //Create Driver Name 

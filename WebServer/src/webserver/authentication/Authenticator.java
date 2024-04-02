@@ -7,7 +7,9 @@ package webserver.authentication;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.util.HashMap;
-import webserver.SQLUtil;
+
+import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -70,26 +72,22 @@ public class Authenticator {
     
     //Checks Username and Password
     private boolean verify(String userName, String password) {
-        SQLUtil u        = new SQLUtil();
-        String response  = u.queryDatabase("SELECT Password FROM Staff WHERE Username = '" + userName+"'");
+        DataResponse response = WebServer.dbHandler.secureGet("SELECT Password FROM Staff WHERE Username = ?", new Object[] { userName });
+
+        // Clinician doesn't exist.
+        if (response.size() == 0) 
+            return false;
         
-        if (response.equals("")) return false;
-        
-        response               = response.substring(1, response.length() - 1); //Remove first and last character
-        String dbHash          = response.split(":")[1]; //Split at ":" to get requested field
-        BCrypt.Result result   = BCrypt.verifyer().verify(password.toCharArray(), dbHash);
-        //System.out.println("VERIFY: " + result.verified);
+        String passHash = (String)response.getValueAtRowAndColumn(1, "Password");
+        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), passHash);
+
         return result.verified;
     }
     
     //Can Probably be moved to verify
     private int getUserId(String userName) {
-        SQLUtil s        = new SQLUtil();
-        String response  = s.queryDatabase("SELECT Id FROM Staff WHERE Username = '" + userName+"'"); 
-        //System.out.println("RESPONSE: " + response);
-        response         = response.substring(1, response.length() - 1); //Remove first and last character
-        String idString  = response.split(":")[1]; //Split at ":" to get requested field
-        return Integer.valueOf(idString);
+        DataResponse response = WebServer.dbHandler.secureGet("SELECT Id FROM Staff WHERE Username = ?", new Object[] { userName });
+        return (Integer)response.getValueAtRowAndColumn(1, "Id");
     }
     
     public int getUserIdByToken(String accessToken) {

@@ -6,7 +6,10 @@
 package webserver.responses;
 
 import java.util.ArrayList;
-import webserver.SQLUtil;
+import java.time.LocalDateTime;
+
+import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -31,44 +34,22 @@ public class UserClientsResponse extends BasicResponse {
         getClients();
     }
     
-    private String getSQLResponse() {
-        
-        String query = "SELECT * FROM Client WHERE EnteredBy  = '" + userId + "'";
-        
-        SQLUtil sql = new SQLUtil();
-        String response = sql.queryDatabase(query);
-        
-        return response;
-    }
-    
     private ArrayList<Client> getClients() {
         clients = new ArrayList<>();
-        String response = getSQLResponse();
-        
-        response = response.replace("[", "");
-        String[] clientStrings = response.split("]");
+
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Client WHERE EnteredBy = ?", new Object[] { userId });
         
         // if there's no results, then return nothing.
-        if (response.equals(""))
+        if (dr.size() == 0)
             return null;
 
-        for (String s : clientStrings) {
-            Client c = new Client();           
-            String[] fieldStrings = s.split(", ");
-            
-            for (int i = 0; i < fieldStrings.length; i++) {
-                String fieldName = fieldStrings[i].split(":")[0];
-                String fieldValue = fieldStrings[i].split(":")[1];
+        for (int i = 1; i <= dr.size(); i++) {
+            Client c = new Client();   
 
-                if (fieldName.equals("Id"))
-                    c.clientId = fieldValue;
-                else if (fieldName.equals("FirstName"))
-                    c.firstName = fieldValue;
-                else if (fieldName.equals("LastName"))
-                    c.lastName = fieldValue;
-                else if (fieldName.equals("DOB"))
-                    c.DOB = fieldValue; 
-            }
+            c.clientId = Integer.toString((Integer)dr.getValueAtRowAndColumn(i, "Id"));
+            c.lastName = (String)dr.getValueAtRowAndColumn(i, "LastName");
+            c.firstName = (String)dr.getValueAtRowAndColumn(i, "FirstName");
+            c.DOB = (String)dr.getValueAtRowAndColumn(i, "DOB");
 
             clients.add(c);
         }
