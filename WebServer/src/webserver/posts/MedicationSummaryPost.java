@@ -9,8 +9,8 @@ public class MedicationSummaryPost extends ServicePost {
 
     public void publish() {
         String serviceId = generateService();
-        String queryString = "INSERT INTO MedicationSummary (OrderNumber, Contents, Date, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
-                + "VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String queryString = "INSERT INTO `MedicationSummary` (OrderNumber, Contents, Date, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
+                + "VALUES(?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
             orderNumber, contents, date, serviceCode, enteredby, 

@@ -96,10 +96,6 @@
 										<td id="DOB"> </td>
 									</tr>
 									<tr>
-										<th scope="row">Weight</th>
-										<td id="weight"></td>
-									</tr>
-									<tr>
 										<th scope="row">Age</th>
 										<td id="age"> </td>
 									</tr>
@@ -172,12 +168,11 @@
 
 		let name = clientUtils.getCookie("clientFriendlyName");
 		let dob = clientUtils.ISOToLaymanDate(serverResponse.demographicData.DOB);
-		let weight = serverResponse.demographicData.Weight;
 		let age = new Date(Date.now() - new Date(dob).getTime()).getFullYear() - 1970;
 		let sex = serverResponse.demographicData.Sex;
 		let ethnicity = serverResponse.demographicData.Ethnicity;
 		let race = serverResponse.demographicData.Race;
-		let hPhone = clientUtils.toReadablePhone(serverResponse.demographicData.Phone);
+		let phoneNumber = serverResponse.demographicData.Phone;
 		let SSN = serverResponse.demographicData.SSN;
 		let lastVisit = '1-1-2024'
 		let pharmacyName = serverResponse.demographicData.Pharmacy
@@ -189,8 +184,8 @@
 		let emergencyPhone = serverResponse.demographicData.EmergencyPhone;
 
 		//Insert patient info into appropiate elements
-		let info = [dob, weight, age, sex, ethnicity, race, hPhone, firstLan, pharmacyName, insuranceName, insuranceID, fullAddress, emergencyPhone];
-		let ele = ['DOB', 'weight', 'age', 'sex', 'ethnicity', 'race', 'hPhone', 'firstLan', 'pharmacy','insuranceName', 'insuranceID', "full-address", "emergency-phone"];
+		let info = [dob, age, sex, ethnicity, race, phoneNumber, firstLan, pharmacyName, insuranceName, insuranceID, fullAddress, emergencyPhone];
+		let ele = ['DOB', 'age', 'sex', 'ethnicity', 'race', 'hPhone', 'firstLan', 'pharmacy','insuranceName', 'insuranceID', "full-address", "emergency-phone"];
 		let i = 0;
 
 		ele.forEach(element => {
@@ -215,7 +210,7 @@
 		if (!sessionStorage.getItem("preloadedDashboardData"))
 			sessionStorage.setItem("preloadedDashboardData", JSON.stringify(serverResponse));
 	}
-
+	
 	document.addEventListener("DOMContentLoaded", (event) => {
 		let preloadedDashboardData = sessionStorage.getItem("preloadedDashboardData");
 

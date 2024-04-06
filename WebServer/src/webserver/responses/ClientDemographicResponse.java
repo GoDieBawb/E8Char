@@ -19,7 +19,7 @@ public class ClientDemographicResponse extends BasicResponse {
 
     // Note: the data is dependent on the header names of the Client table in the database.
     private void getDemographicData(int clientID) {
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Client WHERE id = ?", new Object[] { clientID });
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Clients WHERE id = ?", new Object[] { clientID });
 
         // if there's no results, then return nothing.
         if (dr.size() == 0)

@@ -26,6 +26,7 @@
 				<legend>Contact</legend>
 				<label for="prim-lang">Primary Language:</label>
 				<select id="prim-lang" name="primaryLanguage" required>
+					<option value="null">Select primary language</option>
 				</select>
 
 				<label for="phonenumber">Phone Number:</label>
@@ -63,6 +64,7 @@
 				<legend>Diversity & Physicality</legend>
 				<label for="ethnicity">Ethnicity:</label>
 				<select id="ethnicity" name="ethnicity" required>
+					<option value="null">Select ethnicity</option>
 				</select>
 
 				<label for="race">Race:</label>
@@ -106,5 +108,21 @@
 		else if (serverResponse.outcome == "success") {
 			parent.location.reload();
 		}
-	}	
+	}
+
+	function onPageLoaded() {
+		let primLangList = document.querySelector("#ethnicity");
+		let ethnicityList = document.querySelector("#prim-lang");
+
+		primaryLanguages.forEach((lang) => {
+			primLangList.innerHTML += `<option value="${lang}">${lang}</option>`;
+		});
+
+		ethnicities.forEach((ethn) => {
+			ethnicityList.innerHTML += `<option value="${ethn}">${ethn}</option>`;
+		});
+		
+	}
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
 </script>

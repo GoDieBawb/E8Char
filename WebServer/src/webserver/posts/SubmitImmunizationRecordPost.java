@@ -20,7 +20,7 @@ public class SubmitImmunizationRecordPost extends ServicePost {
         serviceCode = 4;
         
         String serviceId = generateService();
-        String queryString = "INSERT INTO ImmunizationRecord (VaccineName, DateAdministered, AdministeringLocation, NextDoseDate, VaccineTypeFirstDose, VaccineTypeSecondDose, VaccineTypeBooster, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
+        String queryString = "INSERT INTO `ImmunizationRecords` (VaccineName, DateAdministered, AdministeringLocation, NextDoseDate, VaccineTypeFirstDose, VaccineTypeSecondDose, VaccineTypeBooster, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {

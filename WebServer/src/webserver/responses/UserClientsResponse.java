@@ -6,7 +6,6 @@
 package webserver.responses;
 
 import java.util.ArrayList;
-import java.time.LocalDateTime;
 
 import webserver.WebServer;
 import webserver.DataOMatic.DataResponse;
@@ -37,7 +36,7 @@ public class UserClientsResponse extends BasicResponse {
     private ArrayList<Client> getClients() {
         clients = new ArrayList<>();
 
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Client WHERE EnteredBy = ?", new Object[] { userId });
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Clients WHERE EnteredBy = ?", new Object[] { userId });
         
         // if there's no results, then return nothing.
         if (dr.size() == 0)

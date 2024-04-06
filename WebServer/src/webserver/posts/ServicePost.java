@@ -19,13 +19,13 @@ public class ServicePost extends BasicPost {
     public int         serviceCode;
     
     protected String generateService() {
-        String serviceQuery = "INSERT INTO Service (ServiceCode, ClientId, ServiceDate, EnteredBy) VALUES (?, ?, ?, ?)";
+        String serviceQuery = "INSERT INTO `Services` (ServiceCode, ClientId, ServiceDate, EnteredBy) VALUES (?,?,?,?)";
 
         WebServer.dbHandler.securePost(serviceQuery, new Object[] {
             serviceCode, clientId, entereddate, enteredby
         });
 
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM Service", new Object[0]);
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM Services", new Object[] {});
 
         return Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "MAX(id)"));
     }

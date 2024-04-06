@@ -38,7 +38,7 @@ public class ClientServicesResponse extends BasicResponse {
     }
     
     private void getServices() {
-        String query            = "SELECT Service.Id, Service.ServiceDate, ServiceType, ServiceType.FileName FROM Service "
+        String query            = "SELECT Services.Id, Services.ServiceDate, ServiceType, ServiceType.FileName FROM Services "
                                 + "JOIN Test.ServiceType on ServiceCode = ServiceType.Id "
                                 + "WHERE ClientId = ? AND EnteredBy = ?";
                                 
@@ -47,8 +47,6 @@ public class ClientServicesResponse extends BasicResponse {
         // if there's no results, then return nothing.
         if (dr.size() == 0)
             return;
-        
-        System.out.println("================== " + dr.size());
 
         // Make an organized list of services for a given patient.
         for (int i = 1; i <= dr.size(); i++) {

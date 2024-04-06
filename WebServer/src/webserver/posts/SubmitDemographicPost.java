@@ -31,16 +31,15 @@ public class SubmitDemographicPost extends BasicPost {
     public String      race;
     public int         ssn;
     public String      sex;
-    public int         weight;
     
     public void publish() {
-        String queryString = "insert into Client (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EnteredBy, EnteredDate, " +
-                             "EmergencyPhone, Ethnicity, Insurance, InsuranceId, Pharmacy, PrimaryLanguage, Race, SSN, Sex, Weight) " +
-                             "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String queryString = "insert into `Clients` (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EnteredBy, EnteredDate, " +
+                             "EmergencyPhone, Ethnicity, Insurance, InsuranceId, Pharmacy, PrimaryLanguage, Race, SSN, Sex) " +
+                             "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
             firstName, lastName, phoneNumber, dob, address, city, state, zip, enteredBy, enteredDate, 
-            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, weight
+            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex
         });
     }
 }

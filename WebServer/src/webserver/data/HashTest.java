@@ -3,7 +3,7 @@
  * 
  * 
  */
-package webserver.tests;
+package webserver.data;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 

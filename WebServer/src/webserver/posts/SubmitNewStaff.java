@@ -18,7 +18,7 @@ public class SubmitNewStaff extends ServicePost {
     public int hourlyRate;
     
     public void publish() {
-        String queryString = "INSERT INTO Staff (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EmploymentDate, hourlyrate)"
+        String queryString = "INSERT INTO `Staff` (FirstName, LastName, Phone, DOB, Address, City, State, Zip, EmploymentDate, hourlyrate)"
                 + "VALUES (?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {

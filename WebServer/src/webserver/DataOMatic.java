@@ -118,6 +118,7 @@ public final class DataOMatic {
     /** Executes a prepared query intended for reading data.
      * @param preparedQuery an SQL query string that contains '?' as parameterized fields.
      * @param values a list of generic values to fill the fields with, and each must correspond exactly to each '?' field as before.
+     * This parameter can be NULL if it's not needed.
      * @return  a numerically-indexed array of dictionaries, where a key is a column name and its value is the 
      *          pertaining column's value.
     **/
@@ -129,42 +130,53 @@ public final class DataOMatic {
         // This might slow things down, but whatever.
         DataResponse dr = new DataResponse();
 
-        try {
-            conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:mainpool");
-            conn.beginRequest();
+        int tries = 3;
+        while(tries > 0) {
+            try {
+                conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:mainpool");
+                conn.beginRequest();
 
-            stmt = conn.prepareStatement(preparedQuery);
+                stmt = conn.prepareStatement(preparedQuery);
 
-            // Populate the parameterized fields.
-            for (int i = 0; i < values.length; i++)
-                stmt.setObject(i+1, values[i]);
+                if (values != null) {
+                    // Populate the parameterized fields.
+                    for (int i = 0; i < values.length; i++)
+                        stmt.setObject(i+1, values[i]);
+                }
 
-            stmt.execute();
-            rset = stmt.getResultSet();
+                stmt.execute();
+                rset = stmt.getResultSet();
 
-            final ResultSetMetaData setData = rset.getMetaData();
+                final ResultSetMetaData setData = rset.getMetaData();
 
-            while (rset.next()) {
-                /* Iterate through each row in the set and add each row to the data response object.
-                   Order is uncertain. */
-                HashMap<String, Object> newRow = new HashMap<>();
+                while (rset.next()) {
+                    /* Iterate through each row in the set and add each row to the data response object.
+                    Order is uncertain. */
+                    HashMap<String, Object> newRow = new HashMap<>();
 
-                // Populate columns and their values.
-                for (int i = 1; i <= setData.getColumnCount(); i++)
-                    newRow.put(setData.getColumnLabel(i), rset.getObject(i));
+                    // Populate columns and their values.
+                    for (int i = 1; i <= setData.getColumnCount(); i++)
+                        newRow.put(setData.getColumnLabel(i), rset.getObject(i));
 
-                dr.putRow(newRow);
+                    dr.putRow(newRow);
+                }
             }
-        }
-        catch(Exception ex) {
-            System.err.println("Data-o-Matic: Couldn't get data - " + ex.getMessage());
-            System.err.println(".. get query was: " + preparedQuery);
-        }
-        finally {
-            // Free the resources and release the connection back to the pool.
-            try { if (rset != null) rset.close(); } catch(SQLException e) {}
-            try { if (stmt != null) stmt.close(); } catch(SQLException e) {}
-            try { if (conn != null) conn.endRequest(); conn.close(); } catch(SQLException e) {}
+            catch(Exception ex) {
+                System.err.println("Data-o-Matic: Couldn't get data - " + ex.getMessage());
+                System.err.println(".. get query was: " + preparedQuery);
+                System.err.println("Data-o-Matic: try " + tries);
+                
+                tries--;
+                continue;
+            }
+            finally {
+                // Free the resources and release the connection back to the pool.
+                try { if (rset != null) rset.close(); } catch(SQLException e) {}
+                try { if (stmt != null) stmt.close(); } catch(SQLException e) {}
+                try { if (conn != null) conn.endRequest(); conn.close(); } catch(SQLException e) {}
+            }
+
+            break;
         }
 
         return dr;
@@ -173,6 +185,7 @@ public final class DataOMatic {
     /** Executes a prepared query intended for inserting, updating and deleting data. 
      * @param preparedQuery an SQL query string that contains '?' as parameterized fields.
      * @param values a list of generic values to fill the fields with, and each must correspond exactly to each '?' field as before.
+     * This parameter can be NULL if it's not needed.
     **/
     public void securePost(String preparedQuery, Object[] values) {
         Connection conn = null;
@@ -184,9 +197,11 @@ public final class DataOMatic {
 
             stmt = conn.prepareStatement(preparedQuery);
             
-            // Populate the parameterized fields.
-            for (int i = 0; i < values.length; i++)
-                stmt.setObject(i+1, values[i]);
+            if (values != null) {
+                // Populate the parameterized fields.
+                for (int i = 0; i < values.length; i++)
+                    stmt.setObject(i+1, values[i]);
+            }
 
             stmt.execute();
         }
