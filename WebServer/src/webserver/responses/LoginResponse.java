@@ -19,18 +19,17 @@ public class LoginResponse extends BasicResponse {
     public String clinicianId;
     
     public LoginResponse(String username) {
+        outcome = "success";
         responseType = "login";
 
-        DataResponse dr = WebServer.dbHandler.secureGet("select Id, FirstName, LastName from Staff where username = ?", new Object[] { username });
+        DataResponse dr = WebServer.dbHandler.secureGet("select Id, FirstName, LastName from Staff where Username = ?", new Object[] { username });
         
         if (dr.size() == 0) {
             outcome = "failed";
-            responseType = "LoginResponse";
             return;
         }
 
         clinicianName = (String)dr.getValueAtRowAndColumn(1, "FirstName") + " " + (String)dr.getValueAtRowAndColumn(1, "LastName");
         clinicianId = Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "Id"));
     }
-    
 }

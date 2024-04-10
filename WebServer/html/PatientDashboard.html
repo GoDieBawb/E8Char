@@ -166,7 +166,7 @@
 
         console.log(serverResponse);
 
-		let name = clientUtils.getCookie("clientFriendlyName");
+		let name = clientUtils.getCookie("clientName");
 		let dob = clientUtils.ISOToLaymanDate(serverResponse.demographicData.DOB);
 		let age = new Date(Date.now() - new Date(dob).getTime()).getFullYear() - 1970;
 		let sex = serverResponse.demographicData.Sex;
@@ -178,7 +178,7 @@
 		let pharmacyName = serverResponse.demographicData.Pharmacy
 		let insuranceName = serverResponse.demographicData.Insurance
 		let insuranceID = serverResponse.demographicData.InsuranceId;
-		let physician = `Dr. ${clientUtils.getCookie("physicianName")}`;
+		let physician = `Dr. ${clientUtils.getCookie("clinicianName")}`;
 		let firstLan = serverResponse.demographicData.PrimaryLanguage;
 		let fullAddress = `${serverResponse.demographicData.Address}, ${serverResponse.demographicData.City}, ${serverResponse.demographicData.State} ${serverResponse.demographicData.Zip}`;
 		let emergencyPhone = serverResponse.demographicData.EmergencyPhone;

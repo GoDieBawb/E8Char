@@ -39,7 +39,7 @@ public final class DataOMatic {
         private ArrayList<HashMap<String, Object>> table = new ArrayList<HashMap<String, Object>>(0);
         
         /** Retrieves a value at a given row and column with the given column name.
-         *  Row number start at 1. **/
+         *  Row number starts at 1. **/
         public Object getValueAtRowAndColumn(int row, String columnName) {
             Object value = table.get(row-1).get(columnName);
 

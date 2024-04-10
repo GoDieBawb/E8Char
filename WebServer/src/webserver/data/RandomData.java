@@ -242,4 +242,15 @@ public final class RandomData {
         "WellCare Health Insurance", "MediSure Health Insurance", "HealthGuard Insurance", "CareLink Health Insurance", "Vitality Health Insurance",
         "MediCover Health Insurance", "TrueCare Health Insurance", "CompleteCare Health Insurance", "Optima Health Insurance", "TotalHealth Insurance"
     };
+
+    public static final String[] EMPLOYMENT_POSITIONS = {
+        "Physician", "Nurse", "Pharmacist", "Dietitian", "Surgeon", "Family Physician", "Anesthesiologist", "Psychiatrist", "Phlebotomist", 
+        "Radiologist", "Pediatrician", "Neurologist", "ENT Doctor", "Cardiologist", "Urologist", "Dermatologist", "Hematologist", "Oncologist",
+        "Psychiatrist"
+    };
+
+    public static final String[] DEPARTMENTS = {
+        "Anesthesics", "Cardiology", "General Surgery", "Neurology", "Nutrition and Dietetics", "Pediatrics", "Psychiatry", "Radiology", "Urology",
+        "Ear, Nose and Throat", "Family Medicine", "Oncology", "Hematology", "Dermatology"
+    };
 }

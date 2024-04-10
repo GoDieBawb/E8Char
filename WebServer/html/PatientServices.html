@@ -77,6 +77,7 @@
     "use strict"
 
     let serviceGroupList = {};
+    let serviceGroupOptionsList = []; // For creating a new service form.
     let serviceGroupRecordsList = [];
     var selectedGroupRecord = null;
 
@@ -84,45 +85,50 @@
     function ServiceGroup(name) {
         this.name = name;
         this.records = new Array(); // Array<ServiceRecord>
-        this.HTMLReference =  new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100">${this.name}</button>`, "text/html").querySelector(".btn");
-        this.clonedHTMLReference = null;
+        this.HTMLReference = new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100">${this.name}</button>`, "text/html").querySelector(".btn");
         this.serviceFile = null;
 
         this.select = function(viewMode) {
             for (const serviceName in serviceGroupList)
                 serviceGroupList[serviceName].deselect(viewMode)
 
-            if (viewMode == 1)
-            {
-                this.clonedHTMLReference.classList.add("pressed");
-                document.querySelector("#service-creation-form-viewer").setAttribute("src", this.serviceFile);
-            }
-            else
-            {
-                this.HTMLReference.classList.add("pressed");
-                
-                const serviceRecordsListHTML = document.querySelector("#service-record-list");
-                clientUtils.clearHTMLList(serviceRecordsListHTML);
+            this.HTMLReference.classList.add("pressed");
             
-                for (const record of this.records)
-                    serviceRecordsListHTML.appendChild(record.HTMLReference);
-            }
+            const serviceRecordsListHTML = document.querySelector("#service-record-list");
+            clientUtils.clearHTMLList(serviceRecordsListHTML);
+        
+            for (const record of this.records)
+                serviceRecordsListHTML.appendChild(record.HTMLReference);
         }
 
         this.deselect = function(viewMode) {
-            if (viewMode == 1)
-                this.clonedHTMLReference.classList.remove("pressed");
-            else
-                this.HTMLReference.classList.remove("pressed");
+            this.HTMLReference.classList.remove("pressed");
         }
         
         this.HTMLReference.addEventListener("click", () => this.select(0), false);
         document.getElementById("service-group-list").appendChild(this.HTMLReference);
+    }
 
-        // Clone a separate service group button for the service creation form view.
-        this.clonedHTMLReference = this.HTMLReference.cloneNode(true);
-        this.clonedHTMLReference.addEventListener("click", () => this.select(1), false);
-        document.getElementById("service-creation-group-list").appendChild(this.clonedHTMLReference);
+    // Represents an option for creating a new service form.
+    function ServiceGroupOption(name, serviceFile) {
+        this.name = name;
+        this.HTMLReference = new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100">${this.name}</button>`, "text/html").querySelector(".btn");
+        this.serviceFile = serviceFile;
+
+        this.select = function(viewMode) {
+            for (const serviceGroupOption in serviceGroupOptionsList)
+                serviceGroupOptionsList[serviceGroupOption].deselect(viewMode)
+
+            this.HTMLReference.classList.add("pressed");
+            document.querySelector("#service-creation-form-viewer").src = this.serviceFile;
+        }
+
+        this.deselect = function(viewMode) {
+            this.HTMLReference.classList.remove("pressed");
+        }
+        
+        this.HTMLReference.addEventListener("click", () => this.select(0), false);
+        document.querySelector("#service-creation-group-list").appendChild(this.HTMLReference);
     }
 
     // This object represents a record belonging to a specific service.
@@ -132,7 +138,7 @@
             `<button class="btn-elechart text-start my-1 py-1">
                 <span class="col mx-4">#${recordData.serviceId}</span>|
                 <span class="col mx-4">${recordData.serviceType}</span>|
-                <span class="col mx-4">${clientUtils.getCookie("clientFriendlyName")}</span>|
+                <span class="col mx-4">${clientUtils.getCookie("clientName")}</span>|
                 <span class="col mx-4">d.o.b</span>|
                 <span class="col mx-4">servicing doctor</span>|
                 <span class="col mx-4">${recordData.date}</span>
@@ -191,19 +197,24 @@
             }
         }
 
+        // Populate service group options to allow for service form creation.
+        for (const serviceGroupOption in serverResponse.availableServices) {
+            let serviceFile = serverResponse.availableServices[serviceGroupOption];
+            serviceGroupOptionsList.push(new ServiceGroupOption(serviceGroupOption, serviceFile));
+        }
+
         //clientUtils.setLoadingStatus(false, "loading-services-display");
     }
 
     window.onload = function() {
         clientUtils.changeInstructionalMessage(document.querySelector("#service-form-viewer"), "To view a record, select a service type tab, then select a record entry on the top left window.");
 
-        //clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientFriendlyName")} > Services`);
+        //clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientName")} > Services`);
         //clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
 
         // retrieve a list of services for this particular patient
         let newClientPost = new clientUtils.ClientPost("requestClientServices", clientUtils.getCookie("accessToken"), responseCallback);
         newClientPost.addParam("clientId", clientUtils.getCookie("clientID"));
-        
         clientUtils.webPost(newClientPost);
     };
 

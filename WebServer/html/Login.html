@@ -73,7 +73,8 @@
 		}
 		else if (serverResponse.outcome == "success") {
 			clientUtils.setCookie("accessToken", serverResponse.accessToken);
-			clientUtils.setCookie("physicianName", serverResponse.physicianName);
+			clientUtils.setCookie("clinicianName", serverResponse.clinicianName);
+			clientUtils.setCookie("clinicianID", serverResponse.clinicianId);
 			clientUtils.goto("PatientInquiry");
 		}
 	}

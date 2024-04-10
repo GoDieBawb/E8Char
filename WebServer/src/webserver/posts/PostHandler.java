@@ -42,7 +42,6 @@ public class PostHandler {
                 return r;
             }
 
-            r.outcome       = "success";
             r.accessToken   = token;
             return r;
         }
@@ -143,7 +142,7 @@ public class PostHandler {
                 selectedClient = g.fromJson(json, RequestClientDemographicPost.class).clientId;
                 ClientDemographicResponse cdr = new ClientDemographicResponse(selectedClient);
                 return cdr;
-
+                
             default:
                 System.out.println("Unknown Post: " + b.postType);
                 return new UnknownPostResponse();

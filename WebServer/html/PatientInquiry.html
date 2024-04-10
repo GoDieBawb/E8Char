@@ -85,7 +85,7 @@
             this.referenceCard.querySelector(".btn-elechart").classList.add("selected");
             
             clientUtils.setCookie("clientID", this.clientID);
-            clientUtils.setCookie("clientFriendlyName", `${clientLastName}, ${clientFirstName}`);
+            clientUtils.setCookie("clientName", `${clientLastName}, ${clientFirstName}`);
         }
 
         this.deselect = function() {
@@ -104,7 +104,7 @@
         console.log(serverResponse);
 
         clientUtils.delCookie("clientID");
-        clientUtils.delCookie("clientFriendlyName");
+        clientUtils.delCookie("clientName");
 
         let clients = serverResponse.clients;
 
