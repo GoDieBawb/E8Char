@@ -1,6 +1,6 @@
 package webserver;
 
-import webserver.data.DataManager;
+// import webserver.data.DataManager;
 
 public class Main {
     public static void main(String[] args) throws Exception {

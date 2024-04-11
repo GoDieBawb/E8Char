@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<script defer src="scripts/clientutils.js"></script>
 	</head>
 	<body>
 		<h2>Blood Drawn Form</h2>
@@ -65,8 +66,9 @@
 	function submitBloodDrawnRequest() {
 		event.preventDefault();
 
-		var accessToken = clientUtils.getCookie("accessToken");
-		var postType = "bloodDrawnFormPost";
+		const accessToken = clientUtils.getCookie("accessToken");
+		const clientId = clientUtils.getCookie("clientID");
+		const postType = "bloodDrawnFormPost";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);

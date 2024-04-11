@@ -88,8 +88,9 @@
 	function submitDemographic() {
 		event.preventDefault();
 		
-		var accessToken = clientUtils.getCookie("accessToken");
-		var postType = "patientRegistrationFormPost";
+		const accessToken = clientUtils.getCookie("accessToken");
+		const clientId = clientUtils.getCookie("clientID");
+		const postType = "patientRegistrationFormPost";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);

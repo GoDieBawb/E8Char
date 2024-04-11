@@ -69,8 +69,9 @@
 	function submitStaff() {
 		event.preventDefault();
 		
-		var accessToken = clientUtils.getCookie("accessToken");
-		var postType = "submitStaff";
+		const accessToken = clientUtils.getCookie("accessToken");
+		const clientId = clientUtils.getCookie("clientID");
+		const postType = "submitStaff";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
