@@ -14,8 +14,8 @@
     <body>
         <div class="d-flex overflow-x-hidden">
             <!-- Sidebar -->
-            <div class="bg-white border-left" id="sidebar-wrapper">
-                <div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i class="fas fa-user me-2"></i>Portal</div>
+            <div class="bg-white shadow" id="sidebar-wrapper">
+                <h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-th-list me-2"></i>Inquiry</h1>
                 <div class="list-group list-group-flush">
                     <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
                         <i class="fas fa-user-md me-2"></i>Service Patient</button>
@@ -27,18 +27,8 @@
 
             <!-- Page Content & Nav Bar -->
             <div class="bg-elechart-light elechart-bg w-100" id="page-content-wrapper">
-                <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                        <h2 class="fs-2 m-0">Patient Inquiry</h2>
-                    </div>
-    
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </nav>
+                <!-- Top Padding -->
+				<nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4"></nav>
 
                 <!-- Patient History List -->
                 <div class="container-fluid px-4">

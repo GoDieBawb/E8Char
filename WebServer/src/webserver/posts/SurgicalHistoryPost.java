@@ -13,7 +13,7 @@ public class SurgicalHistoryPost extends ServicePost {
         serviceCode = 8;
 
         String serviceId = generateService();
-        String queryString = "INSERT INTO `SurgicalHistories` (PatientName, DateOfSurgery, ProcedurePerformed, SurgeonName, HospitalName, EnteredBy, EnteredDate, ServiceId) "
+        String queryString = "INSERT INTO `SurgicalHistories` (PatientName, DateOfSurgery, ProcedurePerformed, SurgeonName, HospitalName, EnteredBy, EnteredDate, PertainingServiceId) "
                 + "VALUES (?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {

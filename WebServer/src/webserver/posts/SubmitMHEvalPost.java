@@ -22,7 +22,7 @@ public class SubmitMHEvalPost  extends ServicePost {
         serviceCode = 2;
         
         String serviceId = this.generateService();
-        String queryString = "INSERT INTO `MentalHealthEvaluations` (ClientId, StressLevel, AnxietyLevel, DepressionLevel, SleepQuality, OverallHealth, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
+        String queryString = "INSERT INTO `MentalHealthEvaluations` (ClientId, StressLevel, AnxietyLevel, DepressionLevel, SleepQuality, OverallHealth, ServiceCode, EnteredBy, EnteredDate, PertainingServiceId)"
                 + "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {

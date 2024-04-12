@@ -14,7 +14,7 @@ public class SubmitMedicationRecordPost extends ServicePost {
         serviceCode = 9;
         
         String serviceId = this.generateService();
-        String queryString = "INSERT INTO `MedicationRecords` (ClientId, MedicationName, Dosage, FrequencyOfDosage, PrescribedBy, HasSideEffects, HasAllergies, ServiceCode, EnteredBy, EnteredDate, ServiceId) " +
+        String queryString = "INSERT INTO `MedicationRecords` (ClientId, MedicationName, Dosage, FrequencyOfDosage, PrescribedBy, HasSideEffects, HasAllergies, ServiceCode, EnteredBy, EnteredDate, PertainingServiceId) " +
                              "values(?,?,?,?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {

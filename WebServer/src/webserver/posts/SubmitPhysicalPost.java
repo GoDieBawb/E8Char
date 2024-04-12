@@ -22,7 +22,7 @@ public class SubmitPhysicalPost extends ServicePost {
         serviceCode = 1;
         
         String serviceId = generateService();
-        String queryString = "INSERT INTO `PhysicalEvaluations` (ClientId, Height, Weight, BloodPressure, HeartRate, Temperature, ServiceCode, EnteredBy, EnteredDate, ServiceId)"
+        String queryString = "INSERT INTO `PhysicalEvaluations` (ClientId, Height, Weight, BloodPressure, HeartRate, Temperature, ServiceCode, EnteredBy, EnteredDate, PertainingServiceId)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {

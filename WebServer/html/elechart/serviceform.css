@@ -77,13 +77,19 @@ select {
 
 button {
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #12633C;
     color: white;
+    font-weight: 700;
+    font-size: 12pt;
+    border-radius: 0;
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #157347;
+}
+
+button:active {
+    background-color: #12633C;
 }

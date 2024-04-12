@@ -16,7 +16,7 @@ public class SubmitBloodDrawnPost extends ServicePost {
         serviceCode = 3;
         
         String serviceId = generateService();
-        String queryString = "INSERT INTO `BloodDrawnRequests` (PatientName, DateOfBirth, MedicalRecordNumber, PhysicianName, BloodTest, LabLocation, IsFasting, Signature, ServiceCode, EnteredBy, EnteredDate, ServiceId) "
+        String queryString = "INSERT INTO `BloodDrawnRequests` (PatientName, DateOfBirth, MedicalRecordNumber, PhysicianName, BloodTest, LabLocation, IsFasting, Signature, ServiceCode, EnteredBy, EnteredDate, PertainingServiceId) "
                 + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {

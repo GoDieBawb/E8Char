@@ -13,146 +13,137 @@
 	</head>
 
 	<body>
-		<div class="d-flex" id="wrapper">
-			<!-- Sidebar -->
-			<div class="bg-white border-end" id="sidebar-wrapper">
-				<div class="sidebar-heading text-center py-4 color-elechart-deep fs-4 fw-bold text-uppercase border-bm"><i
-						class="fas fa-user me-2"></i>Patient</div>
-				<div class="list-group list-group-flush">
-					<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="clientUtils.goto('PatientServices')"><i class="fas fa-user-tag me-2"></i>Services</button>
-					<button type="button" class="btn btn-success rounded-0 fw-bold" onclick="clientUtils.goto('PatientInquiry'); sessionStorage.removeItem('preloadedDashboardData')">
-						<i class="fas fa-arrow-alt-circle-left me-2"></i>Patient Inquiry</button>
+		<section role="main">
+			<div class="d-flex" id="wrapper">
+				<!-- Sidebar -->
+				<div class="bg-white shadow" id="sidebar-wrapper">
+					<h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-clinic-medical me-2"></i>Dashboard</h1>
+					<div class="list-group list-group-flush">
+						<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="clientUtils.goto('PatientServices')"><i class="fas fa-user-tag me-2"></i>Services</button>
+						<button type="button" class="btn btn-success rounded-0 fw-bold" onclick="clientUtils.goto('PatientInquiry'); sessionStorage.removeItem('preloadedDashboardData')">
+							<i class="fas fa-arrow-alt-circle-left me-2"></i>Patient Inquiry</button>
+					</div>
 				</div>
-			</div>
-			<!-- /#sidebar-wrapper -->
+				<!-- /#sidebar-wrapper -->
 
-			<!-- Page Content & Nav Bar -->
-			<div class="bg-elechart-light elechart-bg w-100" id="page-content-wrapper">
-				<nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
-					<div class="d-flex align-items-center">
-						<i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-						<h2 class="fs-2 m-0">Dashboard</h2>
-					</div>
+				<!-- Page Content & Nav Bar -->
+				<div class="bg-elechart-light elechart-bg w-100" id="page-content-wrapper">
+					<!-- Top Padding -->
+					<nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4"></nav>
 
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-						data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-				</nav>
-
-				<div class="container-fluid px-4">
-				<!-- TOP -->
-					<div class="row g-3 my-2 align-items-center">
-						<div class="col-md-3">
-							<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
-								<div>
-									<h3 class="fs-2">Physician</h3>
-									<p class="fs-5" id="hPhysician"></p>
+					<div class="container-fluid px-4">
+					<!-- TOP -->
+						<div class="row g-3 my-2 align-items-center">
+							<div class="col-md-3">
+								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
+									<div>
+										<h2 class="fs-2">Physician</h2>
+										<p class="fs-5" id="hPhysician"></p>
+									</div>
+									<i class="fas fa-head-side-mask fs-1 border rounded-full secondary-bg p-3"></i>
 								</div>
-								<i class="fas fa-head-side-mask fs-1 color-elechart-deep border rounded-full secondary-bg p-3"></i>
+							</div>
+
+							<div class="col-md-3">
+								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
+									<div>
+										<h2 class="fs-2">Last Visit</h2>
+										<p class="fs-5" id="lastV"></p>
+									</div>
+									<i class="fas fa-calendar-day fs-1 border rounded-full secondary-bg p-3"></i>
+								</div>
+							</div>
+
+							<div class="col-md-3">
+								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
+									<div>
+										<h2 class="fs-2">SSN</h2>
+										<p class="fs-5" id="idt"></p>
+									</div>
+									<i class="fas fa-address-card fs-1 border rounded-full secondary-bg p-3"></i>
+								</div>
 							</div>
 						</div>
 
-						<div class="col-md-3">
-							<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
-								<div>
-									<h3 class="fs-2">Last Visit</h3>
-									<p class="fs-5" id="lastV"></p>
-								</div>
-								<i class="fas fa-calendar-day fs-1 color-elechart-deep border rounded-full secondary-bg p-3"></i>
+						<div class="row my-5 bg-white rounded border" >
+							<h3 class="fs-4 mt-3 mb-3 text-center" id="pName"></h3>
+							<!--Patient Image-->
+							<div class="col text-center">
+								<figure class="figure">
+									<img src="images/default.png" class="figure-img img-fluid rounded" alt="..." style="height: 200px; width: 200px;">
+								</figure>
 							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
-								<div>
-									<h3 class="fs-2">SSN</h3>
-									<p class="fs-5" id="idt"></p>
-								</div>
-								<i class="fas fa-address-card fs-1 color-elechart-deep border rounded-full secondary-bg p-3"></i>
+							<!--Patient Info-->
+							<div class="col">
+								<table class="table">
+									<tbody>
+										<tr>
+											<th scope="row">Primary Language</th>
+											<td id="firstLan"> </td>
+										</tr>
+										<tr>
+											<th scope="row">DOB</th>
+											<td id="DOB"> </td>
+										</tr>
+										<tr>
+											<th scope="row">Age</th>
+											<td id="age"> </td>
+										</tr>
+										<tr>
+											<th scope="row">Sex</th>
+											<td id="sex"></td>
+										</tr>
+										<tr>
+											<th scope="row">Ethnicity</th>
+											<td id="ethnicity"> </td>
+										</tr>
+										<tr>
+											<th scope="row">Race</th>
+											<td id="race"></td>
+										</tr>
+										<tr>
+											<th scope="row">Home Phone</th>
+											<td id="hPhone"> </td>
+										</tr>
+									</tbody>
+								</table>
 							</div>
+							<!--Patient Info left table end-->
+							<div class="col">
+								<table class="table">
+									<thead>
+									</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">Full Address</th>
+											<td id="full-address"></td>
+										</tr>
+										<tr>
+											<th scope="row">Emergency Contact</th>
+											<td id="emergency-phone"></td>
+										</tr>
+										<tr>
+											<th scope="row">Source Pharmacy</th>
+											<td id="pharmacy"></td>
+										</tr>
+										<tr>
+											<th scope="row">Insurance</th>
+											<td id="insuranceName"> </td>
+										</tr>
+										<tr>
+											<th scope="row">InsuranceID</th>
+											<td id="insuranceID"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<!--Patient Info right table end-->
 						</div>
-					</div>
-
-					<div class="row my-5 bg-white rounded border" >
-						<h3 class="fs-4 mt-3 mb-3 text-center" id="pName"></h3>
-						<!--Patient Image-->
-						<div class="col text-center">
-							<figure class="figure">
-								<img src="images/default.png" class="figure-img img-fluid rounded" alt="..." style="height: 200px; width: 200px;">
-							</figure>
-						</div>
-						<!--Patient Info-->
-						<div class="col">
-							<table class="table">
-								<tbody>
-									<tr>
-										<th scope="row">Primary Language</th>
-										<td id="firstLan"> </td>
-									</tr>
-									<tr>
-										<th scope="row">DOB</th>
-										<td id="DOB"> </td>
-									</tr>
-									<tr>
-										<th scope="row">Age</th>
-										<td id="age"> </td>
-									</tr>
-									<tr>
-										<th scope="row">Sex</th>
-										<td id="sex"></td>
-									</tr>
-									<tr>
-										<th scope="row">Ethnicity</th>
-										<td id="ethnicity"> </td>
-									</tr>
-									<tr>
-										<th scope="row">Race</th>
-										<td id="race"></td>
-									</tr>
-									<tr>
-										<th scope="row">Home Phone</th>
-										<td id="hPhone"> </td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<!--Patient Info left table end-->
-						<div class="col">
-							<table class="table">
-								<thead>
-								</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<th scope="row">Full Address</th>
-										<td id="full-address"></td>
-									</tr>
-									<tr>
-										<th scope="row">Emergency Contact</th>
-										<td id="emergency-phone"></td>
-									</tr>
-									<tr>
-										<th scope="row">Source Pharmacy</th>
-										<td id="pharmacy"></td>
-									</tr>
-									<tr>
-										<th scope="row">Insurance</th>
-										<td id="insuranceName"> </td>
-									</tr>
-									<tr>
-										<th scope="row">InsuranceID</th>
-										<td id="insuranceID"></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<!--Patient Info right table end-->
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	</body>
 </html>
 

@@ -17,7 +17,7 @@ public class SubmitProcedureConsentFormPost extends ServicePost {
         serviceCode = 6;
 
         String serviceId = generateService();
-        String queryString = "INSERT INTO `ConsentFormData` (ConsentProcedure, Risks, Benefits, Anesthesia, ConsentType, AdditionalInfo, PersonName, ConsentGiven, EnteredBy, EnteredDate, ServiceId) " +
+        String queryString = "INSERT INTO `ConsentFormData` (ConsentProcedure, Risks, Benefits, Anesthesia, ConsentType, AdditionalInfo, PersonName, ConsentGiven, EnteredBy, EnteredDate, PertainingServiceId) " +
                 "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {

@@ -15,7 +15,7 @@ public class AppointmentFormPost extends ServicePost {
         serviceCode = 7;
 
         String serviceId = generateService();
-        String queryString = "INSERT INTO `Appointments` (FirstName, LastName, Email, PhoneNumber, Physician, Date, Reason, EnteredBy, EnteredDate, ServiceId) "
+        String queryString = "INSERT INTO `Appointments` (FirstName, LastName, Email, PhoneNumber, Physician, Date, Reason, EnteredBy, EnteredDate, PertainingServiceId) "
                 + "VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {

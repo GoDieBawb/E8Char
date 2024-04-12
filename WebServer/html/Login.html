@@ -5,6 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
 		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" >
 		<link rel="stylesheet" type="text/css" href="elechart/elechart.css">
 		<script defer src="scripts/clientutils.js"></script>
 		<title>Login</title>
@@ -14,24 +15,29 @@
 			<div class="row justify-content-center mt-4">
 				<div class="col-6">
 					<div class="row justify-content-center">
-						<img id="elechart-logo" src="images/Elephant.png"><br>
+						<img id="elechart-logo" src="images/Elephant.png" alt="Elephant Logo"><br>
 					</div>
 					<div class="row justify-content-center">
 						<img id="elechart-title" src="images/elechart-title.png" alt="EleChart">
 					</div>
 					<div class="bg-white rounded border row justify-content-center p-3 mt-4 elechart-style-1">
-						<form id="login-form">
-							<h2 class="text-center m-0">Portal Sign-In</h2>
+						<form id="login-form" aria-labelledby="sign-in-header">
+							<div class="text-center m-0 fs-2" id="sign-in-header">Portal Sign-In</div> 
 							<div class="row justify-content-center">
 								<label class="fs-5" for="username-input">Username</label>
-								<input id="username-input" type="text" name="username" autocomplete="username" required>
+								<div class="input-group">
+									<input class="form-control fs-5" id="username-input" type="text" name="username" autocomplete="username" aria-label="username sign-in field" required>
+								</div>
 							</div>
 							<div class="row justify-content-center mt-2">
 								<label class="fs-5" for="password-input">Password</label>
-								<input id="password-input" type="password" name="password" required>
+								<div class="input-group">
+									<input type="password" class="form-control fs-5" id="password-input" name="password" aria-label="password sign-in field">
+									<button class="btn btn-success input-group-text" id="btn-show-password" type="button" onclick="togglePasswordView()" aria-label="show password in text"><i class="fas fa-eye" id="password-icon"></i></button>
+								</div>
 							</div>
-							<div class="row justify-content-center mt-4">
-								<button class="btn btn-success fs-5" id="login-button" type="submit" onclick="attemptLogin()">Sign In</button>
+							<div class="input-group justify-content-center">
+								<button class="btn btn-success rounded-0 fs-4 mt-3 w-100" id="login-button" type="submit" onclick="attemptLogin()" aria-label="sign-in">Sign In</button>
 							</div>
 						</form>
 					</div>
@@ -76,6 +82,19 @@
 			clientUtils.setCookie("clinicianName", serverResponse.clinicianName);
 			clientUtils.setCookie("clinicianID", serverResponse.clinicianId);
 			clientUtils.goto("PatientInquiry");
+		}
+	}
+
+	function togglePasswordView() {
+		if (document.querySelector("#password-input").type == "password") {
+			document.querySelector("#password-input").type = "text";
+			document.querySelector("#password-icon").className = "fas fa-eye-slash";
+			document.querySelector("#btn-show-password").setAttribute("aria-label", "hide password");
+		}
+		else {
+			document.querySelector("#password-input").type = "password";
+			document.querySelector("#password-icon").className = "fas fa-eye";
+			document.querySelector("#btn-show-password").setAttribute("aria-label", "show password in text");
 		}
 	}
 </script>
