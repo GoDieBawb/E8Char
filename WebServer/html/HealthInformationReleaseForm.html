@@ -11,8 +11,8 @@
         <form id="main-form" method="post">
             <fieldset>
                 <legend>Consent to Share Medical Records to Another Doctor</legend>
-                <label for="clientName">Patient's Name:</label>
-                <input type="text" id="clientName" name="clientName" required>
+                <label for="patientName">Patient's Name:</label>
+                <input type="text" id="patientName" name="patientName" required>
                 <label for="doctorName">Doctor's Name:</label>
                 <input type="text" id="doctorName" name="doctorName" required>
                 <label for="date">Date:</label>
@@ -24,7 +24,8 @@
                 <label for="consentCheckbox">I consent.</label>
                 <input type="checkbox" id="consentCheckbox" name="consented" required>
             </fieldset>
-            <button type="submit" onclick="submitHealthInfoRelease()">Submit</button>
+            
+            <button id="main-submit-button" type="submit" onclick="submitHealthInfoRelease()">Submit</button>
         </form>
     </body>
 </html>
@@ -33,7 +34,7 @@
         event.preventDefault();
         
         var accessToken = clientUtils.getCookie("accessToken");
-        var clientId = clientUtils.getCookie("clientID");
+        var patientId = clientUtils.getCookie("patientId");
         var postType = "submitHealthReleaseForm";
         const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
@@ -53,4 +54,22 @@
 			parent.location.reload();
 		}
 	}
+
+    // Called only from the patient services page.
+    function populateAsReadOnly(readOnlyData) {
+        document.querySelector("#main-submit-button").remove();
+        delete readOnlyData.enteredDate;
+        
+		// Disable all fieldsets.
+		document.querySelectorAll("fieldset").forEach((el) => {
+			el.disabled = true;
+		});
+
+        for (const field in readOnlyData) {
+            const val = readOnlyData[field];
+            const formField = document.querySelector(`[name='${field}']`);
+            formField.value = val;
+            formField.setAttribute("readonly", true);
+        }
+    }
 </script>

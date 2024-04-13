@@ -58,6 +58,13 @@ select {
     border-radius: 5px;
 }
 
+:disabled {
+    color: black;
+    background: white;
+    font-weight: 700;
+    opacity: 1;
+}
+
 .checkbox-label {
     display: block;
     margin-bottom: 5px;

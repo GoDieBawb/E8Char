@@ -17,14 +17,14 @@ import webserver.DataOMatic.DataResponse;
 public class UserClientsResponse extends BasicResponse {
     
     public class Client {
-        public String clientId;
+        public String patientId;
         public String lastName;
         public String firstName;
-        public String DOB;
+        public String dob;
     }
     
     int userId;
-    ArrayList<Client> clients;
+    ArrayList<Client> patients;
     
     public UserClientsResponse(int userId) {
         this.userId  = userId;
@@ -34,9 +34,9 @@ public class UserClientsResponse extends BasicResponse {
     }
     
     private ArrayList<Client> getClients() {
-        clients = new ArrayList<>();
+        patients = new ArrayList<>();
 
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Clients WHERE EnteredBy = ?", new Object[] { userId });
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Patients WHERE enteredBy = ?", new Object[] { userId });
         
         // if there's no results, then return nothing.
         if (dr.size() == 0)
@@ -45,14 +45,14 @@ public class UserClientsResponse extends BasicResponse {
         for (int i = 1; i <= dr.size(); i++) {
             Client c = new Client();   
 
-            c.clientId = Integer.toString((Integer)dr.getValueAtRowAndColumn(i, "Id"));
-            c.lastName = (String)dr.getValueAtRowAndColumn(i, "LastName");
-            c.firstName = (String)dr.getValueAtRowAndColumn(i, "FirstName");
-            c.DOB = (String)dr.getValueAtRowAndColumn(i, "DOB");
+            c.patientId = Integer.toString((Integer)dr.getValueAtRowAndColumn(i, "id"));
+            c.lastName = (String)dr.getValueAtRowAndColumn(i, "lastName");
+            c.firstName = (String)dr.getValueAtRowAndColumn(i, "firstName");
+            c.dob = (String)dr.getValueAtRowAndColumn(i, "dob");
 
-            clients.add(c);
+            patients.add(c);
         }
 
-        return clients; 
+        return patients; 
     }
 }

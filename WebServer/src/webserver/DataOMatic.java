@@ -43,8 +43,10 @@ public final class DataOMatic {
         public Object getValueAtRowAndColumn(int row, String columnName) {
             Object value = table.get(row-1).get(columnName);
 
-            if (value == null)
+            if (value == null) {
                 System.err.println("Data-o-Matic: Imminent null exception - no such column name '" + columnName + "'.");
+                new Throwable().printStackTrace();
+            }
 
             return value;
         }

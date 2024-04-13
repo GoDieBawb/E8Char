@@ -18,9 +18,9 @@
                 <div class="bg-white shadow" id="sidebar-wrapper">
                     <h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-user-tag me-2"></i>Services</h1>
                     <div class="list-group list-group-flush">
-                        <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" id="btn-new-service" onclick="switchView(1)"><i class="fas fa-notes-medical me-2"></i>New Service</button>
-                        <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" id="btn-cancel" onclick="switchView(0)" hidden>Cancel</button>
-                        <button type="button" class="btn btn-success rounded-0 fw-bold" id="btn-dashboard" onclick="clientUtils.goto('PatientDashboard')"><i class="fas fa-arrow-alt-circle-left me-2"></i>Dashboard</button>
+                        <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" id="btn-new-service" onclick="switchView(1)"><i class="fas fa-notes-medical me-2"></i>New Service</button>
+                        <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" id="btn-cancel" onclick="switchView(0)" hidden>Cancel</button>
+                        <button type="button" class="btn btn-success rounded-0 fw-bold fs-5" id="btn-dashboard" onclick="clientUtils.goto('PatientDashboard')"><i class="fas fa-arrow-alt-circle-left me-2"></i>Dashboard</button>
                     </div>
                 </div>
                 <!-- /#sidebar-wrapper -->
@@ -44,7 +44,11 @@
                         </div>
                         
                         <div class="row full-height-minus-300 bg-white shadow-sm rounded border">
-                            <iframe class="py-3" id="service-form-viewer" src="InstructionalMessage" aria-label="form viewer"></iframe>
+                            <div class="text-center" id="instructional-message-1">
+                                <img class="halftone" src="images/Elephant-halftone.png" width="256" height="256" alt="EleChart logo"><br>
+                                <span class="display-6" id="template-message">To view a record, select a service type tab, then select a record entry on the top left window.</span>
+                            </div>
+                            <iframe class="py-3" id="service-form-viewer" aria-label="form viewer" hidden></iframe>
                         </div>
                     </div>
                 </div>
@@ -64,7 +68,11 @@
                             </div>
                             
                             <div class="col full-height-minus-100 bg-white shadow-sm rounded border">
-                                <iframe class="py-3" id="service-creation-form-viewer" src="InstructionalMessage" aria-label="form viewer"></iframe>
+                                <div class="text-center" id="instructional-message-2">
+                                    <img class="halftone" src="images/Elephant-halftone.png" width="256" height="256" alt="EleChart logo"><br>
+                                    <span class="display-6" id="template-message">Select a service from the left to fill a form.</span>
+                                </div>
+                                <iframe class="py-3" id="service-creation-form-viewer" aria-label="form viewer" hidden></iframe>
                             </div>
                         </div>
                     </div>
@@ -86,10 +94,13 @@
     function ServiceGroup(name) {
         this.name = name;
         this.records = new Array(); // Array<ServiceRecord>
-        this.HTMLReference = new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100">${this.name}</button>`, "text/html").querySelector(".btn");
+        this.HTMLReference = new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100 fs-5">${this.name}</button>`, "text/html").querySelector(".btn");
         this.serviceFile = null;
+        this.selected = false;
 
         this.select = function(viewMode) {
+            if (this.selected) return;
+
             for (const serviceName in serviceGroupList)
                 serviceGroupList[serviceName].deselect(viewMode)
 
@@ -100,10 +111,13 @@
         
             for (const record of this.records)
                 serviceRecordsListHTML.appendChild(record.HTMLReference);
+            
+            this.selected = true;
         }
 
         this.deselect = function(viewMode) {
             this.HTMLReference.classList.remove("pressed");
+            this.selected = false;
         }
         
         this.HTMLReference.addEventListener("click", () => this.select(0), false);
@@ -115,17 +129,25 @@
         this.name = name;
         this.HTMLReference = new DOMParser().parseFromString(`<button class="btn btn-light rounded-0 shadow-sm mb-1 w-100">${this.name}</button>`, "text/html").querySelector(".btn");
         this.serviceFile = serviceFile;
+        this.selected = false;
 
         this.select = function(viewMode) {
+            if (this.selected) return;
+
             for (const serviceGroupOption in serviceGroupOptionsList)
                 serviceGroupOptionsList[serviceGroupOption].deselect(viewMode)
 
             this.HTMLReference.classList.add("pressed");
+            document.querySelector("#instructional-message-2").hidden = true;
+            document.querySelector("#service-creation-form-viewer").hidden = false;
             document.querySelector("#service-creation-form-viewer").src = this.serviceFile;
+
+            this.selected = true;
         }
 
         this.deselect = function(viewMode) {
             this.HTMLReference.classList.remove("pressed");
+            this.selected = false;
         }
         
         this.HTMLReference.addEventListener("click", () => this.select(0), false);
@@ -139,12 +161,15 @@
             `<button class="btn-elechart text-start my-1 py-1">
                 <span class="col mx-4">#${recordData.serviceId}</span>|
                 <span class="col mx-4">${recordData.serviceType}</span>|
-                <span class="col mx-4">${clientUtils.getCookie("clientName")}</span>|
-                <span class="col mx-4">${clientUtils.getCookie("clinicianName")}</span>|
-                <span class="col mx-4">${recordData.date}</span>
+                <span class="col mx-4">${clientUtils.getCookie("patientName")}</span>|
+                <span class="col mx-4">${recordData.formFiler}</span>|
+                <span class="col mx-4">${recordData.readOnlyData.enteredDate}</span>
             </button>`, "text/html").querySelector(".btn-elechart");
+        this.selected = false;
 
         this.select = function() {
+            if (this.selected) return;
+
             serviceGroupRecordsList.forEach(record => {
                 if (this !== record)
                     record.deselect();
@@ -154,11 +179,23 @@
             this.HTMLReference.classList.add("selected");
 
             // Display the matching service form file.
+            document.querySelector("#instructional-message-1").hidden = true;
+            document.querySelector("#service-form-viewer").hidden = false;
+
+            let iframeLoadedListener = function(readOnlyData) {
+                // Fill out the form with its read-only data from the database.
+                document.querySelector("#service-form-viewer").contentWindow.populateAsReadOnly(readOnlyData);
+            };
+
+            document.querySelector("#service-form-viewer").addEventListener("load", () => iframeLoadedListener(this.data.readOnlyData), {once: true}, false);
             document.querySelector("#service-form-viewer").setAttribute("src", this.data.serviceFile);
+
+            this.selected = true;
         }
 
         this.deselect = function() {
             this.HTMLReference.classList.remove("selected");
+            this.selected = false;
         }
 
         // Make the select() function for this record listen for clicks.
@@ -202,19 +239,12 @@
             let serviceFile = serverResponse.availableServices[serviceGroupOption];
             serviceGroupOptionsList.push(new ServiceGroupOption(serviceGroupOption, serviceFile));
         }
-
-        //clientUtils.setLoadingStatus(false, "loading-services-display");
     }
 
     window.onload = function() {
-        clientUtils.changeInstructionalMessage(document.querySelector("#service-form-viewer"), "To view a record, select a service type tab, then select a record entry on the top left window.");
-
-        //clientUtils.setNavigationPath(`Dashboard > ${clientUtils.getCookie("clientName")} > Services`);
-        //clientUtils.setLoadingStatus(true, "loading-services-display", "retrieving patient services ..");
-
         // retrieve a list of services for this particular patient
         let newClientPost = new clientUtils.ClientPost("requestClientServices", clientUtils.getCookie("accessToken"), responseCallback);
-        newClientPost.addParam("clientId", clientUtils.getCookie("clientID"));
+        newClientPost.addParam("patientId", clientUtils.getCookie("patientId"));
         clientUtils.webPost(newClientPost);
     };
 

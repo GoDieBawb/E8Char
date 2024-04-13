@@ -1,6 +1,7 @@
 package webserver.posts;
 
 import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 public class SurgicalHistoryPost extends ServicePost {
     public String patientName;
@@ -12,12 +13,14 @@ public class SurgicalHistoryPost extends ServicePost {
     public void publish() {
         serviceCode = 8;
 
-        String serviceId = generateService();
-        String queryString = "INSERT INTO `SurgicalHistories` (PatientName, DateOfSurgery, ProcedurePerformed, SurgeonName, HospitalName, EnteredBy, EnteredDate, PertainingServiceId) "
-                + "VALUES (?,?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `SurgicalHistories` (patientName, dateOfSurgery, procedurePerformed, surgeonName, hospitalName, enteredBy, enteredDate) "
+                + "VALUES (?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
-            patientName , dateOfSurgery , procedurePerformed , surgeonName , hospitalName , enteredby , entereddate , serviceId
+            patientName , dateOfSurgery , procedurePerformed , surgeonName , hospitalName , enteredby , entereddate
         });
+
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM SurgicalHistories", null);
+        generateService((Number)dr.getValueAtRowAndColumn(1, "MAX(id)"));
     }
 }

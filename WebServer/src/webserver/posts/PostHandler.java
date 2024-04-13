@@ -57,8 +57,12 @@ public class PostHandler {
                 return new BadTokenResponse();
             }
             // System.out.println("Verified!");
-
         }
+
+        // Check if clinician has valid access to the patient for the proper request.
+        if (b.patientId != -1)
+            if (!authenticator.Authenticate(b.accessToken, b.patientId))
+                return new BadTokenResponse();
 
         //Once Token Verified Determine Which Post Type
         switch (b.postType) {
@@ -71,7 +75,7 @@ public class PostHandler {
                 return new BasicResponse("success");
 
             case "bloodDrawnFormPost":
-                SubmitBloodDrawnPost sbp = g.fromJson(json, SubmitBloodDrawnPost.class);
+                SubmitBloodDrawPost sbp = g.fromJson(json, SubmitBloodDrawPost.class);
                 sbp.enteredby   = authenticator.getUserIdByToken(sbp.accessToken);
                 sbp.entereddate = LocalDate.now().toString();
                 sbp.publish();
@@ -92,7 +96,7 @@ public class PostHandler {
                 return new BasicResponse("success");
 
             case "medicationRecordFormPost":
-                SubmitMedicationRecordPost smp = g.fromJson(json, SubmitMedicationRecordPost.class);
+                SubmitPrescriptionForm smp = g.fromJson(json, SubmitPrescriptionForm.class);
                 smp.enteredby   = authenticator.getUserIdByToken(smp.accessToken);
                 smp.entereddate = LocalDate.now().toString();
                 smp.publish();
@@ -106,7 +110,7 @@ public class PostHandler {
                 return new BasicResponse("success");
 
             case "patientRegistrationFormPost":
-                SubmitDemographicPost sdp = g.fromJson(json, SubmitDemographicPost.class);
+                SubmitPatientPost sdp = g.fromJson(json, SubmitPatientPost.class);
                 sdp.enteredBy   = authenticator.getUserIdByToken(sdp.accessToken);
                 sdp.enteredDate = LocalDate.now().toString();
                 sdp.publish();
@@ -127,20 +131,18 @@ public class PostHandler {
                 return new BasicResponse("success");
 
             case "requestUserClients":
-                int userId                          = authenticator.getUserIdByToken(b.accessToken);
+                int userId = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
-                // System.out.println("GSON CLIENTS: " + g.toJson(clientsResponse));
                 return clientsResponse;
 
             case "requestClientServices":
-                int selectedClient         = g.fromJson(json, RequestClientServicesPost.class).clientId;
                 int requestingUser         = authenticator.getUserIdByToken(b.accessToken);
-                ClientServicesResponse csr = new ClientServicesResponse(requestingUser,selectedClient);
+                ClientServicesResponse csr = new ClientServicesResponse(requestingUser, b.patientId);
                 return csr;
 
             case "requestClientDemographic":
-                selectedClient = g.fromJson(json, RequestClientDemographicPost.class).clientId;
-                ClientDemographicResponse cdr = new ClientDemographicResponse(selectedClient);
+                requestingUser = authenticator.getUserIdByToken(b.accessToken);
+                ClientDemographicResponse cdr = new ClientDemographicResponse(requestingUser, b.patientId);
                 return cdr;
                 
             default:

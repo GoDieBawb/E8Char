@@ -13,7 +13,7 @@
             <fieldset>
                 <legend>Informaton for the Procedure, Treatment, or Surgery</legend>
                 <label for="procedure">Procedure, Treatment, or Surgery:</label>
-                <input type="text" id="procedure" name="procedure" required>
+                <input type="text" id="procedure" name="consentProcedure" required>
 
                 <label for="risks">Risks:</label>
                 <textarea id="risks" name="risks" rows="4" required></textarea>
@@ -61,12 +61,12 @@
                 <input type="checkbox" id="consent-given" name="consentGiven" required>
                 <br>
                 <label for="person-signature">Signature:</label>
-                <input type="text" id="person-signature" name="personSignature" required placeholder="Please sign here">
+                <input type="text" id="person-signature" name="signature" required placeholder="Please sign here">
                 <div class="signature-line"></div>
             </fieldset>
 
             <!-- Submit button -->
-            <button class="btn btn-primary" onclick="submitConsentForm()" type="submit">Submit</button>
+            <button id="main-submit-button" class="btn btn-primary" onclick="submitConsentForm()" type="submit">Submit</button>
         </form>
     </body>
 </html>
@@ -75,12 +75,12 @@
         event.preventDefault();
         
         var accessToken = clientUtils.getCookie("accessToken");
-        var clientId = clientUtils.getCookie("clientID");
+        var patientId = clientUtils.getCookie("patientId");
         var postType = "procedureConsentFormPost";
         const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
-        newClientPost.addParam("clientId", clientId);
+        newClientPost.addParam("patientId", patientId);
         
 		for (const key in formData)
 			newClientPost.addParam(key, formData[key]);
@@ -96,4 +96,22 @@
 			parent.location.reload();
 		}
 	}
+
+    // Called only from the patient services page.
+    function populateAsReadOnly(readOnlyData) {
+        document.querySelector("#main-submit-button").remove();
+        delete readOnlyData.enteredDate;
+        
+		// Disable all fieldsets.
+		document.querySelectorAll("fieldset").forEach((el) => {
+			el.disabled = true;
+		});
+
+        for (const field in readOnlyData) {
+            const val = readOnlyData[field];
+            const formField = document.querySelector(`[name='${field}']`);
+            formField.value = val;
+            formField.setAttribute("readonly", true);
+        }
+    }
 </script>

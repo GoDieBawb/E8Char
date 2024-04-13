@@ -2,7 +2,7 @@ package webserver.posts;
 
 import webserver.WebServer;
 
-public class SubmitNewStaff extends ServicePost {
+public class SubmitStaffPost extends ServicePost {
     public String username;
     public String firstName;
     public String lastName;
@@ -18,8 +18,8 @@ public class SubmitNewStaff extends ServicePost {
     public String employmentDate;
     
     public void publish() {
-        String queryString = "INSERT INTO `Staff` (Username, FirstName, LastName, Password, Phone, DOB, Address, City, State, Zip, Position, Department, EmploymentDate)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `Staff` (username, firstName, lastName, password, phone, dob, address, city, state, zip, position, department, employmentDate)"
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {
             username, firstName , lastName , password, phoneNumber, dob, address, city, 

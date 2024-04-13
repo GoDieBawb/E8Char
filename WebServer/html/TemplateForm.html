@@ -17,7 +17,7 @@
 			</fieldset>
 			
 			<!-- Submit button -->
-			<button type="submit" class="btn btn-success" onclick="onFormSubmit()">Submit</button>
+			<button id="main-submit-button" type="submit" class="btn btn-success" onclick="onFormSubmit()">Submit</button>
 		</form>
 	</body>
 </html>
@@ -29,7 +29,7 @@
 		event.preventDefault();
 
 		const accessToken = clientUtils.getCookie("accessToken");
-		const clientId = clientUtils.getCookie("clientID");
+		const patientId = clientUtils.getCookie("patientId");
 		const postType = "postTypeHere";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 
@@ -37,7 +37,7 @@
 
 		// Submit form to server.
 		let newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
-		newClientPost.addParam("clientId", clientId);
+		newClientPost.addParam("patientId", patientId);
 
 		clientUtils.webPost(newClientPost);
 	}
@@ -56,6 +56,24 @@
 		// Do something (or nothing) when the page finishes loading here.
 
 	}
+
+	// Called only from the patient services page.
+    function populateAsReadOnly(readOnlyData) {
+        document.querySelector("#main-submit-button").remove();
+        delete readOnlyData.enteredDate;
+        
+		// Disable all fieldsets.
+		document.querySelectorAll("fieldset").forEach((el) => {
+			el.disabled = true;
+		});
+
+        for (const field in readOnlyData) {
+            const val = readOnlyData[field];
+            const formField = document.querySelector(`[name='${field}']`);
+            formField.value = val;
+            formField.setAttribute("readonly", true);
+        }
+    }
 
 	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
 </script>

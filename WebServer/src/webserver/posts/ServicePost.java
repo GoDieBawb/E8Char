@@ -6,27 +6,24 @@
 package webserver.posts;
 
 import webserver.WebServer;
-import webserver.DataOMatic.DataResponse;
 
 /**
  *
  * @author MeanC
  */
 public class ServicePost extends BasicPost {
-    public int         clientId;
+    public int         patientId;
     public int         enteredby;
     public String      entereddate;    
     public int         serviceCode;
     
-    protected String generateService() {
-        String serviceQuery = "INSERT INTO `Services` (ServiceCode, ClientId, ServiceDate, EnteredBy) VALUES (?,?,?,?)";
+    protected void generateService(Number referenceServiceId) {
+        /* Generate a specific service record before generating this service entry, so that 
+        the ReferencingServiceId field can hold the specific service record number. */
+        String serviceQuery = "INSERT INTO `Services` (referencingServiceId, serviceCode, patientId, serviceDate, enteredBy) VALUES (?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(serviceQuery, new Object[] {
-            serviceCode, clientId, entereddate, enteredby
+            referenceServiceId, serviceCode, patientId, entereddate, enteredby
         });
-
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM Services", new Object[] {});
-
-        return Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "MAX(id)"));
     }
 }

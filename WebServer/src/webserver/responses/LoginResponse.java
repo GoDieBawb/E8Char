@@ -22,14 +22,14 @@ public class LoginResponse extends BasicResponse {
         outcome = "success";
         responseType = "login";
 
-        DataResponse dr = WebServer.dbHandler.secureGet("select Id, FirstName, LastName from Staff where Username = ?", new Object[] { username });
+        DataResponse dr = WebServer.dbHandler.secureGet("select id, firstName, lastName from Staff where username = ?", new Object[] { username });
         
         if (dr.size() == 0) {
             outcome = "failed";
             return;
         }
 
-        clinicianName = (String)dr.getValueAtRowAndColumn(1, "FirstName") + " " + (String)dr.getValueAtRowAndColumn(1, "LastName");
-        clinicianId = Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "Id"));
+        clinicianName = (String)dr.getValueAtRowAndColumn(1, "firstName") + " " + (String)dr.getValueAtRowAndColumn(1, "lastName");
+        clinicianId = Integer.toString((Integer)dr.getValueAtRowAndColumn(1, "id"));
     }
 }

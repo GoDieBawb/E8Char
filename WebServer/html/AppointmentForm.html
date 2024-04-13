@@ -30,17 +30,17 @@
 			<fieldset>
 				<legend>Appointment Details</legend>
 				<label for="clinician-name">Preferred Doctor</label>
-				<input type="text" id="clinician-name" name="clinicianName" placeholder="Leave blank if you do not have a preferred doctor" required>
+				<input type="text" id="clinician-name" name="preferredDoctor" placeholder="Leave blank if you do not have a preferred doctor" required>
 
 				<label for="appointment">Preferred Appointment Date and Time</label>
-				<input type="datetime-local" id="appointment" name="dateTime" required>
+				<input type="datetime-local" id="appointment" name="date" required>
 				
 				<label for="visit-reason">Reason for Visit</label>
 				<textarea class="form-control h-100" placeholder="Comment here" id="visit-reason" name="reason" required></textarea>
 			</fieldset>
 			
 			<!-- Submit button -->
-			<button type="submit" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="submitAppointmentForm()">Make Appointment</button>
+			<button id="main-submit-button" type="submit" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="submitAppointmentForm()">Make Appointment</button>
 		</form>
 	</body>
 </html>
@@ -49,12 +49,12 @@
 		event.preventDefault();
 		
 		const accessToken = clientUtils.getCookie("accessToken");
-		const clientId = clientUtils.getCookie("clientID");
+		const patientId = clientUtils.getCookie("patientId");
 		const postType = "appointmentFormPost";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
-		newClientPost.addParam("clientId", clientId);
+		newClientPost.addParam("patientId", patientId);
 		
 		for (const key in formData)
 			newClientPost.addParam(key, formData[key]);
@@ -70,4 +70,22 @@
 			parent.location.reload();
 		}
 	}
+
+	// Called only from the patient services page.
+    function populateAsReadOnly(readOnlyData) {
+        document.querySelector("#main-submit-button").remove();
+        delete readOnlyData.enteredDate;
+        
+		// Disable all fieldsets.
+		document.querySelectorAll("fieldset").forEach((el) => {
+			el.disabled = true;
+		});
+
+        for (const field in readOnlyData) {
+            const val = readOnlyData[field];
+            const formField = document.querySelector(`[name='${field}']`);
+            formField.value = val;
+            formField.setAttribute("readonly", true);
+        }
+    }
 </script>

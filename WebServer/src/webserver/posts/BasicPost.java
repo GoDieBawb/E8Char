@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 public class BasicPost {
     public String accessToken;
     public String postType;
+    public int patientId = -1;
     
     public void debug()
     {

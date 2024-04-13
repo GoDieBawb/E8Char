@@ -18,7 +18,7 @@ import webserver.DataOMatic.DataResponse;
 public class Authenticator {
     
     HashMap<String, User> tokenMap; //Maps Access Token Strings to User Objects
-    
+
     public Authenticator() {
         tokenMap = new HashMap<>();
     }
@@ -37,8 +37,7 @@ public class Authenticator {
             Long curTime = System.currentTimeMillis();
             
             //15 minute time out for token
-            //if ((curTime-lastAct)/1000 > 60*15) {
-            if ((curTime-lastAct)/1000 > 60*3600) {
+            if ((curTime-lastAct)/1000 > 60*15) {
                 //System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
                 tokenMap.remove(token);
                 return null;
@@ -69,16 +68,31 @@ public class Authenticator {
         }
         
     }
+
+    /** Checks if a clinician has verified access to a patient's information. **/
+    public boolean Authenticate(String token, int patientId) {
+        int clinicianId = getUserIdByToken(token);
+
+        // If the clinician even exists
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT id FROM Staff WHERE id = ?", new Object[] { clinicianId });
+        // If such clinician has access to the given patient
+        DataResponse dr2 = WebServer.dbHandler.secureGet("SELECT id FROM Patients WHERE id = ? AND enteredBy = ?", new Object[] { patientId, clinicianId });
+
+        if (dr.size() == 0 || dr2.size() == 0)
+            return false;
+        
+        return true;
+    }
     
     //Checks Username and Password
     private boolean verify(String userName, String password) {
-        DataResponse response = WebServer.dbHandler.secureGet("SELECT Password FROM Staff WHERE Username = ?", new Object[] { userName });
+        DataResponse response = WebServer.dbHandler.secureGet("SELECT password FROM Staff WHERE username = ?", new Object[] { userName });
 
         // Clinician doesn't exist.
         if (response.size() == 0) 
             return false;
         
-        String passHash = (String)response.getValueAtRowAndColumn(1, "Password");
+        String passHash = (String)response.getValueAtRowAndColumn(1, "password");
         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), passHash);
 
         return result.verified;
@@ -86,8 +100,8 @@ public class Authenticator {
     
     //Can Probably be moved to verify
     private int getUserId(String userName) {
-        DataResponse response = WebServer.dbHandler.secureGet("SELECT Id FROM Staff WHERE Username = ?", new Object[] { userName });
-        return (Integer)response.getValueAtRowAndColumn(1, "Id");
+        DataResponse response = WebServer.dbHandler.secureGet("SELECT id FROM Staff WHERE username = ?", new Object[] { userName });
+        return (Integer)response.getValueAtRowAndColumn(1, "id");
     }
     
     public int getUserIdByToken(String accessToken) {

@@ -6,6 +6,7 @@
 package webserver.posts;
 
 import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -21,13 +22,15 @@ public class SubmitPhysicalPost extends ServicePost {
     public void publish() {
         serviceCode = 1;
         
-        String serviceId = generateService();
-        String queryString = "INSERT INTO `PhysicalEvaluations` (ClientId, Height, Weight, BloodPressure, HeartRate, Temperature, ServiceCode, EnteredBy, EnteredDate, PertainingServiceId)"
-                + "VALUES(?,?,?,?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `PhysicalEvaluations` (height, weight, bloodPressure, heartRate, temperature, enteredBy, enteredDate)"
+                + "VALUES(?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {
-            clientId , height , weight , bloodPressure , heartRate , temperature , 
-            serviceCode , enteredby , entereddate , serviceId
+            height , weight , bloodPressure , heartRate , temperature , 
+            enteredby , entereddate
         });
+
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM PhysicalEvaluations", null);
+        generateService((Number)dr.getValueAtRowAndColumn(1, "MAX(id)"));
     }        
 }

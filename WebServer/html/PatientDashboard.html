@@ -19,8 +19,8 @@
 				<div class="bg-white shadow" id="sidebar-wrapper">
 					<h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-clinic-medical me-2"></i>Dashboard</h1>
 					<div class="list-group list-group-flush">
-						<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="clientUtils.goto('PatientServices')"><i class="fas fa-user-tag me-2"></i>Services</button>
-						<button type="button" class="btn btn-success rounded-0 fw-bold" onclick="clientUtils.goto('PatientInquiry'); sessionStorage.removeItem('preloadedDashboardData')">
+						<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" onclick="clientUtils.goto('PatientServices')"><i class="fas fa-user-tag me-2"></i>Services</button>
+						<button type="button" class="btn btn-success rounded-0 fw-bold fs-5" onclick="clientUtils.goto('PatientInquiry'); sessionStorage.removeItem('preloadedDashboardData')">
 							<i class="fas fa-arrow-alt-circle-left me-2"></i>Patient Inquiry</button>
 					</div>
 				</div>
@@ -157,22 +157,22 @@
 
         console.log(serverResponse);
 
-		let name = clientUtils.getCookie("clientName");
-		let dob = clientUtils.ISOToLaymanDate(serverResponse.demographicData.DOB);
+		let name = clientUtils.getCookie("patientName");
+		let dob = clientUtils.ISOToLaymanDate(serverResponse.demographicData.dob);
 		let age = new Date(Date.now() - new Date(dob).getTime()).getFullYear() - 1970;
-		let sex = serverResponse.demographicData.Sex;
-		let ethnicity = serverResponse.demographicData.Ethnicity;
-		let race = serverResponse.demographicData.Race;
-		let phoneNumber = serverResponse.demographicData.Phone;
-		let SSN = serverResponse.demographicData.SSN;
+		let sex = serverResponse.demographicData.sex;
+		let ethnicity = serverResponse.demographicData.ethnicity;
+		let race = serverResponse.demographicData.race;
+		let phoneNumber = serverResponse.demographicData.phone;
+		let SSN = serverResponse.demographicData.ssn;
 		let lastVisit = '1-1-2024'
-		let pharmacyName = serverResponse.demographicData.Pharmacy
-		let insuranceName = serverResponse.demographicData.Insurance
-		let insuranceID = serverResponse.demographicData.InsuranceId;
+		let pharmacyName = serverResponse.demographicData.pharmacy
+		let insuranceName = serverResponse.demographicData.insurance
+		let insuranceID = serverResponse.demographicData.insuranceId;
 		let physician = `Dr. ${clientUtils.getCookie("clinicianName")}`;
-		let firstLan = serverResponse.demographicData.PrimaryLanguage;
-		let fullAddress = `${serverResponse.demographicData.Address}, ${serverResponse.demographicData.City}, ${serverResponse.demographicData.State} ${serverResponse.demographicData.Zip}`;
-		let emergencyPhone = serverResponse.demographicData.EmergencyPhone;
+		let firstLan = serverResponse.demographicData.primaryLanguage;
+		let fullAddress = `${serverResponse.demographicData.streetAddress}, ${serverResponse.demographicData.city}, ${serverResponse.demographicData.state} ${serverResponse.demographicData.zip}`;
+		let emergencyPhone = serverResponse.demographicData.emergencyPhone;
 
 		//Insert patient info into appropiate elements
 		let info = [dob, age, sex, ethnicity, race, phoneNumber, firstLan, pharmacyName, insuranceName, insuranceID, fullAddress, emergencyPhone];
@@ -218,7 +218,7 @@
             responseCallback
         );
 
-		newClientPost.addParam("clientId", clientUtils.getCookie("clientID"));
+		newClientPost.addParam("patientId", clientUtils.getCookie("patientId"));
         clientUtils.webPost(newClientPost);
 	});
 </script>

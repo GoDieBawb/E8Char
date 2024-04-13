@@ -3,16 +3,16 @@ package webserver.posts;
 import webserver.WebServer;
 
 public class SubmitHealthInfoReleasePost extends BasicPost {
-    public String clientName;
+    public String patientName;
     public String doctorName;
     public String date;
     public String consented;
     
     public void publish() {
-        String queryString = "INSERT INTO `HealthInfoRelease` (ClientName, DoctorName, Date) VALUES (?,?,?)";
+        String queryString = "INSERT INTO `HealthInfoRelease` (patientName, doctorName, date) VALUES (?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
-            clientName, doctorName, date
+            patientName, doctorName, date
         });
     }
 }

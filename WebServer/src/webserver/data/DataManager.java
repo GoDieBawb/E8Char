@@ -21,7 +21,7 @@ public final class DataManager {
     private static void putClients() {
         WebServer.dbHandler.securePost("TRUNCATE TABLE `Clients`", null);
 
-        SubmitDemographicPost sdp = new SubmitDemographicPost();
+        SubmitPatientPost sdp = new SubmitPatientPost();
         sdp.enteredDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
 
         for (String name : RandomData.MALE_NAMES) {
@@ -32,7 +32,7 @@ public final class DataManager {
             sdp.phoneNumber = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
             sdp.emergencyPhone = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
             sdp.dob = randomDate(1950, 2015);
-            sdp.address = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
+            sdp.streetAddress = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
             sdp.city = RandomData.CITIES[randomInt(0, RandomData.CITIES.length-1)];
             sdp.state = RandomData.STATES[randomInt(0, RandomData.STATES.length-1)];
             sdp.zip = randomInt(10000, 99999);
@@ -41,8 +41,8 @@ public final class DataManager {
             sdp.race = RandomData.RACES[randomInt(0, RandomData.RACES.length-1)];
             sdp.pharmacy = RandomData.PHARMACY_NAMES[randomInt(0, RandomData.PHARMACY_NAMES.length-1)];
             sdp.insurance = RandomData.HEALTH_INSURANCE_NAMES[randomInt(0, RandomData.HEALTH_INSURANCE_NAMES.length-1)];
-            sdp.insuranceId = randomInt(0, Integer.MAX_VALUE-1);
-            sdp.ssn = randomInt(100000000, 999999999);
+            sdp.insuranceId = Integer.toString(randomInt(0, Integer.MAX_VALUE-1));
+            sdp.ssn = Integer.toString(randomInt(100000000, 999999999));
             sdp.enteredBy = randomInt(1, RandomData.STAFF_NAMES.length);
             // enteredDate done.
             sdp.publish();
@@ -56,7 +56,7 @@ public final class DataManager {
             sdp.phoneNumber = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
             sdp.emergencyPhone = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
             sdp.dob = randomDate(1950, 2015);
-            sdp.address = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
+            sdp.streetAddress = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
             sdp.city = RandomData.CITIES[randomInt(0, RandomData.CITIES.length-1)];
             sdp.state = RandomData.STATES[randomInt(0, RandomData.STATES.length-1)];
             sdp.zip = randomInt(10000, 99999);
@@ -65,8 +65,8 @@ public final class DataManager {
             sdp.race = RandomData.RACES[randomInt(0, RandomData.RACES.length-1)];
             sdp.pharmacy = RandomData.PHARMACY_NAMES[randomInt(0, RandomData.PHARMACY_NAMES.length-1)];
             sdp.insurance = RandomData.HEALTH_INSURANCE_NAMES[randomInt(0, RandomData.HEALTH_INSURANCE_NAMES.length-1)];
-            sdp.insuranceId = randomInt(0, Integer.MAX_VALUE-1);
-            sdp.ssn = randomInt(100000000, 999999999);
+            sdp.insuranceId = Integer.toString(randomInt(0, Integer.MAX_VALUE-1));
+            sdp.ssn = Integer.toString(randomInt(100000000, 999999999));
             sdp.enteredBy = randomInt(1, RandomData.STAFF_NAMES.length);
             // enteredDate done.
             sdp.publish();
@@ -78,7 +78,7 @@ public final class DataManager {
     private static void putStaff() {
         WebServer.dbHandler.securePost("TRUNCATE TABLE `Staff`", null);
 
-        SubmitNewStaff sns = new SubmitNewStaff();
+        SubmitStaffPost sns = new SubmitStaffPost();
 
         for (String name : RandomData.STAFF_NAMES) {
             sns.firstName = name.split(" ")[0];

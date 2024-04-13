@@ -17,10 +17,10 @@
             <div class="bg-white shadow" id="sidebar-wrapper">
                 <h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-th-list me-2"></i>Inquiry</h1>
                 <div class="list-group list-group-flush">
-                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
+                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5 disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
                         <i class="fas fa-user-md me-2"></i>Service Patient</button>
-                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold" onclick="clientUtils.goto('RegistrationForm')"><i class="fas fa-user-tag me-2"></i>Register New Patient</button>
-                    <button type="button" class="btn btn-danger rounded-0 fw-bold" onclick="closeSession()">
+                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" onclick="clientUtils.goto('PatientForm')"><i class="fas fa-user-tag me-2"></i>Register New Patient</button>
+                    <button type="button" class="btn btn-danger rounded-0 fw-bold fs-5" onclick="closeSession()">
                         <i class="fas fa-arrow-alt-circle-left me-2"></i>Close Session</button>
                   </div>
             </div>
@@ -47,20 +47,19 @@
 
     var loadedUICards = [];
 
-    // This object represents a client entry in the dashboard's clients list.
-    function ClientCard(clientLastName, clientFirstName, clientDOB, clientID) {
-        // TODO: admittance, discharge and evaluation statuses
-        this.clientLastName = clientLastName;
-        this.clientFirstName = clientFirstName;
-        this.clientID = clientID;
-        this.clientDOB = clientDOB;
-        this.cardID = "card" + clientID;
+    // This object represents a patient entry in the dashboard's clients list.
+    function PatientCard(lastName, firstName, dob, id) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.patientId = id;
+        this.patientDOB = dob;
+        this.cardID = "card" + id;
         this.referenceCard = new DOMParser().parseFromString(`
             <div class="col">
                 <button class="btn-elechart text-start">
-                    <h5 class="fw-bold m-0">${clientLastName}, ${clientFirstName}</h5>
-                    <h6 class="m-0">${clientDOB}</h6>
-                    <small>#${clientID}</small>
+                    <h5 class="fw-bold m-0">${lastName}, ${firstName}</h5>
+                    <h6 class="m-0">${dob}</h6>
+                    <small>#${id}</small>
                 </button>
             </div>`, "text/html").querySelector(".col");
 
@@ -74,8 +73,8 @@
             
             this.referenceCard.querySelector(".btn-elechart").classList.add("selected");
             
-            clientUtils.setCookie("clientID", this.clientID);
-            clientUtils.setCookie("clientName", `${clientLastName}, ${clientFirstName}`);
+            clientUtils.setCookie("patientId", this.patientId);
+            clientUtils.setCookie("patientName", `${this.lastName}, ${this.firstName}`);
         }
 
         this.deselect = function() {
@@ -83,7 +82,7 @@
         }
     }   
     
-    //Handles the response from the server for the client response
+    //Handles the response from the server.
     function responseCallback(serverResponse) {
         //Alert and return if failed
         if (serverResponse.outcome == "failed") {
@@ -93,16 +92,16 @@
 
         console.log(serverResponse);
 
-        clientUtils.delCookie("clientID");
-        clientUtils.delCookie("clientName");
+        clientUtils.delCookie("patientId");
+        clientUtils.delCookie("patientName");
 
-        let clients = serverResponse.clients;
+        let patients = serverResponse.patients;
 
-        if (clients.length == 0)
+        if (patients.length == 0)
             console.warn("There are no clients to read from!");
 
-        for (let i = 0; i < clients.length; i++) {
-            const newUICard = new ClientCard(clients[i].lastName, clients[i].firstName, clientUtils.ISOToLaymanDate(clients[i].DOB), clients[i].clientId);
+        for (let i = 0; i < patients.length; i++) {
+            const newUICard = new PatientCard(patients[i].lastName, patients[i].firstName, clientUtils.ISOToLaymanDate(patients[i].dob), patients[i].patientId);
 
             newUICard.referenceCard.addEventListener("click", () => newUICard.select(), false);
             loadedUICards.push(newUICard);
@@ -111,9 +110,7 @@
 
         // Store the server response as preloaded data.
         if (!sessionStorage.getItem("preloadedPatientInquiryData"))
-            sessionStorage.setItem("preloadedPatientInquiryData", JSON.stringify( {clients: clients} ));
-
-        //clientUtils.setLoadingStatus(false, "loading-patients-display");
+            sessionStorage.setItem("preloadedPatientInquiryData", JSON.stringify( {patients: patients} ));
     }
 
     function patientSearchSort(showAll)
@@ -124,8 +121,8 @@
         let averagePercentages = 0;
 
         loadedUICards.forEach(card => {
-            let containsName = `${card.clientLastName} ${card.clientFirstName}`.toLowerCase().includes(lookupName.toLowerCase());
-            let containsNameReversed = `${card.clientFirstName} ${card.clientLastName}`.toLowerCase().includes(lookupName.toLowerCase());
+            let containsName = `${card.lastName} ${card.firstName}`.toLowerCase().includes(lookupName.toLowerCase());
+            let containsNameReversed = `${card.firstName} ${card.lastName}`.toLowerCase().includes(lookupName.toLowerCase());
             let DOBComponents = lookupDOB.split("-");
             let [containsYear, containsMonth, containsDay] = [card.clientDOB.includes(DOBComponents[0]), card.clientDOB.includes(DOBComponents[1]), card.clientDOB.includes(DOBComponents[2])];
             
@@ -157,8 +154,6 @@
 
     //On window load we get a list of the user's available clients
     document.addEventListener("DOMContentLoaded", (event) => {
-        // clientUtils.setLoadingStatus(true, "loading-patients-display", "retrieving patient list ..");
-
         let preloadedPatientInquiryData= sessionStorage.getItem("preloadedPatientInquiryData");
         
         // If the serve response has been received before, use the preloaded version instead.

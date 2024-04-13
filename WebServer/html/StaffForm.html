@@ -29,7 +29,7 @@
 				<input type="date" id="dob" name="dob" required>
 
 				<label for="address">Address:</label>
-				<input type="text" id="address" name="address">
+				<input type="text" id="address" name="streetAddress">
 
 				<label for="city">City:</label>
 				<input type="text" id="city" name="city">
@@ -52,13 +52,10 @@
 
 				<label for="employmentdate">Employment Date:</label>
 				<input type="date" id="employmentdate" name="employmentDate" required>
-
-				<label for="hourlyrate">Hourly Rate:</label>
-				<input type="number" id="hourlyrate" name="hourlyRate" min="0" required>
 			</fieldset>
 			
 			<!-- The submit button function -->
-			<button onclick="submitStaff()" type="submit">Submit</button>
+			<button id="main-submit-button" onclick="submitStaff()" type="submit">Submit</button>
 		</form>
 	</body>
 </html>
@@ -70,12 +67,12 @@
 		event.preventDefault();
 		
 		const accessToken = clientUtils.getCookie("accessToken");
-		const clientId = clientUtils.getCookie("clientID");
+		const patientId = clientUtils.getCookie("patientId");
 		const postType = "submitStaff";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
-		newClientPost.addParam("clientId", clientId);
+		newClientPost.addParam("patientId", patientId);
 		
 		for (const key in formData)
 			newClientPost.addParam(key, formData[key]);
@@ -92,4 +89,22 @@
 			parent.location.reload();
 		}
 	}
+
+	// Called only from the patient services page.
+    function populateAsReadOnly(readOnlyData) {
+        document.querySelector("#main-submit-button").remove();
+        delete readOnlyData.enteredDate;
+        
+		// Disable all fieldsets.
+		document.querySelectorAll("fieldset").forEach((el) => {
+			el.disabled = true;
+		});
+
+        for (const field in readOnlyData) {
+            const val = readOnlyData[field];
+            const formField = document.querySelector(`[name='${field}']`);
+            formField.value = val;
+            formField.setAttribute("readonly", true);
+        }
+    }
 </script>

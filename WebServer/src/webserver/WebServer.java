@@ -153,8 +153,8 @@ public class WebServer {
         @Override
         public void handle(HttpExchange t) throws IOException {
             
-            System.out.println("Received Exchange Type " + t.getRequestMethod());
-            Long start = System.currentTimeMillis();
+            //System.out.println("Received Exchange Type " + t.getRequestMethod());
+            //Long start = System.currentTimeMillis();
             
             if (t.getRequestMethod().equals("POST")) {
                 NetworkRequestThread grt = new NetworkRequestThread("Post",this, t);
@@ -170,7 +170,7 @@ public class WebServer {
                 //handleGet(t);
             }
             
-            System.out.println("Finished in " + (System.currentTimeMillis()-start) + "ms");
+            //System.out.println("Finished in " + (System.currentTimeMillis()-start) + "ms");
             
         }
         
@@ -178,10 +178,11 @@ public class WebServer {
            An HTML page name with a ".html" extension in a URL is optional. */
         public void handleGet(HttpExchange t) {
             final Path relativePath = Path.of(t.getRequestURI().getPath());
-            final String parentPath = relativePath.getParent().toString();
-            final String desiredPath = "html" + relativePath + ((parentPath.equals("\\") || parentPath.equals("/")) && !relativePath.toString().endsWith(".html") ? ".html" : "");
+            final String parentPath = relativePath.getParent() == null ? "\\" : relativePath.getParent().toString();
+            final String desiredPath = "html" + (relativePath.toString().equals("\\") ? "\\Login" : relativePath) + 
+                                       ((parentPath.equals("\\") || parentPath.equals("/")) && !relativePath.toString().endsWith(".html") ? ".html" : "");
 
-            System.out.println("Handling GET: " + relativePath);
+            //System.out.println("Handling GET: " + relativePath);
 
             final File file = new File(desiredPath);
             
@@ -192,7 +193,9 @@ public class WebServer {
                 os.close();
             }
             catch (IOException e) {
-                System.out.println(e.getClass().getCanonicalName() + " thrown in handle get: " + e.getMessage());
+                String msg = e.getMessage();
+                if (!msg.endsWith(".map"))
+                    System.out.println(e.getClass().getCanonicalName() + " thrown in handle get: " + e.getMessage());
                 sendNoContentResponse(t);
             }
         }
@@ -213,11 +216,11 @@ public class WebServer {
             }
             catch(IOException e) {}
 
-            System.out.println("Handling POST: " + json);
+            System.out.println("\nHandling POST: " + json + "\n");
 
             BasicResponse response     = POSTHANDLER.handle(json);
             String        jsonResponse = new Gson().toJson(response);
-            //System.out.println("JSON Response: " + jsonResponse);
+            
             try {
                 t.sendResponseHeaders(200, jsonResponse.length());
                 OutputStream os = t.getResponseBody();
@@ -225,7 +228,7 @@ public class WebServer {
                 os.close();
             }
             catch (IOException f){
-                System.out.println("EXCEPTION THROWN IN HANDLE POST");
+                System.out.println("EXCEPTION THROWN IN HANDLE POST: " + f.getMessage());
             }
             
         }

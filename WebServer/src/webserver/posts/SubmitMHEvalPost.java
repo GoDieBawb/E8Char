@@ -6,6 +6,7 @@
 package webserver.posts;
 
 import webserver.WebServer;
+import webserver.DataOMatic.DataResponse;
 
 /**
  *
@@ -21,14 +22,16 @@ public class SubmitMHEvalPost  extends ServicePost {
     public void publish() {
         serviceCode = 2;
         
-        String serviceId = this.generateService();
-        String queryString = "INSERT INTO `MentalHealthEvaluations` (ClientId, StressLevel, AnxietyLevel, DepressionLevel, SleepQuality, OverallHealth, ServiceCode, EnteredBy, EnteredDate, PertainingServiceId)"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `MentalHealthEvaluations` (stressLevel, anxietyLevel, depressionLevel, sleepQuality, overallHealth, enteredBy, enteredDate)"
+                + "VALUES (?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
-            clientId, stressLevel, anxietyLevel, depressionLevel, sleepQuality, overallHealth,
-            serviceCode, enteredby, entereddate, serviceId
+            stressLevel, anxietyLevel, depressionLevel, sleepQuality, overallHealth,
+            enteredby, entereddate
         });
+
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM MentalHealthEvaluations", null);
+        generateService((Number)dr.getValueAtRowAndColumn(1, "MAX(id)"));
     }    
     
 }
