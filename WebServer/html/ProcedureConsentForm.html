@@ -35,13 +35,12 @@
 
             <fieldset>
                 <legend>Consent</legend>
-                <label for="written">Consent Type:</label>
+                <label for="concent-type"><strong>Concent Method:</strong></label>
+                <select id="concent-type" name="concentType">
+					<option value="Written" aria-selected="true" selected>Written</option>
+					<option value="Verbal">Verbal</option>
+				</select>
 
-                <label for="written">Written</label>
-                <input type="radio" id="written" name="consentType" value="Written" required>
-                
-                <label for="verbal">Verbal</label>
-                <input type="radio" id="verbal" name="consentType" value="Verbal" required>
                 <div>
                     <br>
                     <label for="additional-info">Additional Information:</label>
@@ -112,6 +111,12 @@
             const formField = document.querySelector(`[name='${field}']`);
             formField.value = val;
             formField.setAttribute("readonly", true);
+            formField.ariaReadOnly = true;
+
+            if (formField.type == "checkbox") {
+                formField.checked = true;
+                formField.ariaChecked = true;
+            }
         }
     }
 </script>

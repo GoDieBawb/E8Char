@@ -48,7 +48,7 @@
                                 <img class="halftone" src="images/Elephant-halftone.png" width="256" height="256" alt="EleChart logo"><br>
                                 <span class="display-6" id="template-message">To view a record, select a service type tab, then select a record entry on the top left window.</span>
                             </div>
-                            <iframe class="py-3" id="service-form-viewer" aria-label="form viewer" hidden></iframe>
+                            <iframe class="py-3" id="service-form-viewer" aria-label="form viewer" tabindex="-1" hidden></iframe>
                         </div>
                     </div>
                 </div>
@@ -160,9 +160,8 @@
         this.HTMLReference = new DOMParser().parseFromString(
             `<button class="btn-elechart text-start my-1 py-1">
                 <span class="col mx-4">#${recordData.serviceId}</span>|
-                <span class="col mx-4">${recordData.serviceType}</span>|
-                <span class="col mx-4">${clientUtils.getCookie("patientName")}</span>|
-                <span class="col mx-4">${recordData.formFiler}</span>|
+                <span class="col mx-4">Patient: ${clientUtils.getCookie("patientName")}</span>|
+                <span class="col mx-4">Entered by: ${recordData.formFiler}</span>|
                 <span class="col mx-4">${recordData.readOnlyData.enteredDate}</span>
             </button>`, "text/html").querySelector(".btn-elechart");
         this.selected = false;

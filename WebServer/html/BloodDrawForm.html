@@ -30,6 +30,7 @@
 				<legend>Type of Blood Test(s) Requested</legend>
 				<label for="bloodTest">Blood Test:</label>
 				<select id="bloodTest" name="bloodTest">
+					<option value="null" aria-selected="true" selected>Select Blood Test</option>
 					<option value="Complete Blood Count">Complete Blood Count</option>
 					<option value="Blood Chemistry Panel">Blood Chemistry Panel</option>
 					<option value="Blood Glucose Test">Blood Glucose Test</option>
@@ -50,11 +51,11 @@
 
 			<fieldset>
 				<legend>Additional Information</legend>
-				<label for="fastingYes"><strong>Fasting:</strong></label>
-				<label for="fastingYes"><span>Yes</span></label>
-				<input type="radio" id="fastingYes" name="isFasting" value="Yes">
-				<label for="fastingNo">No</label>
-				<input type="radio" id="fastingNo" name="isFasting" value="No">
+				<label for="fasting"><strong>Fasting:</strong></label>
+                <select id="fasting" name="isFasting">
+					<option value="No" aria-selected="true" selected>No</option>
+					<option value="Yes">Yes</option>
+				</select>
 			</fieldset>
 
 			<!-- Submit button -->

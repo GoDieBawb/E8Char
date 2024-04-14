@@ -53,7 +53,7 @@ public class PostHandler {
 
             //If user is null then the Access Token is Bad
             if (user == null) {
-                System.out.println("BAD TOKEN");
+                System.out.println("BAD OR EXPIRED TOKEN");
                 return new BadTokenResponse();
             }
             // System.out.println("Verified!");

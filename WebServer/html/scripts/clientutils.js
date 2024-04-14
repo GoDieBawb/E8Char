@@ -109,8 +109,14 @@ clientUtils.webPost = async function(clientPostObject) {
         console.error(`webPost: error!\npostType: ${clientPostObject.postType}\nreason: ${error}`);
     }
     finally {
-        if (jsonObject != null)
-            clientPostObject.responseCallback(jsonObject);
+        if (jsonObject != null) {
+            if (jsonObject.outcome == "failed") {
+                clientUtils.burnSession();
+                clientUtils.goto("Login");
+            }
+            else
+                clientPostObject.responseCallback(jsonObject);
+        }
     }
 }
 

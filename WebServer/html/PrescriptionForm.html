@@ -28,24 +28,17 @@
                 <label for="prescribedBy">Prescribed By:</label>
                 <input type="text" id="prescribedBy" name="prescribedBy" required>
 
-                <label><strong>Side Effects:</strong></label>
-                <br>
+                <label for="has-side-effects"><strong>Side Effects:</strong></label>
+                <select id="has-side-effects" name="hasSideEffects">
+					<option value="No" aria-selected="true" selected>No</option>
+					<option value="Yes">Yes</option>
+				</select>
 
-                <label for="sideEffectsYes">Yes</label>
-                <input type="radio" id="sideEffectsYes" name="hasSideEffects" value="Yes">
-
-                <label for="sideEffectsNo">No</label>
-                <input type="radio" id="sideEffectsNo" name="hasSideEffects" value="No">
-                <br><br>
-
-                <label><strong>Allergies:</strong></label>
-                <br>
-                
-                <label for="allergiesYes">Yes</label>
-                <input type="radio" id="allergiesYes" name="hasAllergies" value="Yes">
-
-                <label for="allergiesNo">No</label>
-                <input type="radio" id="allergiesNo" name="hasAllergies" value="No">
+                <label for="has-allergies"><strong>Allergies:</strong></label>
+                <select id="has-allergies" name="hasAllergies">
+					<option value="No" aria-selected="true" selected>No</option>
+					<option value="Yes">Yes</option>
+				</select>
             </fieldset>
             
             <!-- Submit button -->

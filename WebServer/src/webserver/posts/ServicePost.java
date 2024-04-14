@@ -12,7 +12,6 @@ import webserver.WebServer;
  * @author MeanC
  */
 public class ServicePost extends BasicPost {
-    public int         patientId;
     public int         enteredby;
     public String      entereddate;    
     public int         serviceCode;

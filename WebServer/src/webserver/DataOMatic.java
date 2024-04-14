@@ -20,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.sql.ResultSetMetaData;
 
 import org.apache.commons.dbcp2.ConnectionFactory;
@@ -86,19 +87,25 @@ public final class DataOMatic {
             System.err.println("Data-o-Matic: Aborted initialization - invalid credentials!");
             return;
         }
-        
+
         dbInfo = dbInfo.split(":")[1];
         final String user = dbInfo.split(",")[0].replace(" ", "");
         final String pass = dbInfo.split(",")[1].replace(" ", "");
-        final String dbIP = IS_PRODUCTION ? "149.56.101.29" : "localhost";
+        final String dbIP = IS_PRODUCTION ? "149.56.101.29:3306" : "127.0.0.1:3306";
         final String dbName = "Test";
         
         // Build a pool that can hold db connections. The connection factory needs a db URL, a db username and a db password.
         ConnectionFactory connectionFactory = new DriverManagerConnectionFactory("jdbc:mysql://" + dbIP + "/" + dbName,  user, pass);
         PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
         GenericObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<>(poolableConnectionFactory);
-        
+
         poolableConnectionFactory.setPool(connectionPool);
+        poolableConnectionFactory.setValidationQuery("SELECT 1;");
+
+        connectionPool.setTestOnBorrow(false);
+        connectionPool.setTestWhileIdle(true);
+        connectionPool.setLifo(false);
+        connectionPool.setDurationBetweenEvictionRuns(Duration.ofSeconds(6));
 
         PoolingDriver driver;
 
@@ -132,53 +139,42 @@ public final class DataOMatic {
         // This might slow things down, but whatever.
         DataResponse dr = new DataResponse();
 
-        int tries = 3;
-        while(tries > 0) {
-            try {
-                conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:mainpool");
-                conn.beginRequest();
+        try {
+            conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:mainpool");
+            stmt = conn.prepareStatement(preparedQuery);
 
-                stmt = conn.prepareStatement(preparedQuery);
-
-                if (values != null) {
-                    // Populate the parameterized fields.
-                    for (int i = 0; i < values.length; i++)
-                        stmt.setObject(i+1, values[i]);
-                }
-
-                stmt.execute();
-                rset = stmt.getResultSet();
-
-                final ResultSetMetaData setData = rset.getMetaData();
-
-                while (rset.next()) {
-                    /* Iterate through each row in the set and add each row to the data response object.
-                    Order is uncertain. */
-                    HashMap<String, Object> newRow = new HashMap<>();
-
-                    // Populate columns and their values.
-                    for (int i = 1; i <= setData.getColumnCount(); i++)
-                        newRow.put(setData.getColumnLabel(i), rset.getObject(i));
-
-                    dr.putRow(newRow);
-                }
-            }
-            catch(Exception ex) {
-                System.err.println("Data-o-Matic: Couldn't get data - " + ex.getMessage());
-                System.err.println(".. get query was: " + preparedQuery);
-                System.err.println("Data-o-Matic: try " + tries);
-                
-                tries--;
-                continue;
-            }
-            finally {
-                // Free the resources and release the connection back to the pool.
-                try { if (rset != null) rset.close(); } catch(SQLException e) {}
-                try { if (stmt != null) stmt.close(); } catch(SQLException e) {}
-                try { if (conn != null) conn.endRequest(); conn.close(); } catch(SQLException e) {}
+            if (values != null) {
+                // Populate the parameterized fields.
+                for (int i = 0; i < values.length; i++)
+                    stmt.setObject(i+1, values[i]);
             }
 
-            break;
+            stmt.execute();
+            rset = stmt.getResultSet();
+
+            final ResultSetMetaData setData = rset.getMetaData();
+
+            while (rset.next()) {
+                /* Iterate through each row in the set and add each row to the data response object.
+                Order is uncertain. */
+                HashMap<String, Object> newRow = new HashMap<>();
+
+                // Populate columns and their values.
+                for (int i = 1; i <= setData.getColumnCount(); i++)
+                    newRow.put(setData.getColumnLabel(i), rset.getObject(i));
+
+                dr.putRow(newRow);
+            }
+        }
+        catch(Exception ex) {
+            System.err.println("Data-o-Matic: Couldn't get data - " + ex.getMessage());
+            System.err.println(".. get query was: " + preparedQuery);
+        }
+        finally {
+            // Free the resources and release the connection back to the pool.
+            try { if (rset != null) rset.close(); } catch(SQLException e) {}
+            try { if (stmt != null) stmt.close(); } catch(SQLException e) {}
+            try { if (conn != null) conn.close(); } catch(SQLException e) {}
         }
 
         return dr;
@@ -195,7 +191,6 @@ public final class DataOMatic {
     
         try {
             conn = DriverManager.getConnection("jdbc:apache:commons:dbcp:mainpool");
-            conn.beginRequest();
 
             stmt = conn.prepareStatement(preparedQuery);
             
@@ -214,7 +209,7 @@ public final class DataOMatic {
         }
         finally {
             try { if (stmt != null) stmt.close(); } catch(SQLException e) {}
-            try { if (conn != null) conn.endRequest(); conn.close(); } catch(SQLException e) {}
+            try { if (conn != null) conn.close(); } catch(SQLException e) {}
         }
     }
 }

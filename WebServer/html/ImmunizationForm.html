@@ -29,10 +29,10 @@
                 <!-- The onchange attribute is set off when once you click either yes or no. If you click yes the additional information will be shown. If you click no then no information will pop up -->
                 <select id="covidVaccination" name="covidVaccination" required>
                     <option value="Yes">Yes</option>
-                    <option value="No" selected>No</option>
+                    <option value="No" aria-selected="true" selected>No</option>
                 </select>
                 <!-- The div id function is just to diplay more information about the patient vaccination like first and second dose.-->
-                <div id="covidVaccinationDetails" style="display: none;">
+                <div id="covidVaccinationDetails" aria-hidden="true" hidden>
                     <label for="covidFirstDoseDate">First Dose Date:</label>
                     <input type="date" id="covidFirstDoseDate" name="covidFirstDoseDate">
 
@@ -42,8 +42,7 @@
                     <label for="vaccineTypeFirstDose">First Dose Vaccine Type:</label>
                     <!-- This select id function below creates the dropdown menu. When you click it has three options for the type of vaccination you took.-->
                     <select id="vaccineTypeFirstDose" name="vaccineTypeFirstDose">
-
-                        <option value="">Select</option>
+                        <option value="null" aria-selected="true" selected>Select</option>
                         <option value="Pfizer">Pfizer</option>
                         <option value="Moderna">Moderna</option>
                         <option value="Johnson & Johnson">Johnson & Johnson</option>
@@ -51,7 +50,7 @@
 
                     <label for="vaccineTypeSecondDose">Second Dose Vaccine Type:</label>
                     <select id="vaccineTypeSecondDose" name="vaccineTypeSecondDose">
-                        <option value="">Select</option>
+                        <option value="null" aria-selected="true" selected>Select</option>
                         <option value="Pfizer">Pfizer</option>
                         <option value="Moderna">Moderna</option>
                         <option value="Johnson & Johnson">Johnson & Johnson</option>
@@ -71,7 +70,7 @@
 
                     <!-- This select id function below creates the dropdow    n menu. When you click it has three options for the type of vaccination you took.-->
                     <select id="vaccineTypeBooster" name="vaccineTypeBooster">
-                        <option value="">Select</option>
+                        <option value="null" aria-selected="true" selected>Select</option>
                         <option value="Pfizer">Pfizer</option>
                         <option value="Moderna">Moderna</option>
                         <option value="Johnson & Johnson">Johnson & Johnson</option>
