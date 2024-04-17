@@ -23,7 +23,7 @@
 
 				<label for="marital-status">Marital Status:</label>
 				<select id="marital-status" name="maritalStatus" required>
-					<option value="null" aria-selected="true" selected>Select Marital Status</option>
+					<option value="null" aria-selected="true" disabled selected>Select Marital Status</option>
 					<option value="Single">Single</option>
 					<option value="Married">Married</option>
 					<option value="Divorced">Divorced</option>
@@ -33,14 +33,14 @@
 
 				<label for="ethnicity">Ethnicity:</label>
 				<select id="ethnicity" name="ethnicity" required>
-					<option value="null" aria-selected="true" selected>Select Ethnicity</option>
+					<option value="null" aria-selected="true" disabled selected>Select Ethnicity</option>
 					<option value="Hispanic or Latino">Hispanic or Latino</option>
 					<option value="Not Hispanic or Latino">Not Hispanic or Latino</option>
 				</select>
 
 				<label for="race">Race:</label>
 				<select id="race" name="race" onchange="parseRaceField()" required>
-					<option value="null" aria-selected="true" selected>Select Race</option>
+					<option value="null" aria-selected="true" disabled selected>Select Race</option>
 					<option value="African-American">African-American</option>
 					<option value="Asian">Asian</option>
 					<option value="Caucasian">Caucasian</option>
@@ -54,7 +54,7 @@
 
 				<label for="sex">Sex:</label>
 				<select id="sex" name="sex" required>
-					<option value="null" aria-selected="true" selected>Select Sex</option>
+					<option value="null" aria-selected="true" disabled selected>Select Sex</option>
 					<option value="Male">Male</option>
 					<option value="Female">Female</option>
 				</select>
@@ -64,7 +64,20 @@
 				<legend>Contact</legend>
 				<label for="prim-lang">Primary Language:</label>
 				<select id="prim-lang" name="primaryLanguage" required>
-					<option value="null" aria-selected="true" selected>Select primary language</option>
+					<option value="null" aria-selected="true" disabled selected>Select primary language</option>
+					<option value="English">English</option>
+					<option value="Spanish">Spanish</option>
+					<option value="French">French</option>
+					<option value="German">German</option>
+					<option value="Tagalog">Tagalog</option>
+					<option value="Armenian">Armenian</option>
+					<option value="Hindi">Hindi</option>
+					<option value="Chinese">Chinese</option>
+					<option value="Arabic">Arabic</option>
+					<option value="Russian">Russian</option>
+					<option value="Korean">Korean</option>
+					<option value="Vietnamese">Vietnamese</option>
+					<option value="Japanese">Japanese</option>
 				</select>
 
 				<label for="phonenumber">Phone Number:</label>
@@ -141,16 +154,6 @@
 	}
 
 	function onPageLoaded() {
-		let primLangList = document.querySelector("#ethnicity");
-		let ethnicityList = document.querySelector("#prim-lang");
-
-		primaryLanguages.forEach((lang) => {
-			primLangList.innerHTML += `<option value="${lang}">${lang}</option>`;
-		});
-
-		ethnicities.forEach((ethn) => {
-			ethnicityList.innerHTML += `<option value="${ethn}">${ethn}</option>`;
-		});
 		
 	}
 

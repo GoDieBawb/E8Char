@@ -16,7 +16,7 @@ public class SubmitPatientPost extends BasicPost {
     public String      lastName;
     public String      phoneNumber;
     public String      dob; 		
-    public String      martialStatus; 		
+    public String      maritalStatus; 		
     public String      streetAddress;   	
     public String      city;   	   
     public String      state;   	
@@ -36,12 +36,12 @@ public class SubmitPatientPost extends BasicPost {
     
     public void publish() {
         String queryString = "insert into `Patients` (firstName, lastName, phone, dob, streetAddress, city, state, zip, enteredBy, enteredDate, " +
-                             "emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, martialStatus, otherRace) " +
+                             "emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, maritalStatus, otherRace) " +
                              "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
             firstName, lastName, phoneNumber, dob, streetAddress, city, state, zip, enteredBy, enteredDate, 
-            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, martialStatus, otherRace
+            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, maritalStatus, otherRace
         });
     }
 }
