@@ -130,6 +130,13 @@ public class PostHandler {
                 smpe.publish();
                 return new BasicResponse("success");
 
+            case "submitHealthReleaseForm":
+                SubmitHealthInfoReleasePost ship = g.fromJson(json, SubmitHealthInfoReleasePost.class);
+                ship.enteredby   = authenticator.getUserIdByToken(ship.accessToken);
+                ship.entereddate = LocalDate.now().toString();
+                ship.publish();
+                return new BasicResponse("success");
+                
             case "requestUserClients":
                 int userId = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
@@ -144,6 +151,10 @@ public class PostHandler {
                 requestingUser = authenticator.getUserIdByToken(b.accessToken);
                 ClientDemographicResponse cdr = new ClientDemographicResponse(requestingUser, b.patientId);
                 return cdr;
+                
+            case "requestClinicians":
+                CliniciansResponse cr = new CliniciansResponse(b.patientId);
+                return cr;
                 
             default:
                 System.out.println("Unknown Post: " + b.postType);

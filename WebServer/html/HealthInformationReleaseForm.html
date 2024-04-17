@@ -12,15 +12,17 @@
             <fieldset>
                 <legend>Consent to Share Medical Records to Another Doctor</legend>
                 <label for="patientName">Patient's Name:</label>
-                <input type="text" id="patientName" name="patientName" required>
-                <label for="doctorName">Doctor's Name:</label>
-                <input type="text" id="doctorName" name="doctorName" required>
+                <input readonly type="text" id="patientName" name="patientName" required>
+                <label for="staffId">Doctor's Name:</label>
+                <select id="staffId" name="staffId" required>
+                <option value="" disabled selected>Select your option</option>
+                <select>
                 <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required>
+                <input readonly type="date" id="date" name="date" required>
             </fieldset>
             <fieldset>
                 <legend>Consent Statement</legend>
-                <p>I, <span id="clientNameOutput">patient name</span>, consent for this doctor, <span id="doctorNameOutput">doctor name</span>, to access my other medical records.</p>
+                <p>I, <span id="clientNameOutput">patient name</span>, consent for this doctor, <span id="staffIdOutput">doctor name</span>, to access my medical records contained within the Elechart System.</p>
                 <label for="consentCheckbox">I consent.</label>
                 <input type="checkbox" id="consentCheckbox" name="consented" required>
             </fieldset>
@@ -30,16 +32,29 @@
     </body>
 </html>
 <script>
+
+    window.onload = function(e) {
+        var accessToken = clientUtils.getCookie("accessToken");
+        var patientId = clientUtils.getCookie("patientId");
+        var postType = "requestClinicians";
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);  
+        newClientPost.addParam("patientId", patientId);
+        clientUtils.webPost(newClientPost);
+        document.getElementById('date').valueAsDate = new Date();
+    }
+
     function submitHealthInfoRelease() {
         event.preventDefault();
         
         var accessToken = clientUtils.getCookie("accessToken");
-        var patientId = clientUtils.getCookie("patientId");
-        var postType = "submitHealthReleaseForm";
-        const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+        var patientId   = clientUtils.getCookie("patientId");
+        var postType    = "submitHealthReleaseForm";
+        const formData  = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
-
+        newClientPost.addParam("patientId", patientId);
+        
 		for (const key in formData)
 			newClientPost.addParam(key, formData[key]);
 
@@ -51,9 +66,26 @@
 			alert("Post Failed: " + serverResponse.responseType);
 		}
 		else if (serverResponse.outcome == "success") {
-			parent.location.reload();
+            if (serverResponse.responseType == "CliniciansResponse") {
+                document.getElementById("patientName").value          = serverResponse.patientName;
+                document.getElementById("clientNameOutput").innerHTML = serverResponse.patientName;
+                populateClinicians(serverResponse.clinicians);
+            }
+			else {
+                parent.location.reload();
+            }
 		}
 	}
+
+    function populateClinicians(clinicians) {
+        select = document.getElementById('staffId');
+        for (let i = 0; i < clinicians.length; i++) {
+            var opt = document.createElement('option');
+            opt.value = clinicians[i][0];
+            opt.innerHTML = clinicians[i][1];
+            select.appendChild(opt);            
+        }
+    }
 
     // Called only from the patient services page.
     function populateAsReadOnly(readOnlyData) {

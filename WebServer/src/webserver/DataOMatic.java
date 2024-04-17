@@ -68,7 +68,7 @@ public final class DataOMatic {
     }
 
     // Whether to use a remote (true) or local (false) database.
-    private static final boolean IS_PRODUCTION = true;
+    private static final boolean IS_PRODUCTION = false;
 
     public DataOMatic() {
         // Get credentials.
@@ -148,7 +148,7 @@ public final class DataOMatic {
                 for (int i = 0; i < values.length; i++)
                     stmt.setObject(i+1, values[i]);
             }
-
+            
             stmt.execute();
             rset = stmt.getResultSet();
 

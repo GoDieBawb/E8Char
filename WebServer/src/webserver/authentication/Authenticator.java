@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 import webserver.WebServer;
 import webserver.DataOMatic.DataResponse;
+import webserver.responses.UserClientsResponse;
+import webserver.responses.UserClientsResponse.Client;
 
 /**
  *
@@ -71,17 +73,15 @@ public class Authenticator {
 
     /** Checks if a clinician has verified access to a patient's information. **/
     public boolean Authenticate(String token, int patientId) {
-        int clinicianId = getUserIdByToken(token);
 
-        // If the clinician even exists
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT id FROM Staff WHERE id = ?", new Object[] { clinicianId });
-        // If such clinician has access to the given patient
-        DataResponse dr2 = WebServer.dbHandler.secureGet("SELECT id FROM Patients WHERE id = ? AND enteredBy = ?", new Object[] { patientId, clinicianId });
-
-        if (dr.size() == 0 || dr2.size() == 0)
-            return false;
-        
-        return true;
+        int userId = getUserIdByToken(token);
+        UserClientsResponse ucr = new UserClientsResponse(userId);
+        for (Client c : ucr.getClients()) {
+            if (c.patientId .equals(patientId+"")) {
+                return true;
+            }
+        }
+        return false;
     }
     
     //Checks Username and Password

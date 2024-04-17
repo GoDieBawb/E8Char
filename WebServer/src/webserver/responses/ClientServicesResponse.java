@@ -99,6 +99,9 @@ public class ClientServicesResponse extends BasicResponse {
                     case 9:
                         recordQuery = "SELECT * From Prescriptions WHERE id = ?"; 
                         break;
+                    case 10:
+                        recordQuery = "SELECT * FROM Releases WHERE id = ?";
+                        break;
                 }
 
                 recordData = WebServer.dbHandler.secureGet(recordQuery, new Object[]{ referenceRecordId }); 
