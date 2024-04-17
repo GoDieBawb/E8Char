@@ -104,10 +104,6 @@ public class ClientServicesResponse extends BasicResponse {
                         break;
                 }
 
-                if (recordQuery.isEmpty()) {
-                    System.out.println("ClientServicesResponse: recordQuery is empty for this service: " + svc.serviceType);
-                }
-
                 recordData = WebServer.dbHandler.secureGet(recordQuery, new Object[]{ referenceRecordId }); 
                 svc.readOnlyData = recordData.getRowAt(1);
                 svc.readOnlyData.remove("id");

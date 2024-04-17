@@ -5,10 +5,8 @@ import webserver.DataOMatic;
 import webserver.WebServer;
 
 public class SubmitHealthInfoReleasePost extends ServicePost {
-    public String patientName;
     public String staffId;
     public String date;
-    public String consented;
     
     public void publish() {
         

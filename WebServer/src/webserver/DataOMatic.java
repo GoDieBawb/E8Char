@@ -68,7 +68,7 @@ public final class DataOMatic {
     }
 
     // Whether to use a remote (true) or local (false) database.
-    private static final boolean IS_PRODUCTION = true;
+    private static final boolean IS_PRODUCTION = false;
 
     public DataOMatic() {
         // Get credentials.
