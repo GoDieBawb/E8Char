@@ -11,11 +11,16 @@
         <form id="main-form" method="post">
             <fieldset>
                 <legend>Consent to Share Medical Records to Another Doctor</legend>
-                <label for="patientName">Patient's Name:</label>
-                <input readonly type="text" id="patientName" name="patientName" required>
+                <input readonly hidden aria-hidden="true" type="text" name="patientId">
+                <label for="first-name">Patient's First Name:</label>
+                <input readonly type="text" id="first-name" name="firstName" required>
+                <label for="last-name">Patient's Last Name:</label>
+                <input readonly type="text" id="last-name" name="lastName" required>
+                <label for="dob">Date of Birth:</label>
+                <input readonly type="date" id="dob" name="dob" required>
                 <label for="staffId">Doctor's Name:</label>
                 <select id="staffId" name="staffId" required>
-                <option value="" disabled selected>Select your option</option>
+                    <option value="" disabled selected>Select your option</option>
                 <select>
                 <label for="date">Date:</label>
                 <input readonly type="date" id="date" name="date" required>
@@ -67,8 +72,8 @@
 		}
 		else if (serverResponse.outcome == "success") {
             if (serverResponse.responseType == "CliniciansResponse") {
-                document.getElementById("patientName").value          = serverResponse.patientName;
-                document.getElementById("clientNameOutput").innerHTML = serverResponse.patientName;
+                console.log(serverResponse);
+                document.getElementById("staffId").innerHTML = serverResponse.patientName;
                 populateClinicians(serverResponse.clinicians);
             }
 			else {
@@ -100,8 +105,14 @@
         for (const field in readOnlyData) {
             const val = readOnlyData[field];
             const formField = document.querySelector(`[name='${field}']`);
+
+            if (formField == null)
+                continue;
+                
             formField.value = val;
             formField.setAttribute("readonly", true);
         }
+
+        document.querySelector("#consentCheckbox").checked = true;
     }
 </script>

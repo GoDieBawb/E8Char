@@ -26,7 +26,7 @@
                 <legend>Anesthesia</legend>
                 <label for="anesthesia">Anesthesia Type:</label>
                 <select id="anesthesia" name="anesthesia">
-                    <option value="General">General Anesthesia</option>
+                    <option value="General" selected>General Anesthesia</option>
                     <option value="Local">Local Anesthesia</option>
                     <option value="Regional">Regional Anesthesia</option>
                     <option value="None">No Anesthesia</option>
@@ -35,8 +35,8 @@
 
             <fieldset>
                 <legend>Consent</legend>
-                <label for="concent-type"><strong>Concent Method:</strong></label>
-                <select id="concent-type" name="concentType">
+                <label for="consent-type"><strong>Concent Method:</strong></label>
+                <select id="consent-type" name="consentType">
 					<option value="Written" aria-selected="true" selected>Written</option>
 					<option value="Verbal">Verbal</option>
 				</select>
@@ -109,6 +109,10 @@
         for (const field in readOnlyData) {
             const val = readOnlyData[field];
             const formField = document.querySelector(`[name='${field}']`);
+            
+            if (formField == null)
+                continue;
+
             formField.value = val;
             formField.setAttribute("readonly", true);
             formField.ariaReadOnly = true;
@@ -118,5 +122,7 @@
                 formField.ariaChecked = true;
             }
         }
+
+        document.querySelector("#consent-given").checked = true;
     }
 </script>
