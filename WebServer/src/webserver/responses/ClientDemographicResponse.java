@@ -15,7 +15,7 @@ public class ClientDemographicResponse extends BasicResponse {
         demographicData = new HashMap<String, Object>();
 
         // Note: the data is dependent on the header names of the Client table in the database.
-        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Patients WHERE id = ? AND enteredBy = ?", new Object[] { patientId, clinicianId });
+        DataResponse dr = WebServer.dbHandler.secureGet("SELECT * FROM Patients WHERE id = ?", new Object[] { patientId });
 
         // if there's no results, then return nothing.
         if (dr.size() == 0)
