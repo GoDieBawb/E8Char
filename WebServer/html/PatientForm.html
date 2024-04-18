@@ -51,12 +51,19 @@
 				</select>
 
 				<input type="text" id="other-race-field" name="otherRace" placeholder="Other Race.." hidden>
-
+			
 				<label for="sex">Sex:</label>
 				<select id="sex" name="sex" required>
 					<option value="null" aria-selected="true" disabled selected>Select Sex</option>
 					<option value="Male">Male</option>
 					<option value="Female">Female</option>
+				</select>
+
+				<label for="pregnancy-status">Pregnancy Status:</label>
+				<select id="pregnancy-status" name="pregnancyStatus" required>
+					<option value="null" disabled selected>Select Pregnancy Status</option>
+					<option value="Not Pregnant">Not Pregnant</option>
+					<option value="Pregnant">Pregnant</option>
 				</select>
 			</fieldset>
 
@@ -78,7 +85,10 @@
 					<option value="Korean">Korean</option>
 					<option value="Vietnamese">Vietnamese</option>
 					<option value="Japanese">Japanese</option>
+					<option value="Other">Other</option>
 				</select>
+				<input type="text" id="other-language-field" name="otherLanguage" placeholder="Other Language..." hidden>
+				
 
 				<label for="phonenumber">Phone Number:</label>
 				<input type="text" id="phonenumber" name="phoneNumber" required>
