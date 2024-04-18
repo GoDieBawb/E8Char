@@ -70,7 +70,7 @@
 			<fieldset>
 				<legend>Contact</legend>
 				<label for="prim-lang">Primary Language:</label>
-				<select id="prim-lang" name="primaryLanguage" required>
+				<select id="prim-lang" name="primaryLanguage" onchange="parseLanguageField()" required>
 					<option value="null" aria-selected="true" disabled selected>Select primary language</option>
 					<option value="English">English</option>
 					<option value="Spanish">Spanish</option>
@@ -162,6 +162,16 @@
 			document.querySelector("#other-race-field").hidden = true;
 		}
 	}
+
+	function parseLanguageField() {
+    let val = document.querySelector("#prim-lang").value;
+    if (val == "Other") {
+        document.querySelector("#other-language-field").hidden = false;
+    } else {
+        document.querySelector("#other-language-field").hidden = true;
+    }
+}
+
 
 	function onPageLoaded() {
 		
