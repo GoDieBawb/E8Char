@@ -53,18 +53,20 @@
 				<input type="text" id="other-race-field" name="otherRace" placeholder="Other Race.." hidden>
 			
 				<label for="sex">Sex:</label>
-				<select id="sex" name="sex" required>
+				<select id="sex" name="sex" onchange="parseSexField()" required>
 					<option value="null" aria-selected="true" disabled selected>Select Sex</option>
 					<option value="Male">Male</option>
 					<option value="Female">Female</option>
 				</select>
 
-				<label for="pregnancy-status">Pregnancy Status:</label>
-				<select id="pregnancy-status" name="pregnancyStatus" required>
-					<option value="null" disabled selected>Select Pregnancy Status</option>
-					<option value="Not Pregnant">Not Pregnant</option>
-					<option value="Pregnant">Pregnant</option>
-				</select>
+				<div id="pregnancy-section" hidden>
+					<label for="pregnancy-status">Pregnancy Status:</label>
+					<select id="pregnancy-status" name="pregnancyStatus" required>
+						<option value="null" disabled selected>Select Pregnancy Status</option>
+						<option value="Not Pregnant">Not Pregnant</option>
+						<option value="Pregnant">Pregnant</option>
+					</select>
+				</div>
 			</fieldset>
 
 			<fieldset>
@@ -74,17 +76,29 @@
 					<option value="null" aria-selected="true" disabled selected>Select primary language</option>
 					<option value="English">English</option>
 					<option value="Spanish">Spanish</option>
-					<option value="French">French</option>
-					<option value="German">German</option>
 					<option value="Tagalog">Tagalog</option>
+					<option value="French">French</option>
+					<option value="Italian">Italian</option>
+					<option value="Polish">Polish</option>
+					<option value="Portuguese">Portuguese</option>
+					<option value="German">German</option>
+					<option value="Swedish">Swedish</option>
+					<option value="Norwegian">Norwegian</option>
 					<option value="Armenian">Armenian</option>
 					<option value="Hindi">Hindi</option>
+					<option value="Thai">Thai</option>
 					<option value="Chinese">Chinese</option>
 					<option value="Arabic">Arabic</option>
 					<option value="Russian">Russian</option>
 					<option value="Korean">Korean</option>
 					<option value="Vietnamese">Vietnamese</option>
 					<option value="Japanese">Japanese</option>
+					<option value="Japanese">Hebrew</option>
+					<option value="Japanese">Turkish</option>
+					<option value="Japanese">Urdu</option>
+					<option value="Japanese">Greek</option>
+					<option value="Japanese">Samoan</option>
+					<option value="Japanese">Malayalam</option>
 					<option value="Other">Other</option>
 				</select>
 				<input type="text" id="other-language-field" name="otherLanguage" placeholder="Other Language..." hidden>
@@ -160,6 +174,16 @@
 		}
 		else {
 			document.querySelector("#other-race-field").hidden = true;
+		}
+	}
+
+	function parseSexField() {
+		let val = document.querySelector("#sex").value;
+		if (val == "Female") {
+			document.querySelector("#pregnancy-section").hidden = false;
+		}
+		else {
+			document.querySelector("#pregnancy-section").hidden = true;
 		}
 	}
 

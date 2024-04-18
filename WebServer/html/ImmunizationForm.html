@@ -152,4 +152,10 @@
             formField.setAttribute("readonly", true);
         }
     }
+
+    function onPageLoaded() {
+		document.querySelector("#dateAdministered").value = clientUtils.getTodaysDate();
+	}
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
 </script>

@@ -12,9 +12,9 @@
             <fieldset>
                 <legend>Consent to Share Medical Records to Another Doctor</legend>
                 <input readonly hidden aria-hidden="true" type="text" name="patientId">
-                <label for="first-name">Patient's First Name:</label>
+                <label for="first-name">Patient First Name:</label>
                 <input readonly type="text" id="first-name" name="firstName" required>
-                <label for="last-name">Patient's Last Name:</label>
+                <label for="last-name">Patient Last Name:</label>
                 <input readonly type="text" id="last-name" name="lastName" required>
                 <label for="dob">Date of Birth:</label>
                 <input readonly type="date" id="dob" name="dob" required>
@@ -46,7 +46,11 @@
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);  
         newClientPost.addParam("patientId", patientId);
         clientUtils.webPost(newClientPost);
+
         document.getElementById('date').valueAsDate = new Date();
+        document.querySelector("#first-name").value = clientUtils.getFromDemogaphicData("firstName");
+        document.querySelector("#last-name").value = clientUtils.getFromDemogaphicData("lastName");
+        document.querySelector("#dob").value = clientUtils.getFromDemogaphicData("dob");
     }
 
     function submitHealthInfoRelease() {
@@ -72,7 +76,6 @@
 		}
 		else if (serverResponse.outcome == "success") {
             if (serverResponse.responseType == "CliniciansResponse") {
-                console.log(serverResponse);
                 document.getElementById("staffId").innerHTML = serverResponse.patientName;
                 populateClinicians(serverResponse.clinicians);
             }

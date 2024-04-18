@@ -47,16 +47,6 @@
 							<div class="col-md-3">
 								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
 									<div>
-										<h2 class="fs-2">Last Visit</h2>
-										<p class="fs-5" id="lastV"></p>
-									</div>
-									<i class="fas fa-calendar-day fs-1 border rounded-full secondary-bg p-3"></i>
-								</div>
-							</div>
-
-							<div class="col-md-3">
-								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
-									<div>
 										<h2 class="fs-2">SSN</h2>
 										<p class="fs-5" id="idt"></p>
 									</div>
@@ -102,8 +92,8 @@
 											<td id="race"></td>
 										</tr>
 										<tr>
-											<th scope="row">Home Phone</th>
-											<td id="hPhone"> </td>
+											<th scope="row">Marital Status</th>
+											<td id="marital-status"> </td>
 										</tr>
 									</tbody>
 								</table>
@@ -115,6 +105,10 @@
 									</tr>
 									</thead>
 									<tbody>
+										<tr>
+											<th scope="row">Home Phone</th>
+											<td id="hPhone"> </td>
+										</tr>
 										<tr>
 											<th scope="row">Full Address</th>
 											<td id="full-address"></td>
@@ -163,20 +157,21 @@
 		let sex = serverResponse.demographicData.sex;
 		let ethnicity = serverResponse.demographicData.ethnicity;
 		let race = serverResponse.demographicData.race;
+		let maritalStatus = serverResponse.demographicData.maritalStatus;
+		let pregnancyStatus = serverResponse.demographicData.pregnancyStatus;
 		let phoneNumber = serverResponse.demographicData.phone;
 		let SSN = serverResponse.demographicData.ssn;
-		let lastVisit = '1-1-2024'
 		let pharmacyName = serverResponse.demographicData.pharmacy
 		let insuranceName = serverResponse.demographicData.insurance
 		let insuranceID = serverResponse.demographicData.insuranceId;
 		let physician = `Dr. ${clientUtils.getCookie("clinicianName")}`;
-		let firstLan = serverResponse.demographicData.primaryLanguage;
+		let firstLan = (serverResponse.demographicData.primaryLanguage == "Other") ? serverResponse.demographicData.otherLanguage : serverResponse.demographicData.primaryLanguage;
 		let fullAddress = `${serverResponse.demographicData.streetAddress}, ${serverResponse.demographicData.city}, ${serverResponse.demographicData.state} ${serverResponse.demographicData.zip}`;
 		let emergencyPhone = serverResponse.demographicData.emergencyPhone;
 
 		//Insert patient info into appropiate elements
-		let info = [dob, age, sex, ethnicity, race, phoneNumber, firstLan, pharmacyName, insuranceName, insuranceID, fullAddress, emergencyPhone];
-		let ele = ['DOB', 'age', 'sex', 'ethnicity', 'race', 'hPhone', 'firstLan', 'pharmacy','insuranceName', 'insuranceID', "full-address", "emergency-phone"];
+		let info = [dob, age, sex, ethnicity, race, phoneNumber, firstLan, pharmacyName, insuranceName, insuranceID, fullAddress, emergencyPhone, maritalStatus];
+		let ele = ['DOB', 'age', 'sex', 'ethnicity', 'race', 'hPhone', 'firstLan', 'pharmacy','insuranceName', 'insuranceID', "full-address", "emergency-phone", "marital-status"];
 		let i = 0;
 
 		ele.forEach(element => {
@@ -191,11 +186,8 @@
 		let physicianName = document.getElementById('hPhysician');
 		physicianName.insertAdjacentHTML('beforeend', '<i>' + physician + '</i>');
 		
-		let vst = document.getElementById('lastV');
-		vst.insertAdjacentHTML('beforeend', '<i>' + lastVisit + '</i>');
-		
 		let ssnAcc = document.getElementById('idt');
-		ssnAcc.insertAdjacentHTML('beforeend', '<i>' + SSN + '</i>');
+		ssnAcc.insertAdjacentHTML('beforeend', '<i>' + `${SSN.substring(0, 3)}-${SSN.substring(3, 5)}-${SSN.substring(5, 9)}` + '</i>');
 
 		// Store the server response as preloaded data.
 		if (!sessionStorage.getItem("preloadedDashboardData"))

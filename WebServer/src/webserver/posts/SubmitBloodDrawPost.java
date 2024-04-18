@@ -4,7 +4,8 @@ import webserver.WebServer;
 import webserver.DataOMatic.DataResponse;
 
 public class SubmitBloodDrawPost extends ServicePost {
-    public String patientName;
+    public String firstName;
+    public String lastName;
     public String dob;
     public String medicalRecordNumber;
     public String physicianName;
@@ -16,11 +17,11 @@ public class SubmitBloodDrawPost extends ServicePost {
     public void publish() {
         serviceCode = 3;
         
-        String queryString = "INSERT INTO `BloodDraws` (patientName, dob, medicalRecordNumber, physicianName, bloodTest, labLocation, isFasting, signature, enteredBy, enteredDate) "
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `BloodDraws` (firstName, lastName, dob, medicalRecordNumber, physicianName, bloodTest, labLocation, isFasting, signature, enteredBy, enteredDate) "
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         
         WebServer.dbHandler.securePost(queryString, new Object[] {
-            patientName , dob , medicalRecordNumber , physicianName , bloodTest , labLocation , 
+            firstName, lastName , dob , medicalRecordNumber , physicianName , bloodTest , labLocation , 
             isFasting , signature , enteredby , entereddate
         });
 

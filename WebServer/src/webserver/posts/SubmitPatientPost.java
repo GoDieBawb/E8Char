@@ -33,15 +33,17 @@ public class SubmitPatientPost extends BasicPost {
     public String      otherRace;
     public String      ssn;
     public String      sex;
+    public String      pregnancyStatus;
+    public String      otherLanguage;
     
     public void publish() {
         String queryString = "insert into `Patients` (firstName, lastName, phone, dob, streetAddress, city, state, zip, enteredBy, enteredDate, " +
-                             "emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, maritalStatus, otherRace) " +
-                             "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                             "emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, maritalStatus, otherRace, pregnancyStatus, otherLanguage) " +
+                             "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
             firstName, lastName, phoneNumber, dob, streetAddress, city, state, zip, enteredBy, enteredDate, 
-            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, maritalStatus, otherRace
+            emergencyPhone, ethnicity, insurance, insuranceId, pharmacy, primaryLanguage, race, ssn, sex, maritalStatus, otherRace, pregnancyStatus, otherLanguage
         });
     }
 }

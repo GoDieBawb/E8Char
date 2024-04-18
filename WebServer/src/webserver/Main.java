@@ -1,13 +1,16 @@
 package webserver;
 
-// import webserver.data.DataManager;
+import webserver.data.DataManager;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         WebServer w = new WebServer();
         w.start();
         
-        //DataManager.populate();
+        boolean dev = false;
+        if (dev) {
+            DataManager.populate();
+        }
 
         //Tester t = new Tester();
         //t.clientServicesResponseTest();

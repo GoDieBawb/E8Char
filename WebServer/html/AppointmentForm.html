@@ -10,18 +10,18 @@
 		<h2>Appointment Registration Form</h2>
 		<form id="main-form" method="post">
 			<fieldset>
-				<legend>Patient Name</legend>
+				<legend>Patient Information</legend>
 				<label for="first-name">First</label>
-				<input type="text" id="first-name" name="firstName" autocomplete="given-name" required>
+				<input readonly type="text" id="first-name" name="firstName" autocomplete="given-name" required>
 			
 				<label for="last-name">Last</label>
-				<input type="text" id="last-name" name="lastName" required>
+				<input readonly type="text" id="last-name" name="lastName" required>
 			</fieldset>
 			
 			<fieldset>
 				<legend>Contact</legend>
 				<label for="phone-number">Contact Number</label>
-				<input type="text" id="phone-number" name="phoneNumber" placeholder="555 555 555" required>
+				<input readonly type="text" id="phone-number" name="phoneNumber" placeholder="555 555 555" required>
 
 				<label for="email-address">Email Address</label>
 				<input type="text" id="email-address" name="email" placeholder="john@example.com" autocomplete="email" required>
@@ -88,4 +88,12 @@
             formField.setAttribute("readonly", true);
         }
     }
+
+	function onPageLoaded() {
+		document.querySelector("#first-name").value = clientUtils.getFromDemogaphicData("firstName");
+		document.querySelector("#last-name").value = clientUtils.getFromDemogaphicData("lastName");
+		document.querySelector("#phone-number").value = clientUtils.getFromDemogaphicData("phone");
+	}
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
 </script>

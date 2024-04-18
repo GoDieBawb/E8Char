@@ -11,19 +11,21 @@
 		<form id="main-form" method="post">
 			<fieldset>
 				<legend>Patient Information</legend>
-				<label for="patientName">Patient Name:</label>
-				<input type="text" id="patientName" name="patientName" required>
+				<label for="first-name">Patient First Name:</label>
+                <input readonly type="text" id="first-name" name="firstName" required>
+                <label for="last-name">Patient Last Name:</label>
+                <input readonly type="text" id="last-name" name="lastName" required>
 				<br>
 				<label for="dob">Date of Birth:</label>
-				<input type="date" id="dob" name="dob" required>
+				<input readonly type="date" id="dob" name="dob" required>
 				<label for="medicalRecordNumber">Medical Record Number:</label>
 				<input type="text" id="medicalRecordNumber" name="medicalRecordNumber" required>
 			</fieldset>
 
 			<fieldset>
-				<legend>Ordering Physician Information</legend>
-				<label for="physicianName">Physician Name:</label>
-				<input type="text" id="physicianName" name="physicianName" required>
+				<legend>Ordering Clinician Information</legend>
+				<label for="clinicianName">Clinician Name:</label>
+				<input type="text" id="clinicianName" name="clinicianName" required>
 			</fieldset>
 
 			<fieldset>
@@ -107,4 +109,13 @@
             formField.setAttribute("readonly", true);
         }
     }
+
+	function onPageLoaded() {
+		document.querySelector("#first-name").value = clientUtils.getFromDemogaphicData("firstName");
+		document.querySelector("#last-name").value = clientUtils.getFromDemogaphicData("lastName");
+		document.querySelector("#dob").value = clientUtils.getFromDemogaphicData("dob");
+		document.querySelector("#clinicianName").value = clientUtils.getCookie("clinicianName");
+	}
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
 </script>

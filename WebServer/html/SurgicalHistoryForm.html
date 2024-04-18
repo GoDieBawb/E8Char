@@ -11,8 +11,10 @@
 		<form id="main-form" method="post">
 			<fieldset>
 				<legend>Patient Information</legend>
-				<label for="patient-name">Patient Name</label>
-				<input type="text" id="patient-name" name="patientName" required>
+				<label for="first-name">Patient First Name:</label>
+                <input readonly type="text" id="first-name" name="firstName" required>
+                <label for="last-name">Patient Last Name:</label>
+                <input readonly type="text" id="last-name" name="lastName" required>
 			</fieldset>
 
 			<fieldset>
@@ -109,4 +111,11 @@
             formField.setAttribute("readonly", true);
         }
     }
+
+	function onPageLoaded() {
+		document.querySelector("#first-name").value = clientUtils.getFromDemogaphicData("firstName");
+		document.querySelector("#last-name").value = clientUtils.getFromDemogaphicData("lastName");
+	}
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
 </script>

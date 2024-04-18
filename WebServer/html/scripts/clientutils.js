@@ -78,7 +78,7 @@ clientUtils.delCookie = function(cname) {
 */
 clientUtils.webPost = async function(clientPostObject) {
     if (clientPostObject.constructor != clientUtils.ClientPost) {
-        console.error("webPost: malformed clientPostObject; type must be clientUtils.ClientPost!");
+        console.warn("webPost: malformed clientPostObject; type must be clientUtils.ClientPost!");
         return;
     }
 
@@ -150,6 +150,11 @@ clientUtils.ISOToLaymanDate = function(ISODate) {
     return ISODate.split("T")[0];
 }
 
+clientUtils.getTodaysDate = function() {
+    let now = new Date(Date.now());
+	return `${now.getFullYear()}-${now.getMonth().toString().padStart(2, '0')}-${now.getDay().toString().padStart(2, '0')}`;
+}
+
 clientUtils.toReadablePhone = function(rawPhone) {
     return `(${rawPhone.substring(0, 3)}) ${rawPhone.substring(3, 6)}-${rawPhone.substring(6, 10)}`;
 }
@@ -175,4 +180,13 @@ clientUtils.getFormData = function(formElement) {
     formData.forEach((val, key) => obj[key] = val);
 
     return obj;
+}
+
+clientUtils.getFromDemogaphicData = function(propertyName) {
+    let demoData = sessionStorage.getItem("preloadedDashboardData");
+    if (!demoData) {
+        console.warn("Preloaded demographic data cannot be read. It doesn't exist.");
+        return;
+    }
+    return JSON.parse(sessionStorage.getItem("preloadedDashboardData")).demographicData[propertyName];
 }

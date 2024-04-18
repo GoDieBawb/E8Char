@@ -18,8 +18,8 @@ import webserver.posts.*;
  */
 public final class DataManager {
 
-    private static void putClients() {
-        WebServer.dbHandler.securePost("TRUNCATE TABLE `Clients`", null);
+    private static void putPatients() {
+        WebServer.dbHandler.securePost("TRUNCATE TABLE `Patients`", null);
 
         SubmitPatientPost sdp = new SubmitPatientPost();
         sdp.enteredDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
@@ -29,9 +29,9 @@ public final class DataManager {
             sdp.lastName = name.split(" ")[1];
             sdp.primaryLanguage = RandomData.PRIMARY_LANGUAGES[randomInt(0, RandomData.PRIMARY_LANGUAGES.length-1)];
             int areaCode = randomInt(100, 999);
-            sdp.phoneNumber = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
-            sdp.emergencyPhone = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
-            sdp.dob = randomDate(1950, 2015);
+            sdp.phoneNumber = String.format("%d %d %d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
+            sdp.emergencyPhone = String.format("%d %d %d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
+            sdp.dob = randomDate(1950, 1990);
             sdp.streetAddress = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
             sdp.city = RandomData.CITIES[randomInt(0, RandomData.CITIES.length-1)];
             sdp.state = RandomData.STATES[randomInt(0, RandomData.STATES.length-1)];
@@ -44,6 +44,7 @@ public final class DataManager {
             sdp.insuranceId = Integer.toString(randomInt(0, Integer.MAX_VALUE-1));
             sdp.ssn = Integer.toString(randomInt(100000000, 999999999));
             sdp.enteredBy = randomInt(1, RandomData.STAFF_NAMES.length);
+            sdp.maritalStatus = RandomData.MARITAL_STATUSES[randomInt(0, RandomData.MARITAL_STATUSES.length-1)];
             // enteredDate done.
             sdp.publish();
         }
@@ -53,9 +54,9 @@ public final class DataManager {
             sdp.lastName = name.split(" ")[1];
             sdp.primaryLanguage = RandomData.PRIMARY_LANGUAGES[randomInt(0, RandomData.PRIMARY_LANGUAGES.length-1)];
             int areaCode = randomInt(100, 999);
-            sdp.phoneNumber = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
-            sdp.emergencyPhone = String.format("(%d) %d-%d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
-            sdp.dob = randomDate(1950, 2015);
+            sdp.phoneNumber = String.format("%d %d %d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
+            sdp.emergencyPhone = String.format("%d %d %d", areaCode, randomInt(100, 999), randomInt(1000, 9999));
+            sdp.dob = randomDate(1950, 1990);
             sdp.streetAddress = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
             sdp.city = RandomData.CITIES[randomInt(0, RandomData.CITIES.length-1)];
             sdp.state = RandomData.STATES[randomInt(0, RandomData.STATES.length-1)];
@@ -68,11 +69,13 @@ public final class DataManager {
             sdp.insuranceId = Integer.toString(randomInt(0, Integer.MAX_VALUE-1));
             sdp.ssn = Integer.toString(randomInt(100000000, 999999999));
             sdp.enteredBy = randomInt(1, RandomData.STAFF_NAMES.length);
+            sdp.maritalStatus = RandomData.MARITAL_STATUSES[randomInt(0, RandomData.MARITAL_STATUSES.length-1)];
+            sdp.pregnancyStatus = RandomData.PREGNANCY_STATUS[randomInt(0, RandomData.PREGNANCY_STATUS.length-1)];
             // enteredDate done.
             sdp.publish();
         }
 
-        System.out.println("Done making clients.");
+        System.out.println("Done making patients.");
     }
 
     private static void putStaff() {
@@ -110,8 +113,8 @@ public final class DataManager {
         WebServer.dbHandler.securePost("TRUNCATE TABLE `ConsentFormData`", null);
     }
 
-    private static void putBloodDrawnData() {
-        WebServer.dbHandler.securePost("TRUNCATE TABLE `BloodDrawnRequests`", null);
+    private static void putBloodDrawData() {
+        WebServer.dbHandler.securePost("TRUNCATE TABLE `BloodDraws`", null);
     }
 
     private static void putAppointmentData() {
@@ -127,7 +130,7 @@ public final class DataManager {
     }
 
     private static void putMedicationData() {
-        WebServer.dbHandler.securePost("TRUNCATE TABLE `MedicationRecords`", null);
+        WebServer.dbHandler.securePost("TRUNCATE TABLE `Prescriptions`", null);
     }
 
     private static String randomDate(int minYear, int maxYear) {
@@ -161,7 +164,7 @@ public final class DataManager {
     public static void populate() {
         WebServer.dbHandler.securePost("SET FOREIGN_KEY_CHECKS = 0", null);
 
-        putClients();
+        putPatients();
 
         WebServer.dbHandler.securePost("SET FOREIGN_KEY_CHECKS = 1", null);
     }

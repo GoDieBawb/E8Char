@@ -208,17 +208,10 @@ public final class RandomData {
     };
     
     public static final String[] PRIMARY_LANGUAGES = {
-        "English", "Mandarin Chinese", "Hindi", "Spanish", "French", "Standard Arabic", "Bengali", "Russian", "Portuguese", "Urdu",
-        "Indonesian", "German", "Japanese", "Swahili", "Telugu", "Marathi", "Turkish", "Tamil", "Vietnamese", "Korean",
-        "Italian", "Thai", "Gujarati", "Javanese", "Filipino", "Kannada", "Amharic", "Malayalam", "Odia",
-        "Punjabi", "Burmese", "Sundanese", "Nepali", "Sinhala", "Slovak", "Malay", "Romanian", "Greek", "Bulgarian",
-        "Serbian", "Hungarian", "Czech", "Finnish", "Swedish", "Danish", "Norwegian", "Icelandic", "Lithuanian", "Latvian",
-        "Estonian", "Albanian", "Croatian", "Bosnian", "Macedonian", "Slovenian", "Ukrainian", "Belarusian", "Mongolian", "Kazakh",
-        "Armenian", "Georgian", "Kyrgyz", "Tajik", "Uzbek", "Turkmen", "Azerbaijani", "Kurdish", "Pashto", "Dari",
-        "Somali", "Kinyarwanda", "Luganda", "Chichewa", "Zulu", "Xhosa", "Afrikaans", "Khoekhoe", "Sesotho",
-        "Setswana", "Swati", "Tsonga", "Venda", "Tigrinya", "Oromo", "Igbo", "Hausa", "Yoruba",
-        "Akan", "Wolof", "Fula", "Mandinka", "Malagasy", "Samoan", "Tongan", "Hawaiian", "Maori", "Fijian",
-        "Marshallese", "Chamorro", "Palauan", "Nauruan", "Kiribati", "Tuvaluan", "Tokelauan", "Hiri Motu", "Tetum", "Bislama"
+       "English", "Spanish", "Chinese", "Tagalog", "Vietnamese", "Korean",
+       "Persian", "Armenian", "Hindi", "Arabic", "Russian", "Punjabi", "Japanese",
+       "French", "Thai", "Samoan", "Tamil", "Dutch", "Italian", "Greek", "Urdu", "Polish",
+       "Turkish", "Nepali", "Laotian", "Bengali", "Indonesian", "Hebrew"
     };
 
     public static final String[] ETHNICITIES = {
@@ -252,5 +245,13 @@ public final class RandomData {
     public static final String[] DEPARTMENTS = {
         "Anesthesics", "Cardiology", "General Surgery", "Neurology", "Nutrition and Dietetics", "Pediatrics", "Psychiatry", "Radiology", "Urology",
         "Ear, Nose and Throat", "Family Medicine", "Oncology", "Hematology", "Dermatology"
+    };
+
+    public static final String[] MARITAL_STATUSES = {
+        "Single", "Divorced", "Married", "Widowed", "Separated"
+    };
+
+    public static final String[] PREGNANCY_STATUS = {
+        "Pregnant", "Not Pregnant"
     };
 }

@@ -4,7 +4,8 @@ import webserver.WebServer;
 import webserver.DataOMatic.DataResponse;
 
 public class SurgicalHistoryPost extends ServicePost {
-    public String patientName;
+    public String firstName;
+    public String lastName;
     public String surgeonName;
     public String dateOfSurgery;
     public String procedurePerformed;
@@ -13,11 +14,11 @@ public class SurgicalHistoryPost extends ServicePost {
     public void publish() {
         serviceCode = 8;
 
-        String queryString = "INSERT INTO `SurgicalHistories` (patientName, dateOfSurgery, procedurePerformed, surgeonName, hospitalName, enteredBy, enteredDate) "
-                + "VALUES (?,?,?,?,?,?,?)";
+        String queryString = "INSERT INTO `SurgicalHistories` (firstName, lastName, dateOfSurgery, procedurePerformed, surgeonName, hospitalName, enteredBy, enteredDate) "
+                + "VALUES (?,?,?,?,?,?,?,?)";
 
         WebServer.dbHandler.securePost(queryString, new Object[] {
-            patientName , dateOfSurgery , procedurePerformed , surgeonName , hospitalName , enteredby , entereddate
+            firstName, lastName, dateOfSurgery , procedurePerformed , surgeonName , hospitalName , enteredby , entereddate
         });
 
         DataResponse dr = WebServer.dbHandler.secureGet("SELECT MAX(id) FROM SurgicalHistories", null);

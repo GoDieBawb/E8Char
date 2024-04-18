@@ -8,6 +8,7 @@ public class SubmitHealthInfoReleasePost extends ServicePost {
     public String patientName;
     public String staffId;
     public String date;
+    public String dob;
     public String consented;
     
     public void publish() {
