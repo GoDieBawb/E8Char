@@ -12,26 +12,19 @@
         <title>Patient Inquiry</title>
     </head>
     <body>
-        <div class="d-flex overflow-x-hidden">
-            <!-- Sidebar -->
-            <div class="bg-white shadow" id="sidebar-wrapper">
-                <h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-th-list me-2"></i>Inquiry</h1>
-                <div class="list-group list-group-flush">
-                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5 disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
-                        <i class="fas fa-user-md me-2"></i>Service Patient</button>
-                    <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" onclick="clientUtils.goto('PatientForm')"><i class="fas fa-user-tag me-2"></i>Register New Patient</button>
-                    <button type="button" class="btn btn-danger rounded-0 fw-bold fs-5" onclick="closeSession()">
-                        <i class="fas fa-arrow-alt-circle-left me-2"></i>Close Session</button>
-                  </div>
-            </div>
-
-            <!-- Page Content & Nav Bar -->
-            <div class="bg-elechart-light elechart-bg w-100" id="page-content-wrapper">
-                <!-- Top Padding -->
-				<nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4"></nav>
-
-                <!-- Patient History List -->
-                <div class="container-fluid px-4">
+        <div class="container-fluid vh-100">
+            <div class="row h-100">
+                <div class="col-2 g-0">
+                    <svg class="sidebar-title ms-4 ms-lg-5 mt-2 position-absolute" width="283px" height="63px" viewBox="-0.5 -0.5 283 63"><defs></defs><g><g><path d="M 1 1 L 251 1 Q 281 1 281 31 Q 281 61 251 61 L 1 61 Z" fill="rgb(255, 255, 255)" stroke="#46998b" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/></g><g><g transform="translate(-0.5 -0.5)"><switch><foreignObject pointer-events="none" width="100%" height="100%" style="overflow: visible; text-align: left;"><div style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 1px; height: 1px; padding-top: 31px; margin-left: 3px;"><div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left;"><div style="display: inline-block; font-size: 32px; font-family: Calibri; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">  Patient Inquiry</div></div></div></foreignObject></switch></g></g></g></svg>
+                    <div class="list-group list-group-flush sidebar-button-group">
+                        <button disabled type="button" class="btn btn-success rounded-0 fw-bold mb-1 fs-5 disabled" id="service-btn" onclick="clientUtils.goto('PatientDashboard')">
+                            <i class="fas fa-user-md me-2"></i>Service Patient</button>
+                        <button id="btn-register-patient" type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" onclick="clientUtils.goto('PatientRegistration')" aria-hidden="true" hidden><i class="fas fa-user-tag me-2"></i>Register New Patient</button>
+                        <button type="button" class="btn btn-danger rounded-0 fw-bold fs-5" onclick="closeSession()">
+                            <i class="fas fa-times-circle me-2"></i>Close Session</button>
+                    </div>
+                </div>
+                <div class="col-10 gx-5 elechart-bg bg-elechart-light page-view">
                     <div class="bg-white rounded border p-3 shadow-sm">
                         <div class="row row-cols-4 g-2" id="patients-list">
                         </div>
@@ -69,6 +62,7 @@
                     card.deselect();
                 
                 document.querySelector("#service-btn").classList.remove("disabled");
+                document.querySelector("#service-btn").removeAttribute("disabled");
             });
             
             this.referenceCard.querySelector(".btn-elechart").classList.add("selected");
@@ -109,8 +103,17 @@
         }
 
         // Store the server response as preloaded data.
-        if (!sessionStorage.getItem("preloadedPatientInquiryData"))
-            sessionStorage.setItem("preloadedPatientInquiryData", JSON.stringify( {patients: patients} ));
+        // if (!sessionStorage.getItem("preloadedPatientInquiryData"))
+        //     sessionStorage.setItem("preloadedPatientInquiryData", JSON.stringify( {patients: patients} ));
+    }
+
+    function isAdminResponseCallback(serverResponse) {
+        console.log(serverResponse);
+        if (serverResponse.isAdmin) {
+            let regBtn = document.querySelector("#btn-register-patient");
+            regBtn.hidden = false;
+            regBtn.ariaHidden = false;
+        }
     }
 
     function patientSearchSort(showAll)
@@ -149,25 +152,29 @@
 
     function closeSession() {
         clientUtils.burnSession();
-        document.location.href = "Login.html";
+        clientUtils.goto("Login");
     }
 
     //On window load we get a list of the user's available clients
     document.addEventListener("DOMContentLoaded", (event) => {
-        let preloadedPatientInquiryData= sessionStorage.getItem("preloadedPatientInquiryData");
-        
+        // let preloadedPatientInquiryData= sessionStorage.getItem("preloadedPatientInquiryData");
+        const accessToken = clientUtils.getCookie("accessToken");
+
         // If the serve response has been received before, use the preloaded version instead.
-        if (preloadedPatientInquiryData) {
-            responseCallback(JSON.parse(preloadedPatientInquiryData));
-            return;
-        }
+        // if (preloadedPatientInquiryData) {
+        //     responseCallback(JSON.parse(preloadedPatientInquiryData));
+        //     return;
+        // }
 
         var newClientPost = new clientUtils.ClientPost(
             "requestUserClients",
-            clientUtils.getCookie("accessToken"),
+            accessToken,
             responseCallback
         );
         
         clientUtils.webPost(newClientPost);
+
+        let isAdminPost = new clientUtils.ClientPost("requestIsAdmin", accessToken, isAdminResponseCallback);
+        clientUtils.webPost(isAdminPost);
     });
 </script>

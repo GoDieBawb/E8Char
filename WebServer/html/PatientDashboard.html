@@ -9,139 +9,131 @@
 		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
 		<script defer src="bootstrap/bootstrap.bundle.min.js"></script>
 		<script defer src="scripts/clientutils.js"></script>
-		<title>Dashboard</title>
+		<title>Patient Dashboard</title>
 	</head>
-
 	<body>
-		<section role="main">
-			<div class="d-flex" id="wrapper">
-				<!-- Sidebar -->
-				<div class="bg-white shadow" id="sidebar-wrapper">
-					<h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-clinic-medical me-2"></i>Dashboard</h1>
-					<div class="list-group list-group-flush">
+		<div class="container-fluid vh-100">
+			<div class="row h-100">
+				<div class="col-2 g-0">
+					<svg class="sidebar-title ms-4 ms-lg-5 mt-2 position-absolute" width="283px" height="63px" viewBox="-0.5 -0.5 283 63"><defs></defs><g><g><path d="M 1 1 L 251 1 Q 281 1 281 31 Q 281 61 251 61 L 1 61 Z" fill="rgb(255, 255, 255)" stroke="#46998b" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/></g><g><g transform="translate(-0.5 -0.5)"><switch><foreignObject pointer-events="none" width="100%" height="100%" style="overflow: visible; text-align: left;"><div style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 1px; height: 1px; padding-top: 31px; margin-left: 3px;"><div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left;"><div style="display: inline-block; font-size: 32px; font-family: Calibri; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">  Patient Dashboard</div></div></div></foreignObject></switch></g></g></g></svg>
+					<div class="list-group list-group-flush sidebar-button-group">
 						<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" onclick="clientUtils.goto('PatientServices')"><i class="fas fa-user-tag me-2"></i>Services</button>
-						<button type="button" class="btn btn-success rounded-0 fw-bold fs-5" onclick="clientUtils.goto('PatientInquiry'); sessionStorage.removeItem('preloadedDashboardData')">
+						<button type="button" class="btn btn-success rounded-0 fw-bold fs-5" onclick="clientUtils.goto('PatientInquiry')">
 							<i class="fas fa-arrow-alt-circle-left me-2"></i>Patient Inquiry</button>
 					</div>
 				</div>
-				<!-- /#sidebar-wrapper -->
 
-				<!-- Page Content & Nav Bar -->
-				<div class="bg-elechart-light elechart-bg w-100" id="page-content-wrapper">
-					<!-- Top Padding -->
-					<nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4"></nav>
-
-					<div class="container-fluid px-4">
-					<!-- TOP -->
-						<div class="row g-3 my-2 align-items-center">
-							<div class="col-md-3">
-								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
-									<div>
-										<h2 class="fs-2">Physician</h2>
-										<p class="fs-5" id="hPhysician"></p>
-									</div>
-									<i class="fas fa-head-side-mask fs-1 border rounded-full secondary-bg p-3"></i>
+				<div class="col-10 gx-5 elechart-bg bg-elechart-light page-view">
+					<div class="row mb-3 align-items-center">
+						<div class="col-md-3">
+							<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
+								<div>
+									<h2 class="fs-2">Physician</h2>
+									<p class="fs-5" id="hPhysician"></p>
 								</div>
-							</div>
-
-							<div class="col-md-3">
-								<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
-									<div>
-										<h2 class="fs-2">SSN</h2>
-										<p class="fs-5" id="idt"></p>
-									</div>
-									<i class="fas fa-address-card fs-1 border rounded-full secondary-bg p-3"></i>
-								</div>
+								<i class="fas fa-head-side-mask fs-1 border rounded-full secondary-bg p-3"></i>
 							</div>
 						</div>
 
-						<div class="row my-5 bg-white rounded border" >
-							<h3 class="fs-4 mt-3 mb-3 text-center" id="pName"></h3>
-							<!--Patient Image-->
-							<div class="col text-center">
-								<figure class="figure">
-									<img src="images/default.png" class="figure-img img-fluid rounded" alt="..." style="height: 200px; width: 200px;">
-								</figure>
+						<div class="col-md-3">
+							<div class="p-3 bg-white shadow-sm border d-flex justify-content-around align-items-center rounded">
+								<div>
+									<h2 class="fs-2">SSN</h2>
+									<p class="fs-5" id="idt"></p>
+								</div>
+								<i class="fas fa-address-card fs-1 border rounded-full secondary-bg p-3"></i>
 							</div>
-							<!--Patient Info-->
-							<div class="col">
-								<table class="table">
-									<tbody>
-										<tr>
-											<th scope="row">Primary Language</th>
-											<td id="firstLan"> </td>
-										</tr>
-										<tr>
-											<th scope="row">DOB</th>
-											<td id="DOB"> </td>
-										</tr>
-										<tr>
-											<th scope="row">Age</th>
-											<td id="age"> </td>
-										</tr>
-										<tr>
-											<th scope="row">Sex</th>
-											<td id="sex"></td>
-										</tr>
-										<tr>
-											<th scope="row">Ethnicity</th>
-											<td id="ethnicity"> </td>
-										</tr>
-										<tr>
-											<th scope="row">Race</th>
-											<td id="race"></td>
-										</tr>
-										<tr>
-											<th scope="row">Marital Status</th>
-											<td id="marital-status"> </td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<!--Patient Info left table end-->
-							<div class="col">
-								<table class="table">
-									<thead>
+						</div>
+					</div>
+
+					<div class="row bg-white rounded border">
+						<h3 class="fs-4 mt-3 mb-3 text-center" id="pName"></h3>
+
+						<div class="col text-center">
+							<figure class="figure">
+								<img src="images/default.png" class="figure-img img-fluid rounded" alt="..." style="height: 200px; width: 200px;">
+							</figure>
+						</div>
+
+
+						<div class="col">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th scope="row">Primary Language</th>
+										<td id="firstLan"> </td>
 									</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<th scope="row">Home Phone</th>
-											<td id="hPhone"> </td>
-										</tr>
-										<tr>
-											<th scope="row">Full Address</th>
-											<td id="full-address"></td>
-										</tr>
-										<tr>
-											<th scope="row">Emergency Contact</th>
-											<td id="emergency-phone"></td>
-										</tr>
-										<tr>
-											<th scope="row">Source Pharmacy</th>
-											<td id="pharmacy"></td>
-										</tr>
-										<tr>
-											<th scope="row">Insurance</th>
-											<td id="insuranceName"> </td>
-										</tr>
-										<tr>
-											<th scope="row">InsuranceID</th>
-											<td id="insuranceID"></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<!--Patient Info right table end-->
+									<tr>
+										<th scope="row">DOB</th>
+										<td id="DOB"> </td>
+									</tr>
+									<tr>
+										<th scope="row">Age</th>
+										<td id="age"> </td>
+									</tr>
+									<tr>
+										<th scope="row">Sex</th>
+										<td id="sex"></td>
+									</tr>
+									<tr>
+										<th scope="row">Ethnicity</th>
+										<td id="ethnicity"> </td>
+									</tr>
+									<tr>
+										<th scope="row">Race</th>
+										<td id="race"></td>
+									</tr>
+									<tr>
+										<th scope="row">Marital Status</th>
+										<td id="marital-status"> </td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="col">
+							<table class="table">
+								<thead>
+								</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th scope="row">Home Phone</th>
+										<td id="hPhone"> </td>
+									</tr>
+									<tr>
+										<th scope="row">Full Address</th>
+										<td id="full-address"></td>
+									</tr>
+									<tr>
+										<th scope="row">Emergency Contact</th>
+										<td id="emergency-phone"></td>
+									</tr>
+									<tr>
+										<th scope="row">Source Pharmacy</th>
+										<td id="pharmacy"></td>
+									</tr>
+									<tr>
+										<th scope="row">Insurance</th>
+										<td id="insuranceName"> </td>
+									</tr>
+									<tr>
+										<th scope="row">InsuranceID</th>
+										<td id="insuranceID"></td>
+									</tr>
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
-		</section>
+		</div>
 	</body>
 </html>
 
 <script>
+	"use strict"
+	
 	function responseCallback(serverResponse) {
         //Alert and return if failed
         if (serverResponse.outcome == "failed") {

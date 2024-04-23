@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="elechart/serviceform.css">
+		<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
 		<script defer src="scripts/clientutils.js"></script>
 	</head>
 	<body>
@@ -41,6 +42,16 @@
 				<input type="number" id="zip" name="zip">
 			</fieldset>
 
+			<fieldset>
+				<legend>Credentials</legend>
+				<label for="pass">Password</label>
+				<input type="password" id="pass" name="password" required>
+
+				<label for="pass-confirm">Confirm Password</label>
+				<input type="password" id="pass-confirm" onchange="checkPassword()" required>
+				<div id="pass-hint" hidden><i class="fas fa-exclamation-circle"></i>  Passwords do not match.</div>
+			</fieldset>
+
 			<!-- Additional Staff Information -->
 			<fieldset>
 				<legend>Additional Information</legend>
@@ -60,6 +71,8 @@
 	</body>
 </html>
 <script>
+	"use strict"
+	
 	//The code below is too handle the submission of the form.
 	//Below is also where the javascript aspect of the form begins.
 
@@ -68,7 +81,7 @@
 		
 		const accessToken = clientUtils.getCookie("accessToken");
 		const patientId = clientUtils.getCookie("patientId");
-		const postType = "submitStaff";
+		const postType = "submitStaffFormPost";
 		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
@@ -88,6 +101,15 @@
 		else if (serverResponse.outcome == "success") {
 			parent.location.reload();
 		}
+	}
+
+	function checkPassword() {
+		let [pass1, pass2] = [document.querySelector("#pass").value, document.querySelector("#pass-confirm").value];
+
+		if (pass1 != pass2)
+			document.querySelector("#pass-hint").hidden = false;
+		else if (pass1 == pass2 || pass2.length == 0)
+			document.querySelector("#pass-hint").hidden = true;
 	}
 
 	// Called only from the patient services page.

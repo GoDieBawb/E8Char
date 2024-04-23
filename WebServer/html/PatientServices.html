@@ -12,38 +12,35 @@
 		<title>Services</title>
 	</head>
 	<body>
-        <section role="main">
-            <div class="d-flex" id="wrapper">
-                <!-- Sidebar -->
-                <div class="bg-white shadow" id="sidebar-wrapper">
-                    <h1 class="sidebar-heading text-center py-4 fs-3 text-uppercase border-bm"><i class="fas fa-user-tag me-2"></i>Services</h1>
-                    <div class="list-group list-group-flush">
+        <div class="container-fluid vh-100">
+            <div class="row h-100">
+                <div class="col-2 g-0">
+                    <svg class="sidebar-title ms-4 ms-lg-5 mt-2 position-absolute" width="283px" height="63px" viewBox="-0.5 -0.5 283 63"><defs></defs><g><g><path d="M 1 1 L 251 1 Q 281 1 281 31 Q 281 61 251 61 L 1 61 Z" fill="rgb(255, 255, 255)" stroke="#46998b" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/></g><g><g transform="translate(-0.5 -0.5)"><switch><foreignObject pointer-events="none" width="100%" height="100%" style="overflow: visible; text-align: left;"><div style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 1px; height: 1px; padding-top: 31px; margin-left: 3px;"><div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left;"><div style="display: inline-block; font-size: 32px; font-family: Calibri; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">  Patient Services</div></div></div></foreignObject></switch></g></g></g></svg>
+                    <div class="list-group list-group-flush sidebar-button-group">
                         <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" id="btn-new-service" onclick="switchView(1)"><i class="fas fa-notes-medical me-2"></i>New Service</button>
                         <button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" id="btn-cancel" onclick="switchView(0)" hidden>Cancel</button>
                         <button type="button" class="btn btn-success rounded-0 fw-bold fs-5" id="btn-dashboard" onclick="clientUtils.goto('PatientDashboard')"><i class="fas fa-arrow-alt-circle-left me-2"></i>Dashboard</button>
                     </div>
                 </div>
-                <!-- /#sidebar-wrapper -->
 
-                <!-- Read-only service record view -->
-                <div class="bg-elechart-light elechart-bg w-100" id="readonly-service-view">
-                    
-                    <div class="container-fluid px-4">
-                        <div class="row my-4">
-                            <div class="col-2 overflow-y-scroll overflow-x-hidden">
-                                <div class="row">
-                                    <div class="col p-0" id="service-group-list">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col bg-white shadow-sm border py-2">
-                                <p class="h3">Service Records</p>
-                                <div class="overflow-y-scroll overflow-x-hidden pe-2" id="service-record-list">
+                <!-- Service read-only form view -->
+                <div class="col-10 gx-5 elechart-bg bg-elechart-light page-view" id="readonly-service-view">
+                    <div class="row">
+                        <div class="col-2 overflow-y-scroll overflow-x-hidden">
+                            <div class="row">
+                                <div class="col p-0" id="service-group-list">
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="row full-height-minus-300 bg-white shadow-sm rounded border">
+                        <div class="col bg-white shadow-sm border py-2">
+                            <p class="h3">Service Records</p>
+                            <div class="overflow-y-scroll overflow-x-hidden pe-2" id="service-record-list">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-2" style="height: calc(100% - 250px)">
+                        <div class="bg-white shadow-sm rounded border">
                             <div class="text-center" id="instructional-message-1">
                                 <img class="halftone" src="images/Elephant-halftone.png" width="256" height="256" alt="EleChart logo"><br>
                                 <span class="display-6" id="template-message">To view a record, select a service type tab, then select a record entry on the top left window.</span>
@@ -54,31 +51,29 @@
                 </div>
 
                 <!-- Service creation form view -->
-                <div class="bg-elechart-light elechart-bg w-100" id="creation-service-view" hidden>
-                    <div class="container-fluid px-4 pt-4">
-                        <div class="row mt-4">
-                            <div class="col-3 my-4">
-                                <div class="bg-white rounded border">
-                                    <h3 class="text-center">Service Type</h3>
-                                    <div class="overflow-y-scroll overflow-x-hidden">
-                                        <div id="service-creation-group-list">
-                                        </div>
+                <div class="col-10 gx-5 elechart-bg bg-elechart-light page-view" id="creation-service-view" hidden>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="bg-white rounded border">
+                                <h3 class="text-center">Service Type</h3>
+                                <div class="overflow-y-scroll overflow-x-hidden">
+                                    <div id="service-creation-group-list">
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="col full-height-minus-100 bg-white shadow-sm rounded border">
-                                <div class="text-center" id="instructional-message-2">
-                                    <img class="halftone" src="images/Elephant-halftone.png" width="256" height="256" alt="EleChart logo"><br>
-                                    <span class="display-6" id="template-message">Select a service from the left to fill a form.</span>
-                                </div>
-                                <iframe class="py-3" id="service-creation-form-viewer" aria-label="form viewer" hidden></iframe>
+                        </div>
+                        
+                        <div class="col full-height-minus-100 bg-white shadow-sm rounded border">
+                            <div class="text-center" id="instructional-message-2">
+                                <img class="halftone" src="images/Elephant-halftone.png" width="256" height="256" alt="EleChart logo"><br>
+                                <span class="display-6" id="template-message">Select a service from the left to fill a form.</span>
                             </div>
+                            <iframe class="py-3" id="service-creation-form-viewer" aria-label="form viewer" hidden></iframe>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
 	</body>
 </html>
 

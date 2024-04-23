@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css" >
+        <link rel="stylesheet" type="text/css" href="elechart/elechart.css" >
+        <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" >
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+        <script defer src="bootstrap/bootstrap.bundle.min.js"></script>
+        <script defer src="scripts/clientutils.js"></script>
+        <title>Patient Inquiry</title>
+    </head>
+    <body>
+        <div class="container-fluid vh-100">
+            <div class="row h-100">
+                <div class="col-2 g-0">
+                    <svg class="sidebar-title ms-4 ms-lg-5 mt-2 position-absolute" width="283px" height="63px" viewBox="-0.5 -0.5 283 63"><defs></defs><g><g><path d="M 1 1 L 251 1 Q 281 1 281 31 Q 281 61 251 61 L 1 61 Z" fill="rgb(255, 255, 255)" stroke="#46998b" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/></g><g><g transform="translate(-0.5 -0.5)"><switch><foreignObject pointer-events="none" width="100%" height="100%" style="overflow: visible; text-align: left;"><div style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 1px; height: 1px; padding-top: 31px; margin-left: 3px;"><div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left;"><div style="display: inline-block; font-size: 32px; font-family: Calibri; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">  Administration</div></div></div></foreignObject></switch></g></g></g></svg>
+                    <div class="list-group list-group-flush sidebar-button-group">
+                        <button id="btn-cancel-staff-form" class="btn btn-success rounded-0 fw-bold fs-5 mb-1" onclick="switchToView('staff-registration-form','staff-registry-view'); document.querySelector('#btn-cancel-staff-form').hidden=true" hidden>
+                            <i class="fas fa-arrow-alt-circle-left me-2"></i>Cancel</button>
+                        <button id="btn-cancel-clinic-form" class="btn btn-success rounded-0 fw-bold fs-5 mb-1" onclick="switchToView('clinics-registration-form','clinic-registry-view'); document.querySelector('#btn-cancel-clinic-form').hidden=true" hidden>
+                            <i class="fas fa-arrow-alt-circle-left me-2"></i>Cancel</button>
+                            <button id="btn-cancel-patients-report" class="btn btn-success rounded-0 fw-bold fs-5 mb-1" onclick="switchToView('patients-report','patients-registry-view'); document.querySelector('#btn-cancel-patients-report').hidden=true" hidden>
+                                <i class="fas fa-arrow-alt-circle-left me-2"></i>Cancel</button>
+                        <button class="btn btn-danger rounded-0 fw-bold fs-5" onclick="closeSession()"><i class="fas fa-times-circle me-2"></i>Close Session</button>
+                    </div>
+                </div>
+
+                <!-- Main Page View -->
+                <div class="col-10 gx-5 elechart-bg bg-elechart-light page-view">
+
+                    <!-- Landing Page -->
+                    <div id="landing-page" class="row justify-content-center">
+                        <div class="bg-white rounded border shadow-sm p-3" style="width:50%;">
+                            <h3 class="text-center">Administration Options</h3>
+                            <div class="list-group list-group-flush mb-2">
+                                <button class="btn btn-success rounded-0 fw-bold fs-5 mb-2" onclick="switchToView('landing-page','staff-registry-view')"><i class="fas fa-hospital-user me-2"></i>Staff Registry</button>
+                                <button class="btn btn-success rounded-0 fw-bold fs-5 mb-2" onclick="switchToView('landing-page','clinic-registry-view')"><i class="fas fa-clinic-medical me-2"></i>Clinic Registry</button>
+                                <button class="btn btn-success rounded-0 fw-bold fs-5" onclick="switchToView('landing-page','patients-registry-view')"><i class="fas fa-users me-2"></i>Patient Registry</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Staff Registry View -->
+                    <div id="staff-registry-view" class="row justify-content-center mx-5" hidden>
+                        <div class="bg-white rounded border shadow-sm p-3">
+                            <h2>Staff Registry</h2>
+                            <div class="form-group d-inline-flex w-100">
+                                <button class="btn btn-success rounded-0 me-5 fw-bold fs-5" onclick="switchToView('staff-registry-view','landing-page')"><i class="fas fa-arrow-alt-circle-left me-2 d-inline"></i>Return</button>
+                                <button class="btn btn-success rounded-0 me-2 fw-bold fs-5" onclick="filterList('staff','filter-text-input-1')"><i class="fas fa-filter d-inline me-2"></i>Filter</button>
+                                <input type="text" class="form-control w-50" id="filter-text-input-1" aria-label="Filter staff by staff names" placeholder="filter by staff name..">
+                                <div class="w-100 text-end">
+                                    <button class="btn btn-success rounded-0 fw-bold fs-5 position-relative" onclick="switchToView('staff-registry-view','staff-registration-form'); document.querySelector('#btn-cancel-staff-form').hidden=false">
+                                        <i class="fas fa-user-plus me-2"></i>Register Member</button>
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <div id="staff-list" class="overflow-y-scroll pe-3" style="max-height: 400px;">
+                            </div>
+                        </div>
+                        <div class="bg-white rounded border shadow-sm p-3 mt-3">
+                            <div id="staff-data" class="row px-3 pt-3" hidden>
+                                <div class="col-2">
+                                    <figure class="figure">
+                                        <img src="images/default.png" class="figure-img img-fluid rounded" alt="staff_portrait" width="148" height="148">
+                                    </figure>
+                                </div>
+                                <div class="col-4">
+                                    <h2 id="staff-name" class="h2 m-0" aria-label="Staff's name.">John Doe</h3>
+                                    <div id="staff-status" class="text-primary">STAFF - ADMINISTRATOR</div>
+                                    <div id="staff-phone" aria-label="staff's phone number.">Phone:</div>
+                                    <div id="staff-department" aria-label="staff's department.">Department:</div>
+                                    <div id="staff-position" aria-label="staff's position in a department.">Position:</div>
+                                    <div id="staff-clinic-id" aria-label="clinic ID number this staff resides in.">Clinic Id:</div>
+                                </div>
+                                <div class="col">
+                                    <div class="border rounded p-2">
+                                        <h2 class="text-center">Staff Actions</h3>
+                                        <div class="list-group list-group-flush mb-2">
+                                            <button class="btn btn-success rounded-0 fw-bold fs-5 mb-2" onclick="requestStaffDeactivation()">Deactivate Account</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center" id="instructional-message-1">
+                                <img class="halftone" src="images/Elephant-halftone.png" width="128" height="128" alt="EleChart logo"><br>
+                                <span class="display-6" id="template-message">Select an staff entry above to view their information.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Staff Registration Form View -->
+                    <div id="staff-registration-form" class="row justify-content-center mx-5 h-100" hidden>
+                        <div class="bg-white rounded border p-3 shadow-sm h-100">
+                            <iframe class="py-3" src="StaffForm.html" aria-label="staff registration form viewer"></iframe>
+                        </div>
+                    </div>
+                    
+                    <!-- Clinic Registry View -->
+                    <div id="clinic-registry-view" class="row justify-content-center mx-5" hidden>
+                        <div class="bg-white rounded border shadow-sm p-3" style="width:85%">
+                            <h2>Clinic Registry</h2>
+                            <div class="form-group d-inline-flex w-100">
+                                <button class="btn btn-success rounded-0 me-5 fw-bold fs-5" onclick="switchToView('clinic-registry-view','landing-page')"><i class="fas fa-arrow-alt-circle-left me-2 d-inline"></i>Return</button>
+                                <button class="btn btn-success rounded-0 me-2 fw-bold fs-5" onclick="filterList('clinics','filter-text-input-2')"><i class="fas fa-filter d-inline me-2"></i>Filter</button>
+                                <input type="text" class="form-control w-50" id="filter-text-input-2" aria-label="Filter clinics by clinic names" placeholder="filter by clinic name..">
+                                <div class="w-100 text-end">
+                                    <button class="btn btn-success rounded-0 fw-bold fs-5 position-relative" onclick="switchToView('clinic-registry-view','clinics-registration-form'); document.querySelector('#btn-cancel-clinic-form').hidden=false">
+                                        <i class="fas fa-user-plus me-2"></i>Register Clinic</button>
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <div id="clinics-list" class="overflow-y-scroll pe-3" style="max-height: 400px;">
+                            </div>
+                        </div>
+                        <div class="bg-white rounded border shadow-sm p-3 mt-3">
+                            <div id="clinic-data" class="row px-3 pt-3" hidden>
+                                <div class="col-2">
+                                    <figure class="figure">
+                                        <img src="images/clinic.png" class="figure-img img-fluid rounded" alt="clinic_portrait" width="148" height="148">
+                                    </figure>
+                                </div>
+                                <div class="col-4">
+                                    <h2 id="clinic-name" class="h2 m-0" aria-label="clinic name."></h3>
+                                    <div id="clinic-phone" aria-label="clinics phone number."></div>
+                                    <div id="clinic-address" aria-label="clinics department."></div>
+                                    <div id="clinic-id" aria-label="clinic ID number this staff resides in."></div>
+                                </div>
+                                <div class="col">
+                                    <div class="border rounded p-2">
+                                        <h2 class="text-center">Clinic Actions</h3>
+                                        <div class="list-group list-group-flush mb-2">
+                                            <button class="btn btn-success rounded-0 fw-bold fs-5 mb-2" onclick="requestClinicDeactivation()">Invalidate Clinic</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center" id="instructional-message-2">
+                                <img class="halftone" src="images/Elephant-halftone.png" width="128" height="128" alt="EleChart logo"><br>
+                                <span class="display-6" id="template-message">Select an clinic entry above to view a clinic's information.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clinics Registration Form View -->
+                    <div id="clinics-registration-form" class="row justify-content-center mx-5 h-100" hidden>
+                        <div class="bg-white rounded border p-3 shadow-sm h-100">
+                            <iframe class="py-3" src="clinicRegistrationForm.html" aria-label="clinics registration form viewer"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Patient Registry View -->
+                    <div id="patients-registry-view" class="row justify-content-center mx-5" hidden>
+                        <div class="bg-white rounded border shadow-sm p-3" style="width:85%">
+                            <h2>Patient Registry</h2>
+                            <div class="form-group d-inline-flex w-100">
+                                <button class="btn btn-success rounded-0 me-5 fw-bold fs-5" onclick="switchToView('patients-registry-view','landing-page')"><i class="fas fa-arrow-alt-circle-left me-2 d-inline"></i>Return</button>
+                                <button class="btn btn-success rounded-0 me-2 fw-bold fs-5" onclick="filterList('patients','filter-text-input-3')"><i class="fas fa-filter d-inline me-2"></i>Filter</button>
+                                <input type="text" class="form-control w-50" id="filter-text-input-3" aria-label="Filter patients by patient names" placeholder="filter by patient name..">
+                                <div class="w-100 text-end">
+                                    <button class="btn btn-success rounded-0 fw-bold fs-5 position-relative" onclick="switchToView('patients-registry-view','patients-report'); document.querySelector('#btn-cancel-patients-report').hidden=false">
+                                        <i class="fas fa-file-invoice me-2"></i>Generate Report</button>
+                                </div>
+                            </div>
+                            <hr class="my-2">
+                            <div id="patients-list" class="overflow-y-scroll pe-3" style="max-height: 400px;">
+                            </div>
+                        </div>
+                        <div class="bg-white rounded border shadow-sm p-3 mt-3">
+                            <div id="patient-data" class="row px-3 pt-3" hidden>
+                                <div class="col-2">
+                                    <figure class="figure">
+                                        <img src="images/default.png" class="figure-img img-fluid rounded" alt="staff_portrait" width="148" height="148">
+                                    </figure>
+                                </div>
+                                <div class="col-4">
+                                    <h2 id="patient-name" class="h2 m-0" aria-label="Patient's name."></h3>
+                                </div>
+                                <div class="col">
+                                    <div class="border rounded p-2">
+                                        <h2 class="text-center">Patient Actions</h3>
+                                        <div class="list-group list-group-flush mb-2">
+                                            <button class="btn btn-success rounded-0 fw-bold fs-5 mb-2" onclick="requestPatientDeactivation()">Deactivate Account</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center" id="instructional-message-3">
+                                <img class="halftone" src="images/Elephant-halftone.png" width="128" height="128" alt="EleChart logo"><br>
+                                <span class="display-6" id="template-message">Select a patient entry above to view a patient's information.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patients Report View -->
+                    <div id="patients-report" class="row justify-content-center mx-5 h-100" hidden>
+                        <div class="bg-white rounded border p-3 shadow-sm h-100">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    "use strict"
+
+    const clinicRecordList = [];
+    const staffRecordList = [];
+    const patientRecordList = [];
+    var selectedStaff = null;
+    var selectedClinic = null;
+    var selectedPatient = null;
+
+    function ClinicRecord(data) {
+        this.data = data;
+        this.html = new DOMParser().parseFromString(`
+        <button class="btn-elechart text-start my-1 py-1 ps-4">${data.name}</button>`, 
+        "text/html").querySelector(".btn-elechart");
+
+        this.selected = false;
+
+        this.select = function() {
+            if (this.selected) return;
+            clinicRecordList.forEach(record => record.deselect());
+
+            document.querySelector("#instructional-message-2").hidden = true;
+            document.querySelector("#clinic-data").hidden = false;
+            document.querySelector("#clinic-name").innerHTML = this.data.name;
+            document.querySelector("#clinic-address").innerHTML = "Address: " + this.data.address;
+            document.querySelector("#clinic-phone").innerHTML = "Phone: " + this.data.phone;
+            document.querySelector("#clinic-id").innerHTML = "Clinic Id: " + this.data.clinicId;
+
+            this.html.classList.add("selected");
+            this.selected = true;
+            selectedClinic = this;
+        }
+
+        this.deselect = function() {
+            this.html.classList.remove("selected");
+            this.selected = false;
+        }
+
+        this.html.addEventListener("click", () => this.select(), false);
+        document.getElementById("clinics-list").appendChild(this.html);
+    }
+
+    function StaffRecord(data) {
+        this.data = data;
+        this.html = new DOMParser().parseFromString(`
+        <button class="btn-elechart text-start my-1 py-1"><span class="col mx-4">${data.name}</span>|<span class="col mx-4">registered: ${data.employmentDate}</span></button>`,
+        "text/html").querySelector(".btn-elechart");
+
+        this.selected = false;
+
+        this.select = function() {
+            if (this.selected) return;
+            staffRecordList.forEach(record => record.deselect());
+
+            document.querySelector("#instructional-message-1").hidden = true;
+            document.querySelector("#staff-data").hidden = false;
+            document.querySelector("#staff-name").innerHTML = this.data.name;
+            document.querySelector("#staff-status").innerHTML = this.data.staffType == "0" ? "STAFF - CLINICIAN" : "STAFF - ADMINISTRATOR";
+            document.querySelector("#staff-phone").innerHTML = "Phone: " + this.data.phone;
+            document.querySelector("#staff-department").innerHTML = "Department: " + this.data.department;
+            document.querySelector("#staff-position").innerHTML = "Position: " + this.data.position;
+            document.querySelector("#staff-clinic-id").innerHTML = "Residing clinic #: " + this.data.clinicId;
+
+            this.html.classList.add("selected");
+            this.selected = true;
+            selectedStaff = this;
+        }
+
+        this.deselect = function() {
+            this.html.classList.remove("selected");
+            this.selected = false;
+        }
+
+        this.html.addEventListener("click", () => this.select(), false);
+        document.getElementById("staff-list").appendChild(this.html);
+    }
+
+    function PatientRecord(data) {
+        this.data = data;
+        this.html = new DOMParser().parseFromString(`
+        <button class="btn-elechart text-start my-1 py-1"><span class="col mx-4">${data.name}</span>|
+            <span class="col mx-4">D.O.B: ${data.dob}</span>|
+            <span class="col mx-4">Registered On: ${data.registrationDate}</span>
+        </button>`,
+        "text/html").querySelector(".btn-elechart");
+
+        this.selected = false;
+
+        this.select = function() {
+            if (this.selected) return;
+            patientRecordList.forEach(record => record.deselect());
+
+            document.querySelector("#instructional-message-3").hidden = true;
+            document.querySelector("#patient-data").hidden = false;
+            document.querySelector("#patient-name").innerHTML = this.data.name;
+
+            this.html.classList.add("selected");
+            this.selected = true;
+            selectedPatient = this;
+        }
+
+        this.deselect = function() {
+            this.html.classList.remove("selected");
+            this.selected = false;
+        }
+
+        this.html.addEventListener("click", () => this.select(), false);
+        document.getElementById("patients-list").appendChild(this.html);
+    }
+
+    function requestStaffDeactivation() {
+        if (!selectedStaff) {
+            console.warn("staff not selected!");
+            return;
+        }
+
+        // ask for re-authorization
+        const authDialogHtml = clientUtils.makeAuthorizationDialog();
+        const authDialog = new bootstrap.Modal(authDialogHtml, {
+            keyboard: false
+        });
+
+        // called when the dialog is submitted
+        authDialogHtml.querySelector("#modal-password-form").addEventListener("submit", (ev) => {
+            ev.preventDefault();
+            let password = new FormData(ev.target).get("password");
+
+            authDialog.dispose();
+            authDialogHtml.remove();
+
+            let responseCallback = (serverResponse) => {
+                let [okDialogHtml, okDialog] = [null, null];
+
+                if (serverResponse.outcome == "success") {
+                    okDialogHtml = clientUtils.makeMsgDialog("Message", "Re-authorization and deactivation was successful.", () => clientUtils.goto("Administration?view=1"));
+                    okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+                }    
+                else {
+                    okDialogHtml = clientUtils.makeMsgDialog("Alert", "Re-authorization was unsuccessful.");
+                    okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+                }
+
+                okDialog.show();
+            };
+
+            let deactPost = new clientUtils.ClientPost("staffDeactivationPost", clientUtils.getCookie("accessToken"), responseCallback);
+            deactPost.addParam("staffId", selectedStaff.data.staffId);
+            deactPost.addParam("password", password);
+
+            clientUtils.webPost(deactPost);
+        }, false);
+
+        authDialog.show();
+    }
+
+    function requestClinicDeactivation() {
+        if (!selectedClinic) {
+            console.warn("clinic not selected!");
+            return;
+        }
+
+        // ask for re-authorization
+        const authDialogHtml = clientUtils.makeAuthorizationDialog();
+        const authDialog = new bootstrap.Modal(authDialogHtml, {
+            keyboard: false
+        });
+
+        // called when the dialog is submitted
+        authDialogHtml.querySelector("#modal-password-form").addEventListener("submit", (ev) => {
+            ev.preventDefault();
+            let password = new FormData(ev.target).get("password");
+
+            authDialog.dispose();
+            authDialogHtml.remove();
+
+            let responseCallback = (serverResponse) => {
+                let [okDialogHtml, okDialog] = [null, null];
+
+                if (serverResponse.outcome == "success") {
+                    okDialogHtml = clientUtils.makeMsgDialog("Message", "Re-authorization and invalidation was successful.", () => clientUtils.goto("Administration?view=2"));
+                    okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+                }    
+                else {
+                    okDialogHtml = clientUtils.makeMsgDialog("Alert", "Re-authorization was unsuccessful.");
+                    okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+                }
+
+                okDialog.show();
+            };
+
+            let deactPost = new clientUtils.ClientPost("clinicDeactivationPost", clientUtils.getCookie("accessToken"), responseCallback);
+            deactPost.addParam("clinicId", selectedClinic.data.clinicId);
+            deactPost.addParam("password", password);
+
+            clientUtils.webPost(deactPost);
+        }, false);
+
+        authDialog.show();
+    }
+
+    function requestPatientDeactivation() {
+        if (!selectedPatient) {
+            console.warn("patient not selected!");
+            return;
+        }
+
+        // ask for re-authorization
+        const authDialogHtml = clientUtils.makeAuthorizationDialog();
+        const authDialog = new bootstrap.Modal(authDialogHtml, {
+            keyboard: false
+        });
+
+        // called when the dialog is submitted
+        authDialogHtml.querySelector("#modal-password-form").addEventListener("submit", (ev) => {
+            ev.preventDefault();
+            let password = new FormData(ev.target).get("password");
+
+            authDialog.dispose();
+            authDialogHtml.remove();
+
+            let responseCallback = (serverResponse) => {
+                let [okDialogHtml, okDialog] = [null, null];
+
+                if (serverResponse.outcome == "success") {
+                    okDialogHtml = clientUtils.makeMsgDialog("Message", "Re-authorization and deactivation was successful.", () => clientUtils.goto("Administration?view=3"));
+                    okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+                }    
+                else {
+                    okDialogHtml = clientUtils.makeMsgDialog("Alert", "Re-authorization was unsuccessful.");
+                    okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+                }
+
+                console.log(serverResponse);
+
+                okDialog.show();
+            };
+
+            let deactPost = new clientUtils.ClientPost("patientDeactivationPost", clientUtils.getCookie("accessToken"), responseCallback);
+            deactPost.addParam("patientId", selectedPatient.data.patientId);
+            deactPost.addParam("password", password);
+
+            clientUtils.webPost(deactPost);
+        }, false);
+
+        authDialog.show();
+    }
+
+    function switchToView(fromViewName, toViewName)
+    {
+        const [fromView, toView] = [document.getElementById(fromViewName), document.getElementById(toViewName)];
+        fromView.hidden = true;
+        toView.hidden = false;
+    }
+
+    function filterList(byWhat, filterFieldId) {
+        const filterString = document.getElementById(filterFieldId).value;
+        
+        const suitableMatch = (str, filterStr) => {
+            str = str.toLowerCase();
+            filterStr = filterStr.toLowerCase();
+            
+            if (str.startsWith(filterStr)) return true;
+            if (str.endsWith(filterStr)) return true;
+            if (str.includes(filterStr, 0)) return true;
+            if (str.search(filterStr) > -1) return true;
+
+            return false;
+        }
+
+        if (byWhat == "staff") {
+            if (filterString.length == 0) {
+                staffRecordList.forEach((record) => record.html.hidden = false);
+                return;
+            }
+
+            staffRecordList.forEach((record) => record.html.hidden = !suitableMatch(record.data.name, filterString));
+        } 
+        else if (byWhat == "clinics") {
+            if (filterString.length == 0) {
+                clinicRecordList.forEach((record) => record.html.hidden = false);
+                return;
+            }
+
+            clinicRecordList.forEach((record) => record.html.hidden = !suitableMatch(record.data.name, filterString));
+        }
+        else if (byWhat == "patients") {
+            if (filterString.length == 0) {
+                patientRecordList.forEach((record) => record.html.hidden = false);
+                return;
+            }
+
+            patientRecordList.forEach((record) => record.html.hidden = !suitableMatch(record.data.name, filterString));
+        }
+    }
+
+    function initialization(serverResponse) {
+        if (!serverResponse.isAdmin)
+            closeSession();
+
+        // user is admin, continue.
+
+        // get list of clinics
+        const clinicsPost = new clientUtils.ClientPost("requestClinics", clientUtils.getCookie("accessToken"), (serverResponse) => {
+            for (const i in serverResponse.clinics)
+                clinicRecordList.push(new ClinicRecord(serverResponse.clinics[i]));
+        });
+
+        // get list of staff
+        const staffPost = new clientUtils.ClientPost("requestStaff", clientUtils.getCookie("accessToken"), (serverResponse) => {
+            for (const i in serverResponse.staff)
+                staffRecordList.push(new StaffRecord(serverResponse.staff[i]));
+        });
+
+        // get list of all patients
+        const patientPost = new clientUtils.ClientPost("requestPatients", clientUtils.getCookie("accessToken"), (serverResponse) => {
+            for (const i in serverResponse.patients)
+                patientRecordList.push(new PatientRecord(serverResponse.patients[i]));
+        });
+
+        clientUtils.webPost(clinicsPost);
+        clientUtils.webPost(staffPost);
+        clientUtils.webPost(patientPost);
+    }
+
+    function closeSession() {
+        clientUtils.burnSession();
+        clientUtils.goto("Login");
+    }
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        if (urlParams.has("view")) {
+            const view = urlParams.get("view");
+            document.querySelector("#landing-page").hidden = true;
+
+            if (view == "1")
+                document.querySelector("#staff-registry-view").hidden = false;
+            else if (view == "2")
+                document.querySelector("#clinic-registry-view").hidden = false;
+            else if (view == "3")
+                document.querySelector("#patients-registry-view").hidden = false;
+        }
+
+        const isAdminPost = new clientUtils.ClientPost("requestIsAdmin", clientUtils.getCookie("accessToken"), initialization);
+        clientUtils.webPost(isAdminPost);
+    });
+</script>

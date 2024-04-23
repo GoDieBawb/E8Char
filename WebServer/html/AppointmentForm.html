@@ -11,10 +11,10 @@
 		<form id="main-form" method="post">
 			<fieldset>
 				<legend>Patient Information</legend>
-				<label for="first-name">First</label>
+				<label for="first-name">First Name</label>
 				<input readonly type="text" id="first-name" name="firstName" autocomplete="given-name" required>
 			
-				<label for="last-name">Last</label>
+				<label for="last-name">Last Name</label>
 				<input readonly type="text" id="last-name" name="lastName" required>
 			</fieldset>
 			
@@ -45,6 +45,8 @@
 	</body>
 </html>
 <script>
+	"use strict"
+	
 	function submitAppointmentForm() {
 		event.preventDefault();
 		

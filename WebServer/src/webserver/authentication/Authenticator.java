@@ -37,9 +37,9 @@ public class Authenticator {
         if (tokenMap.containsKey(token)) {
             Long lastAct = tokenMap.get(token).lastAct;
             Long curTime = System.currentTimeMillis();
+            int minutes = 60;
             
-            //15 minute time out for token
-            if ((curTime-lastAct)/1000 > 60*15) {
+            if ((curTime-lastAct)/1000 > 60*minutes) {
                 //System.out.println("TOKEN EXPIRED: " + (curTime-lastAct)/1000 +" seconds.");
                 tokenMap.remove(token);
                 return null;

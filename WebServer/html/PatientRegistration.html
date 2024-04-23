@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css" >
+        <link rel="stylesheet" type="text/css" href="elechart/elechart.css" >
+        <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" >
+        <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+		<script defer src="bootstrap/bootstrap.bundle.min.js"></script>
+		<script defer src="scripts/clientutils.js"></script>
+		<title>Patient Registration</title>
+	</head>
+	<body>
+		<div class="container-fluid vh-100">
+			<div class="row h-100">
+				<div class="col-2 g-0">
+					<svg class="sidebar-title ms-4 ms-lg-5 mt-2 position-absolute" width="283px" height="63px" viewBox="-0.5 -0.5 283 63"><defs></defs><g><g><path d="M 1 1 L 251 1 Q 281 1 281 31 Q 281 61 251 61 L 1 61 Z" fill="rgb(255, 255, 255)" stroke="#46998b" stroke-width="3" stroke-miterlimit="10" pointer-events="all"/></g><g><g transform="translate(-0.5 -0.5)"><switch><foreignObject pointer-events="none" width="100%" height="100%" style="overflow: visible; text-align: left;"><div style="display: flex; align-items: unsafe center; justify-content: unsafe flex-start; width: 1px; height: 1px; padding-top: 31px; margin-left: 3px;"><div data-drawio-colors="color: rgb(0, 0, 0); " style="box-sizing: border-box; font-size: 0px; text-align: left;"><div style="display: inline-block; font-size: 32px; font-family: Calibri; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;">  Patient Registration</div></div></div></foreignObject></switch></g></g></g></svg>
+					<div class="list-group list-group-flush sidebar-button-group">
+						<button type="button" class="btn btn-success rounded-0 mb-1 fw-bold fs-5" onclick="clientUtils.goto('PatientInquiry')">
+							<i class="fas fa-arrow-alt-circle-left me-2"></i>Cancel</button>
+					</div>
+				</div>
+				<div class="col-10 gx-5 elechart-bg bg-elechart-light page-view">
+					<div class="bg-white rounded border p-3 shadow-sm h-100">
+						<iframe class="py-3" src="PatientForm.html" aria-label="form viewer"></iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script>
+	"use strict"
+	
+	function submitDemographic() {
+		event.preventDefault();
+		
+		const accessToken = clientUtils.getCookie("accessToken");
+		const patientId = clientUtils.getCookie("patientId");
+		const postType = "patientRegistrationFormPost";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
+	
+		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
+		newClientPost.addParam("patientId", patientId);
+		
+		for (const key in formData)
+			newClientPost.addParam(key, formData[key]);
+
+		clientUtils.webPost(newClientPost);
+	}
+
+	function responseCallback(serverResponse) {
+		if (serverResponse.outcome == "failed") {
+			alert("Post Failed: " + serverResponse.responseType);
+		}
+		else if (serverResponse.outcome == "success") {
+			parent.location.reload();
+		}
+	}
+
+	function parseRaceField() {
+		let val = document.querySelector("#race").value;
+		if (val == "Other") {
+			document.querySelector("#other-race-field").hidden = false;
+		}
+		else {
+			document.querySelector("#other-race-field").hidden = true;
+		}
+	}
+
+	function parseSexField() {
+		let val = document.querySelector("#sex").value;
+		if (val == "Female") {
+			document.querySelector("#pregnancy-section").hidden = false;
+		}
+		else {
+			document.querySelector("#pregnancy-section").hidden = true;
+		}
+	}
+
+	function parseLanguageField() {
+		let val = document.querySelector("#prim-lang").value;
+		if (val == "Other") {
+			document.querySelector("#other-language-field").hidden = false;
+		} else {
+			document.querySelector("#other-language-field").hidden = true;
+		}
+	}
+
+	function onPageLoaded() {
+		let isAdminPost = new clientUtils.ClientPost("requestIsAdmin", clientUtils.getCookie("accessToken"), (servResp) => {
+			if (!servResp.isAdmin)
+				closeSession();
+		});
+		
+        clientUtils.webPost(isAdminPost);
+	}
+
+	// Called only from the patient services page.
+    function populateAsReadOnly(readOnlyData) {
+        document.querySelector("#main-submit-button").remove();
+        delete readOnlyData.enteredDate;
+        
+		// Disable all fieldsets.
+		document.querySelectorAll("fieldset").forEach((el) => {
+			el.disabled = true;
+		});
+
+        for (const field in readOnlyData) {
+            const val = readOnlyData[field];
+            const formField = document.querySelector(`[name='${field}']`);
+            formField.value = val;
+            formField.setAttribute("readonly", true);
+        }
+    }
+
+	function closeSession() {
+        clientUtils.burnSession();
+        clientUtils.goto("Login");
+    }
+
+	document.addEventListener("DOMContentLoaded", onPageLoaded, false);
+</script>

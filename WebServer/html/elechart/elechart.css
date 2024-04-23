@@ -90,7 +90,43 @@ iframe {
     background-size: cover;
 }
 
-#service-view, #service-creation-view {
+.sidebar-button-group {
+    margin-top: 86px;
+}
+
+.full-height-50 {
+    height: calc(100vh - 150px);
+}
+
+.page-view {
+    padding-top: 80px;
+    padding-bottom: 20px;
+}
+
+.elechart-dialog {
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 2;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dialog-disable-screen {
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    position: absolute;				
+    background-color: #cccccc;
+    color: #aaaaaa;
+    opacity: .4;
+    filter: alpha(opacity = 50);
+}
+
+#service-view, #service-creation-view, #patient-registration-form, .full-height-100 {
     height: calc(100vh - 100px);
 }
 
@@ -124,30 +160,10 @@ iframe {
     background-size: cover;
 }
 
-#service-record-list, #service-group-list, #service-creation-group-list {
+#service-record-list, #service-group-list {
     height: 180px;
 }
 
-#sidebar-wrapper {
-    height: 100vh;
-    margin-left: -15rem;
-    -webkit-transition: margin 0.25s ease-out;
-    -moz-transition: margin 0.25s ease-out;
-    -o-transition: margin 0.25s ease-out;
-    transition: margin 0.25s ease-out;
-}
-
-#sidebar-wrapper .sidebar-heading {
-    /* padding: 0.875rem 1.25rem; */
-    font-size: 1.2rem;
-}
-
-#sidebar-wrapper .list-group {
-    width: 15rem;
-}
-
-@media (min-width: 768px) {
-    #sidebar-wrapper {
-        margin-left: 0;
-    }
+#service-creation-group-list {
+    height: 512px;
 }

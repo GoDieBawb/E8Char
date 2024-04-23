@@ -59,10 +59,11 @@ public class PostHandler {
             // System.out.println("Verified!");
         }
 
-        // Check if clinician has valid access to the patient for the proper request.
-        if (b.patientId != -1)
+        // // Check if clinician has valid access to the patient for the proper request.
+        IsAdminResponse isar = new IsAdminResponse(authenticator.getUserIdByToken(b.accessToken));
+        if (b.patientId != -1 && !isar.isAdmin)
             if (!authenticator.Authenticate(b.accessToken, b.patientId))
-                return new BadTokenResponse();
+                return new UnauthorizedResponse();
 
         //Once Token Verified Determine Which Post Type
         switch (b.postType) {
@@ -136,7 +137,38 @@ public class PostHandler {
                 ship.entereddate = LocalDate.now().toString();
                 ship.publish();
                 return new BasicResponse("success");
-                
+            
+            case "submitStaffFormPost":
+                SubmitStaffPost ssp = g.fromJson(json, SubmitStaffPost.class);
+                ssp.publish();
+                return new BasicResponse("success");
+            
+            case "staffDeactivationPost":
+                StaffDeactivationPost stdp = g.fromJson(json, StaffDeactivationPost.class);
+                String result = authenticator.Authenticate(authenticator.getUserNameByToken(b.accessToken), stdp.password);
+                if (result == null) return new UnauthorizedResponse();
+                stdp.publish();
+                return new BasicResponse("success");
+
+            case "clinicDeactivationPost":
+                ClinicDeactivationPost cdp = g.fromJson(json, ClinicDeactivationPost.class);
+                result = authenticator.Authenticate(authenticator.getUserNameByToken(b.accessToken), cdp.password);
+                if (result == null) return new UnauthorizedResponse();
+                cdp.publish();
+                return new BasicResponse("success");
+
+            case "patientDeactivationPost":
+                PatientDeactivationPost pdp = g.fromJson(json, PatientDeactivationPost.class);
+                result = authenticator.Authenticate(authenticator.getUserNameByToken(b.accessToken), pdp.password);
+                if (result == null) return new UnauthorizedResponse();
+                pdp.publish();
+                return new BasicResponse("success");
+            
+            case "clinicRegistrationFormPost":
+                ClinicRegistrationFormPost crfp = g.fromJson(json, ClinicRegistrationFormPost.class);
+                crfp.publish();
+                return new BasicResponse("success");
+
             case "requestUserClients":
                 int userId = authenticator.getUserIdByToken(b.accessToken);
                 UserClientsResponse clientsResponse = new UserClientsResponse(userId);
@@ -155,6 +187,23 @@ public class PostHandler {
             case "requestClinicians":
                 CliniciansResponse cr = new CliniciansResponse(b.patientId);
                 return cr;
+
+            case "requestIsAdmin":
+                int staffId = authenticator.getUserIdByToken(b.accessToken);
+                IsAdminResponse iar = new IsAdminResponse(staffId);
+                return iar;
+
+            case "requestClinics":
+                ClinicsResponse clr = new ClinicsResponse();
+                return clr;
+
+            case "requestStaff":
+                StaffResponse sr = new StaffResponse();
+                return sr;
+
+            case "requestPatients":
+                PatientsResponse pr = new PatientsResponse();
+                return pr;
                 
             default:
                 System.out.println("Unknown Post: " + b.postType);

@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css" >
 		<link rel="stylesheet" type="text/css" href="elechart/elechart.css">
+		<script defer src="bootstrap/bootstrap.bundle.min.js"></script>
 		<script defer src="scripts/clientutils.js"></script>
 		<title>Login</title>
 	</head>
@@ -47,6 +48,8 @@
 	</body>
 </html>
 <script>
+	"use strict"
+	
 	var loginDebounce = false;
 
 	function attemptLogin() {
@@ -72,16 +75,23 @@
 
 	function responseCallback(serverResponse) {
 		if (serverResponse.outcome == "failed") {
-			alert("Login Failed");
-
-			document.querySelector("#login-button").classList.remove("active");
-			loginDebounce = false;
+			let okDialogHtml = clientUtils.makeMsgDialog("Authorization Failed", "Wrong authorization credentials.", () => clientUtils.goto("Login"));
+			let okDialog = new bootstrap.Modal(okDialogHtml, { keyboard: false });
+			okDialog.show();
 		}
 		else if (serverResponse.outcome == "success") {
 			clientUtils.setCookie("accessToken", serverResponse.accessToken);
 			clientUtils.setCookie("clinicianName", serverResponse.clinicianName);
 			clientUtils.setCookie("clinicianID", serverResponse.clinicianId);
-			clientUtils.goto("PatientInquiry");
+
+			let isAdminPost = new clientUtils.ClientPost("requestIsAdmin", clientUtils.getCookie("accessToken"), (servResp) => {
+				if (servResp.isAdmin)
+					clientUtils.goto("Administration");
+				else
+					clientUtils.goto("PatientInquiry");
+			});
+
+        	clientUtils.webPost(isAdminPost);
 		}
 	}
 

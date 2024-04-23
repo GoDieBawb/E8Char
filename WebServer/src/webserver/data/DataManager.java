@@ -86,11 +86,10 @@ public final class DataManager {
         for (String name : RandomData.STAFF_NAMES) {
             sns.firstName = name.split(" ")[0];
             sns.lastName = name.split(" ")[1];
-            sns.username = new String(sns.firstName.charAt(0) + sns.lastName).toLowerCase();
             sns.password = "";
             sns.phoneNumber = String.format("(%d) %d-%d", randomInt(100, 999), randomInt(100, 999), randomInt(1000, 9999));
             sns.dob = randomDate(1950, 2015);
-            sns.address = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
+            sns.streetAddress = String.format("%d %s", randomInt(100, 9999), RandomData.STREETS[randomInt(0, RandomData.STREETS.length-1)]);
             sns.city = RandomData.CITIES[randomInt(0, RandomData.CITIES.length-1)];
             sns.state = RandomData.STATES[randomInt(0, RandomData.STATES.length-1)];
             sns.zip = randomInt(10000, 99999);

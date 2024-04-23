@@ -244,7 +244,7 @@ public final class RandomData {
 
     public static final String[] DEPARTMENTS = {
         "Anesthesics", "Cardiology", "General Surgery", "Neurology", "Nutrition and Dietetics", "Pediatrics", "Psychiatry", "Radiology", "Urology",
-        "Ear, Nose and Throat", "Family Medicine", "Oncology", "Hematology", "Dermatology"
+        "Ear, Nose and Throat", "Family Medicine", "Oncology", "Hematology", "Dermatology", "Information Technology"
     };
 
     public static final String[] MARITAL_STATUSES = {

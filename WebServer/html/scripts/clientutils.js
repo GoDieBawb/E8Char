@@ -110,12 +110,7 @@ clientUtils.webPost = async function(clientPostObject) {
     }
     finally {
         if (jsonObject != null) {
-            if (jsonObject.outcome == "failed") {
-                clientUtils.burnSession();
-                clientUtils.goto("Login");
-            }
-            else
-                clientPostObject.responseCallback(jsonObject);
+            clientPostObject.responseCallback(jsonObject);
         }
     }
 }
@@ -189,4 +184,54 @@ clientUtils.getFromDemogaphicData = function(propertyName) {
         return;
     }
     return JSON.parse(sessionStorage.getItem("preloadedDashboardData")).demographicData[propertyName];
+}
+
+clientUtils.makeAuthorizationDialog = function(closeCallback) {
+    let html = new DOMParser().parseFromString(`
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-3" id="modal-title">Authorization Required</h5>
+                    </div>
+                    <form id="modal-password-form" action="#" type="hidden"></form>
+                    <div class="modal-body fs-4">
+                        <div>Please re-enter your password to authorize this request.</div>
+                        <label for="deact-pass" class="fs-5">Password</label>
+                        <input form="modal-password-form" id="deact-pass" type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-modal-close" class="btn btn-success rounded-0 fw-bold fs-5" data-bs-dismiss="modal">Close</button>
+                        <button id="btn-modal-password" form="modal-password-form" class="btn btn-success rounded-0 fw-bold fs-5">Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>`, "text/html").querySelector("#staticBackdrop");
+    
+    // called with the user clicks 'close'
+    html.querySelector("#btn-modal-close").addEventListener("click", () => { html.remove(); if (closeCallback) closeCallback(); }, false);
+    return html;
+}
+
+clientUtils.makeMsgDialog = function(title, msg, closeCallback) {
+    let html = new DOMParser().parseFromString(`
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title fs-3" id="modal-title">${title}</h5>
+                    </div>
+                    <div class="modal-body fs-4">
+                        <div id="modal-msg">${msg}</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btn-modal-close" class="btn btn-success rounded-0 fw-bold fs-5" data-bs-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>`, "text/html").querySelector("#staticBackdrop");
+    
+    // called with the user clicks 'ok'
+    html.querySelector("#btn-modal-close").addEventListener("click", () => { html.remove(); if (closeCallback) closeCallback(); }, false);
+    return html;
 }
