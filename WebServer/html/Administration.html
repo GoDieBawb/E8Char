@@ -22,7 +22,7 @@
                         <button id="btn-cancel-clinic-form" class="btn btn-success rounded-0 fw-bold fs-5 mb-1" onclick="switchToView('clinics-registration-form','clinic-registry-view'); document.querySelector('#btn-cancel-clinic-form').hidden=true" hidden>
                             <i class="fas fa-arrow-alt-circle-left me-2"></i>Cancel</button>
                             <button id="btn-cancel-patients-report" class="btn btn-success rounded-0 fw-bold fs-5 mb-1" onclick="switchToView('patients-report','patients-registry-view'); document.querySelector('#btn-cancel-patients-report').hidden=true" hidden>
-                                <i class="fas fa-arrow-alt-circle-left me-2"></i>Cancel</button>
+                                <i class="fas fa-arrow-alt-circle-left me-2"></i>Return</button>
                         <button class="btn btn-danger rounded-0 fw-bold fs-5" onclick="closeSession()"><i class="fas fa-times-circle me-2"></i>Close Session</button>
                     </div>
                 </div>
@@ -469,7 +469,7 @@
         const suitableMatch = (str, filterStr) => {
             str = str.toLowerCase();
             filterStr = filterStr.toLowerCase();
-            
+
             if (str.startsWith(filterStr)) return true;
             if (str.endsWith(filterStr)) return true;
             if (str.includes(filterStr, 0)) return true;

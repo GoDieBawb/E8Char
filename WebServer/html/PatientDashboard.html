@@ -182,19 +182,19 @@
 		ssnAcc.insertAdjacentHTML('beforeend', '<i>' + `${SSN.substring(0, 3)}-${SSN.substring(3, 5)}-${SSN.substring(5, 9)}` + '</i>');
 
 		// Store the server response as preloaded data.
-		if (!sessionStorage.getItem("preloadedDashboardData"))
-			sessionStorage.setItem("preloadedDashboardData", JSON.stringify(serverResponse));
+		// if (!sessionStorage.getItem("preloadedDashboardData"))
+		// 	sessionStorage.setItem("preloadedDashboardData", JSON.stringify(serverResponse));
 	}
 	
 	document.addEventListener("DOMContentLoaded", (event) => {
-		let preloadedDashboardData = sessionStorage.getItem("preloadedDashboardData");
+		//let preloadedDashboardData = sessionStorage.getItem("preloadedDashboardData");
 
 		 // If the serve response has been received before, use the preloaded version instead.
-		if (preloadedDashboardData)
-		{
-			responseCallback(JSON.parse(preloadedDashboardData));
-			return;
-		}
+		// if (preloadedDashboardData)
+		// {
+		// 	responseCallback(JSON.parse(preloadedDashboardData));
+		// 	return;
+		// }
 
 		var newClientPost = new clientUtils.ClientPost(
             "requestClientDemographic",
