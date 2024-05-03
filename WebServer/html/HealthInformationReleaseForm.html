@@ -12,18 +12,14 @@
             <fieldset>
                 <legend>Consent to Share Medical Records to Another Doctor</legend>
                 <input readonly hidden aria-hidden="true" type="text" name="patientId">
-                <label for="first-name">First Name</label>
-                <input readonly type="text" id="first-name" name="firstName" required>
-                <label for="last-name">Last Name</label>
-                <input readonly type="text" id="last-name" name="lastName" required>
-                <label for="dob">Date of Birth:</label>
-                <input readonly type="date" id="dob" name="dob" required>
+                <label for="first-name">Patient Name</label>
+                <input readonly type="text" id="patientName" name="patientName" required>
+                <label for="date">Date:</label>
+                <input readonly type="date" id="date" name="date" required>
                 <label for="staffId">Doctor's Name:</label>
                 <select id="staffId" name="staffId" required>
                     <option value="" disabled selected>Select your option</option>
                 <select>
-                <label for="date">Date:</label>
-                <input readonly type="date" id="date" name="date" required>
             </fieldset>
             <fieldset>
                 <legend>Consent Statement</legend>
@@ -50,25 +46,27 @@
         clientUtils.webPost(newClientPost);
 
         document.getElementById('date').valueAsDate = new Date();
-        document.querySelector("#first-name").value = clientUtils.getFromDemogaphicData("firstName");
-        document.querySelector("#last-name").value = clientUtils.getFromDemogaphicData("lastName");
-        document.querySelector("#dob").value = clientUtils.getFromDemogaphicData("dob");
     }
 
     function submitHealthInfoRelease() {
         event.preventDefault();
         
-        var accessToken = clientUtils.getCookie("accessToken");
-        var patientId   = clientUtils.getCookie("patientId");
-        var postType    = "submitHealthReleaseForm";
-        const formData  = clientUtils.getFormData(document.querySelector("#main-form"));
+		
+		var accessToken = clientUtils.getCookie("accessToken");
+		var patientId  = clientUtils.getCookie("patientId");
+		var postType = "submitHealthReleaseForm";
+		const formData = clientUtils.getFormData(document.querySelector("#main-form"));
 	
 		const newClientPost = new clientUtils.ClientPost(postType, accessToken, responseCallback);
-        newClientPost.addParam("patientId", patientId);
-        
+		newClientPost.addParam("patientId", patientId);
+
 		for (const key in formData)
 			newClientPost.addParam(key, formData[key]);
-
+			
+        newClientPost["patientId"] = patientId;    
+        console.log(newClientPost);    
+        
+            
 		clientUtils.webPost(newClientPost);
     }
 
@@ -78,6 +76,8 @@
 		}
 		else if (serverResponse.outcome == "success") {
             if (serverResponse.responseType == "CliniciansResponse") {
+                document.getElementById("patientName").value          = serverResponse.patientName;
+                document.getElementById("clientNameOutput").innerHTML = serverResponse.patientName;            
                 populateClinicians(serverResponse.clinicians);
             }
 			else {
